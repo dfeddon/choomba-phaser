@@ -1,18 +1,26 @@
 {
-  "name": "choomba-phaser",
-  "version": "0.0.1",
-  "description": "Multiplayer cyberpunk RPG",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "http://www.github.com/dfeddon/choomba-phaser"
-  },
-  "author": "Derek Feddon",
-  "license": "UNLICENSED",
-  "dependencies": {
-    "phaser": "^2.6.2"
-  }
+    "name": "choomba-phaser",
+    "version": "0.0.1",
+    "description": "Multiplayer cyberpunk RPG",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "http://www.github.com/dfeddon/choomba-phaser"
+    },
+    "author": "Derek Feddon",
+    "license": "UNLICENSED",
+    "dependencies": {
+        "express": "^4.15.4",
+        "phaser": "^2.6.2"
+    },
+    "devDependencies": {
+        "grunt": "^1.0.1",
+        "grunt-contrib-copy": "^1.0.0",
+        "grunt-contrib-watch": "^1.0.0",
+        "grunt-ts": "^6.0.0-beta.16",
+        "typescript": "^2.4.2"
+    }
 }
