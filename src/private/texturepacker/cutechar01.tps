@@ -90,9 +90,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>8192</int>
             <key>height</key>
-            <int>2048</int>
+            <int>8192</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -150,7 +150,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>cutechar01</filename>
+                <filename>../../public/images/spritesheets/cutechar01.json</filename>
             </struct>
         </map>
         <key>multiPack</key>

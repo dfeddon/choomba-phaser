@@ -78,7 +78,7 @@ class App {
     this.cute1.animations.add("cute01_idle", Phaser.Animation.generateFrameNames("Idle/skeleton-Idle_", 0, 9, ".png", 1), 10, true, false);
     this.cute1.scale.setTo(0.45, 0.45); // scale to 75%
     this.cute1.anchor.setTo(0.5, 1); // centered
-    this.cute1.position.x = 300;
+    this.cute1.position.x = 285;
     this.cute1.position.y = 400;
     this.cute1.play("cute01_idle", 24, true);
 
