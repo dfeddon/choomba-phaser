@@ -1,5 +1,10 @@
-class App {
-  game: Phaser.Game;
+import GameState from "./states/GameState";
+import BootState from "./states/BootState";
+import PreloaderState from "./states/PreloaderState";
+import SplashState from "./states/SplashState";
+
+export default class App extends Phaser.Game {
+  // game: Phaser.Game;
   man1: Phaser.Sprite;
   man2: Phaser.Sprite;
   zomb1: Phaser.Sprite;
@@ -7,20 +12,29 @@ class App {
   cute1: Phaser.Sprite;
 
   constructor() {
-    this.game = new Phaser.Game(
+    console.log("* Choomba");
+    // this.game = new Phaser.Game(
+      super(
       window.innerWidth * window.devicePixelRatio - 15,
       window.innerHeight * window.devicePixelRatio / 1.6,
       Phaser.AUTO,
-      "content",
-      {
-        preload: this.preload,
-        create: this.create,
-        update: this.update,
-        render: this.render
-      }
+      "content", null
+      // {
+      //   preload: this.preload,
+      //   create: this.create,
+      //   update: this.update,
+      //   render: this.render
+      // }
     );
+    this.state.add("BootState", BootState, false);
+    this.state.add("PreloaderState", PreloaderState, false);
+    this.state.add("SplashState", SplashState, false);
+    this.state.add("GameState", GameState, false);
+    // start boot
+    this.state.start("BootState");
   }
-
+}
+/*
   preload() {
     console.log("== preload ==");
     this.game.load.crossOrigin = true;
@@ -43,10 +57,26 @@ class App {
     //   172,
     //   182 // 186
     // ); //132, 186); //, 10);
-    this.game.load.atlasJSONHash("char01", "../images/spritesheets/char01.png", "../images/spritesheets/char01.json");
-    this.game.load.atlasJSONHash("cutechar01", "../images/spritesheets/cutechar01.png", "../images/spritesheets/cutechar01.json");
-    this.game.load.atlasJSONHash('zombie01', '../images/spritesheets/zombie01.png', '../images/spritesheets/zombie01.json');
-    this.game.load.atlasJSONHash("catlvl01", "../images/spritesheets/catlvl01.png", "../images/spritesheets/catlvl01.json");
+    this.game.load.atlasJSONHash(
+      "char01",
+      "../images/spritesheets/char01.png",
+      "../images/spritesheets/char01.json"
+    );
+    this.game.load.atlasJSONHash(
+      "cutechar01",
+      "../images/spritesheets/cutechar01.png",
+      "../images/spritesheets/cutechar01.json"
+    );
+    this.game.load.atlasJSONHash(
+      "zombie01",
+      "../images/spritesheets/zombie01.png",
+      "../images/spritesheets/zombie01.json"
+    );
+    this.game.load.atlasJSONHash(
+      "catlvl01",
+      "../images/spritesheets/catlvl01.png",
+      "../images/spritesheets/catlvl01.json"
+    );
   }
   create() {
     console.log("== create ==");
@@ -58,32 +88,100 @@ class App {
 
     // this.man1 = this.game.add.sprite(0, 0, "uniqueKey", 0);
     // this.man1.animations.add("idle");
-    this.cat1 = this.game.add.sprite(0, 0, "catlvl01", "Idle/skeleton-Idle_0.png");
-    this.cat1.animations.add("catlvl01_idle", Phaser.Animation.generateFrameNames("Idle/skeleton-Idle_", 0, 17, ".png", 1), 10, true, false);
+    this.cat1 = this.game.add.sprite(
+      0,
+      0,
+      "catlvl01",
+      "Idle/skeleton-Idle_0.png"
+    );
+    this.cat1.animations.add(
+      "catlvl01_idle",
+      Phaser.Animation.generateFrameNames(
+        "Idle/skeleton-Idle_",
+        0,
+        17,
+        ".png",
+        1
+      ),
+      10,
+      true,
+      false
+    );
     this.cat1.scale.setTo(0.75, 0.75); // scale to 75%
     this.cat1.anchor.setTo(0.5, 1); // centered
     this.cat1.position.x = 100;
     this.cat1.position.y = 400;
     this.cat1.play("catlvl01_idle", 24, true);
 
-    this.man1 = this.game.add.sprite(0, 0, "char01", "Idle/skeleton-Idle_0.png");
-    this.man1.animations.add("char01_idle", Phaser.Animation.generateFrameNames("Idle/skeleton-Idle_", 0, 9, ".png", 1), 10, true, false);
+    this.man1 = this.game.add.sprite(
+      0,
+      0,
+      "char01",
+      "Idle/skeleton-Idle_0.png"
+    );
+    this.man1.animations.add(
+      "char01_idle",
+      Phaser.Animation.generateFrameNames(
+        "Idle/skeleton-Idle_",
+        0,
+        9,
+        ".png",
+        1
+      ),
+      10,
+      true,
+      false
+    );
     this.man1.scale.setTo(0.75, 0.75); // scale to 75%
     this.man1.anchor.setTo(0.5, 1); // centered
     this.man1.position.x = 200;
     this.man1.position.y = 400;
     this.man1.play("char01_idle", 24, true);
 
-    this.cute1 = this.game.add.sprite(0, 0, "cutechar01", "Idle/skeleton-Idle_0.png");
-    this.cute1.animations.add("cute01_idle", Phaser.Animation.generateFrameNames("Idle/skeleton-Idle_", 0, 9, ".png", 1), 10, true, false);
+    this.cute1 = this.game.add.sprite(
+      0,
+      0,
+      "cutechar01",
+      "Idle/skeleton-Idle_0.png"
+    );
+    this.cute1.animations.add(
+      "cute01_idle",
+      Phaser.Animation.generateFrameNames(
+        "Idle/skeleton-Idle_",
+        0,
+        9,
+        ".png",
+        1
+      ),
+      10,
+      true,
+      false
+    );
     this.cute1.scale.setTo(0.45, 0.45); // scale to 75%
     this.cute1.anchor.setTo(0.5, 1); // centered
     this.cute1.position.x = 285;
     this.cute1.position.y = 400;
     this.cute1.play("cute01_idle", 24, true);
 
-    this.zomb1 = this.game.add.sprite(0, 0, "zombie01", "Idle/skeleton-Idle_0.png");
-    this.zomb1.animations.add("zomb1_idle", Phaser.Animation.generateFrameNames("Idle/skeleton-Idle_", 0, 17, ".png", 1), 10, true, false);
+    this.zomb1 = this.game.add.sprite(
+      0,
+      0,
+      "zombie01",
+      "Idle/skeleton-Idle_0.png"
+    );
+    this.zomb1.animations.add(
+      "zomb1_idle",
+      Phaser.Animation.generateFrameNames(
+        "Idle/skeleton-Idle_",
+        0,
+        17,
+        ".png",
+        1
+      ),
+      10,
+      true,
+      false
+    );
     this.zomb1.scale.setTo(0.75, 0.75); // scale to 75%
     this.zomb1.anchor.setTo(0.5, 1); // center x/y values
     this.zomb1.position.x = 400;
@@ -97,7 +195,8 @@ class App {
     // console.log("* render");
   }
 }
-
+*/
 window.onload = () => {
   var game = new App();
 };
+//*/
