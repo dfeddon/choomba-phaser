@@ -21,8 +21,8 @@ export default class SplashState extends Phaser.State {
 		// else {
 			//  Same goes for mobile settings.
 		// }
-
-		this.game.state.start('CombatState', true, false);
+		
+		this.game.state.start('LobbyState', true, false);
 
 	}
 

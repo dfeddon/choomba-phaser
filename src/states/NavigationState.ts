@@ -1,6 +1,6 @@
 import CharacterView from "../views/CharacterViews";
 
-export default class CombatState extends Phaser.State {
+export default class NavigationState extends Phaser.State {
   crewCombatAttack: Phaser.Group;
   crewCombatDefend: Phaser.Group;
   crewActionAttack: Phaser.Group;
@@ -15,7 +15,7 @@ export default class CombatState extends Phaser.State {
   test: CharacterView;
 
   preload() {
-    console.log("== CombatState.preload ==");
+    console.log("== NavigationState.preload ==");
     this.game.load.crossOrigin = true;
     // "http://s3.amazonaws.com/com.dfeddon.choomba/spritesheets/boy1-idle.png";
     // this.game.load.spritesheet("uniqueKey", "../images/spritesheets/boy1-idle.png", 132, 185); //132, 186); //, 10);
@@ -33,7 +33,7 @@ export default class CombatState extends Phaser.State {
   }
 
   create() {
-    console.log("== CombatState.create ==");
+    console.log("== NavigationState.create ==");
     // Stretch to fill
     // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
     //  var text = "Hello World!";
@@ -145,4 +145,4 @@ export default class CombatState extends Phaser.State {
     this.zomb1.play("zomb1_idle", 24, true);
   }
 }
-// export { CombatState };
+// export { NavigationState };

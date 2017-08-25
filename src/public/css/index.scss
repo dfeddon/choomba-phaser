@@ -1,0 +1,26 @@
+// Google Fonts
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
+@import url(https://fonts.googleapis.com/css?family=Oxygen|Open+Sans:400italic,700italic,400,700);
+// Font Variables
+$roboto-slab: 'Roboto Slab',
+serif;
+$oxygen: 'Oxygen',
+sans-serif;
+$open-sans: 'Open Sans',
+sans-serif;
+$font-stack: Helvetica,
+sans-serif;
+$primary-color: #333;
+body {
+    font: 100% $font-stack;
+    // color: $primary-color;
+    background-color: $primary-color;
+    overflow: hidden; // hide scrollbars
+}
+
+#lobbyState {
+    display: none;
+    font-family: $oxygen;
+    font-size: 15px;
+    color: #ff0;
+}

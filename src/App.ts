@@ -1,7 +1,9 @@
+import './public/css/index.scss';
 import BootState from "./states/BootState";
 import PreloaderState from "./states/PreloaderState";
 import SplashState from "./states/SplashState";
-import CombatState from "./states/CombatState";
+import NavigationState from "./states/NavigationState";
+import LobbyState from "./states/LobbyState";
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
@@ -31,10 +33,19 @@ export default class App extends Phaser.Game {
     this.state.add("BootState", BootState, false);
     this.state.add("PreloaderState", PreloaderState, false);
     this.state.add("SplashState", SplashState, false);
-    this.state.add("CombatState", CombatState, false);
+    this.state.add("NavigationState", NavigationState, false);
+    this.state.add("LobbyState", LobbyState, false);
     // start boot
     this.state.start("BootState");
   }
+
+  // preload() {
+  //   console.log("== App.preload ==");
+  // }
+
+  // create() {
+  //   console.log("== App.create ==");
+  // }
 }
 /*
   preload() {
