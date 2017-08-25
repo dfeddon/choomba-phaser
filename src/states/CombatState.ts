@@ -1,87 +1,39 @@
-import BootState from "./states/BootState";
-import PreloaderState from "./states/PreloaderState";
-import SplashState from "./states/SplashState";
-import CombatState from "./states/CombatState";
+import CharacterView from "../views/CharacterViews";
 
-export default class App extends Phaser.Game {
-  // game: Phaser.Game;
+export default class CombatState extends Phaser.State {
+  crewCombatAttack: Phaser.Group;
+  crewCombatDefend: Phaser.Group;
+  crewActionAttack: Phaser.Group;
+  crewActionDefend: Phaser.Group;
+
   man1: Phaser.Sprite;
   man2: Phaser.Sprite;
   zomb1: Phaser.Sprite;
   cat1: Phaser.Sprite;
   cute1: Phaser.Sprite;
 
-  constructor() {
-    console.log("* Choomba");
-    // this.game = new Phaser.Game(
-      super(
-      window.innerWidth * window.devicePixelRatio,// - 15,
-      window.innerHeight * window.devicePixelRatio,// / 1.6,
-      Phaser.AUTO,
-      "content", null
-      // {
-      //   preload: this.preload,
-      //   create: this.create,
-      //   update: this.update,
-      //   render: this.render
-      // }
-    );
+  test: CharacterView;
 
-    // load states
-    this.state.add("BootState", BootState, false);
-    this.state.add("PreloaderState", PreloaderState, false);
-    this.state.add("SplashState", SplashState, false);
-    this.state.add("CombatState", CombatState, false);
-    // start boot
-    this.state.start("BootState");
-  }
-}
-/*
   preload() {
-    console.log("== preload ==");
+    console.log("== CombatState.preload ==");
     this.game.load.crossOrigin = true;
     // "http://s3.amazonaws.com/com.dfeddon.choomba/spritesheets/boy1-idle.png";
-    this.game.load.spritesheet(
-      "uniqueKey",
-      "../images/spritesheets/boy1-idle.png",
-      132,
-      185
-    ); //132, 186); //, 10);
-    this.game.load.spritesheet(
-      "uniqueKey2",
-      "../images/spritesheets/boy2-idle.png",
-      132,
-      185
-    ); //132, 186); //, 10);
+    // this.game.load.spritesheet("uniqueKey", "../images/spritesheets/boy1-idle.png", 132, 185); //132, 186); //, 10);
+    // this.game.load.spritesheet("uniqueKey2", "../images/spritesheets/boy2-idle.png", 132, 185); //132, 186); //, 10);
     // this.game.load.spritesheet(
     //   "uniqueKey3",
     //   "../images/spritesheets/zombie1-idle.png",
     //   172,
     //   182 // 186
     // ); //132, 186); //, 10);
-    this.game.load.atlasJSONHash(
-      "char01",
-      "../images/spritesheets/char01.png",
-      "../images/spritesheets/char01.json"
-    );
-    this.game.load.atlasJSONHash(
-      "cutechar01",
-      "../images/spritesheets/cutechar01.png",
-      "../images/spritesheets/cutechar01.json"
-    );
-    this.game.load.atlasJSONHash(
-      "zombie01",
-      "../images/spritesheets/zombie01.png",
-      "../images/spritesheets/zombie01.json"
-    );
-    this.game.load.atlasJSONHash(
-      "catlvl01",
-      "../images/spritesheets/catlvl01.png",
-      "../images/spritesheets/catlvl01.json"
-    );
+    // this.game.load.atlasJSONHash("char01", "../images/spritesheets/char01.png", "../images/spritesheets/char01.json");
+    // this.game.load.atlasJSONHash("cutechar01", "../images/spritesheets/cutechar01.png", "../images/spritesheets/cutechar01.json");
+    // this.game.load.atlasJSONHash("zombie01", "../images/spritesheets/zombie01.png", "../images/spritesheets/zombie01.json");
+    // this.game.load.atlasJSONHash("catlvl01", "../images/spritesheets/catlvl01.png", "../images/spritesheets/catlvl01.json");
   }
+
   create() {
-    console.log("== create ==");
+    console.log("== CombatState.create ==");
     // Stretch to fill
     // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
     //  var text = "Hello World!";
@@ -90,6 +42,8 @@ export default class App extends Phaser.Game {
 
     // this.man1 = this.game.add.sprite(0, 0, "uniqueKey", 0);
     // this.man1.animations.add("idle");
+    this.test = new CharacterView(this.game, 200, 200);//, "catlvl01");
+
     this.cat1 = this.game.add.sprite(
       0,
       0,
@@ -190,15 +144,5 @@ export default class App extends Phaser.Game {
     this.zomb1.position.y = 400;
     this.zomb1.play("zomb1_idle", 24, true);
   }
-  update() {
-    // console.log("t", time);
-  }
-  render() {
-    // console.log("* render");
-  }
 }
-*/
-window.onload = () => {
-  var game = new App();
-};
-//*/
+// export { CombatState };
