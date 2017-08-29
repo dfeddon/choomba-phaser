@@ -1,0 +1,74 @@
+#lobbyState {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr 1fr;
+    grid-template-rows: auto auto auto;
+    // grid-column-gap: 1px;
+    // grid-row-gap: 1px;
+    background-color: black;
+    // user-select: none; // disallow text selection
+    @include user-select(none); // mixin to disable text selection
+    cursor: default; // remove text edit caret
+}
+
+.column-wrapper {
+    background-color: #000;
+    font-family: $oxygen;
+    color: #ff0;
+    display: subgrid;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 15px;
+    // line-height: 1;
+    // font-family: 'hobeaux-rococeaux-background', Helvetica;
+    font-weight: 200;
+    // cursor: pointer;
+    transition: all .3s ease;
+}
+
+#squad-row {
+    display: grid;
+    padding-top: 20px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    // grid-column-gap: 1px;
+    // grid-row-gap: 1px;
+    font-family: $oxygen;
+    color: #CFB2E2;
+}
+
+.crew-cells {
+    display: grid;
+    grid-template-rows: 25px 100px 20px; //1fr 1fr;
+    grid-row-gap: 0px;
+    align-items: center;
+    // border: 0.5px solid #fff;
+}
+
+.crew-portraits {
+    display: block;
+    margin: 0 auto;
+    height: 100px;
+    width: 75px;
+    border: 1px solid #F5A623;
+    // pointer-events: none; // android longpress
+    -webkit-touch-callout: none; // ios longpress
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.crew-names {
+    text-align: center;
+    // border: 1 solid "#fff";
+}
+
+.crew-stats {
+    width: 75px;
+    margin: 0 auto;
+    text-align: center;
+    color: #000;
+    background-color: #F5A623;
+    border: 1px solid #F5A623;
+}

@@ -34,12 +34,11 @@ export default class NavigationState extends Phaser.State {
 
   create() {
     console.log("== NavigationState.create ==");
-    // Stretch to fill
-    // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-    //  var text = "Hello World!";
-    //  var style = { font: "65px Arial", fill: "#ff0000", align: "center" };
-    //  this.game.add.text(0, 0, text, style);
 
+    this.doRun();
+  }
+
+  doCombat() {
     // this.man1 = this.game.add.sprite(0, 0, "uniqueKey", 0);
     // this.man1.animations.add("idle");
     this.test = new CharacterView(this.game, 200, 200);//, "catlvl01");
@@ -143,6 +142,37 @@ export default class NavigationState extends Phaser.State {
     this.zomb1.position.x = 400;
     this.zomb1.position.y = 400;
     this.zomb1.play("zomb1_idle", 24, true);
+  }
+
+  doRun() {
+    console.log("== NavigationState.doRun ==");
+    var _this = this;
+
+    // show navigation ui
+    document.getElementById("navigation-ui-container").style.display = "grid";
+
+    // clear game world
+    this.game.world.removeAll();
+
+    // start combat
+    this.doCombat();
+
+    // Stretch to fill
+    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+    //  var text = "Hello World!";
+    //  var style = { font: "65px Arial", fill: "#ff0000", align: "center" };
+    //  this.game.add.text(0, 0, text, style);
+
+    // event handlers
+    document.getElementById("exitNav").addEventListener("click", function(e) {
+        console.log("exiting navigation state");
+        // pause game
+        // _this.game.paused = true;
+        // hide navigationState
+        document.getElementById("navigation-ui-container").style.display = "none";
+        // switch to ResultsState
+        _this.game.state.start("ResultsState", true, false);
+      });
   }
 }
 // export { NavigationState };

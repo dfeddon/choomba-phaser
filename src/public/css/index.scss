@@ -10,17 +10,28 @@ $open-sans: 'Open Sans',
 sans-serif;
 $font-stack: Helvetica,
 sans-serif;
+// global vars
 $primary-color: #333;
+// mixins
+// text selection
+@mixin user-select($select) {
+    -webkit-user-select: $select;
+    -khtml-user-select: $select;
+    -moz-user-select: $select;
+    -ms-user-select: $select;
+    -o-user-select: $select;
+    user-select: $select;
+}
+
+// index body
 body {
     font: 100% $font-stack;
     // color: $primary-color;
     background-color: $primary-color;
     overflow: hidden; // hide scrollbars
+    padding: 0;
+    margin: 0;
 }
 
-#lobbyState {
-    display: none;
-    font-family: $oxygen;
-    font-size: 15px;
-    color: #ff0;
-}
+// lobby
+@import 'lobby';

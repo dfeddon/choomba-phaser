@@ -7,44 +7,63 @@
         <%=htmlWebpackPlugin.options.title %>
     </title>
     <script src="js/lib/phaser.js"></script>
+    <!-- <script src="js/index.js"></script> -->
     <!-- <script src="bundle.client.js"></script> -->
 
     <!-- <link rel="stylesheet" href="index.css"> -->
-    <link rel="stylesheet" href="{%=o.htmlWebpackPlugin.files%}">
+    <!-- <link rel="stylesheet" href="{%=o.htmlWebpackPlugin.files%}"> -->
 </head>
 
 <body>
-    <div id="combat">
-        <div id="content"></div>
 
-        <div id="ui-container">
-
+    <section id="gameView" style="display:none;">
+        <div id="navigation-ui-container">
+            <label>Navigation UI</label>
+            <button id="exitNav">Exit</button>
         </div>
-    </div>
-</body>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Choomba.io</title>
-    <script src="js/lib/phaser.js"></script>
-    <script src="bundle.client.js"></script>
-</head>
-
-<body>
-    <div id="lobbyState">
-        <label id="label">Lobby! Silver mist suffused the deck of the ship.</label>
-    </div>
-    <div id="navigationState">
         <div id="content"></div>
-        <div id="action"></div>
-
-        <div id="ui-container">
-
         </div>
-    </div>
-</body>
+    </section>
 
-</html>
+    <section id="lobbyState">
+
+        <div id="crew-column" class="column-wrapper">
+            <center><label>CREW</label></center>
+            <div id="squad-row">
+                <div id="crew-cell-1" class="crew-cells">
+                    <label id="crew-name-1" class="crew-names">Cron</label>
+                    <img id="crew-portrait-1" class="crew-portraits" draggable="true" src="images/portrait_1.jpg" />
+                    <label id="crew-stats-1" class="crew-stats">5 Hacker</label>
+                    <!-- </div> -->
+                </div>
+                <div id="crew-cell-2" class="crew-cells">
+                    <label id="crew-name-2" class="crew-names">Relay</label>
+                    <img id="crew-portrait-2" class="crew-portraits" draggable="true" src="images/portrait_2.jpg" />
+                    <label id="crew-stats-2" class="crew-stats">4 Proxy</label>
+                </div>
+                <div id="crew-cell-3" class="crew-cells">
+                    <label id="crew-name-3" class="crew-names">Cipher</label>
+                    <img id="crew-portrait-3" class="crew-portraits" draggable="true" src="images/portrait_3.jpg" />
+                    <label id="crew-stats-3" class="crew-stats">5 Shade</label>
+                </div>
+                <div id="crew-cell-4" class="crew-cells">
+                    <label id="crew-name-4" class="crew-names">Degauss</label>
+                    <img id="crew-portrait-4" class="crew-portraits" draggable="true" src="images/portrait_4.jpg" />
+                    <label id="crew-stats-4" class="crew-stats">3 Thumper</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="vitals-column" class="column-wrapper">
+            <!-- <center><label>VITALS</label></center> -->
+        </div>
+
+        <div id="pulse-column" class="column-wrapper">
+            <center><label>PULSE</label></center>
+            <button id="pulseClicker">CLICK</button>
+        </div>
+
+    </section>
+</body>
 
 </html>

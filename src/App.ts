@@ -4,6 +4,7 @@ import PreloaderState from "./states/PreloaderState";
 import SplashState from "./states/SplashState";
 import NavigationState from "./states/NavigationState";
 import LobbyState from "./states/LobbyState";
+import ResultsState from "./states/ResultsState";
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
@@ -35,6 +36,7 @@ export default class App extends Phaser.Game {
     this.state.add("SplashState", SplashState, false);
     this.state.add("NavigationState", NavigationState, false);
     this.state.add("LobbyState", LobbyState, false);
+    this.state.add("ResultsState", ResultsState, false);
     // start boot
     this.state.start("BootState");
   }
