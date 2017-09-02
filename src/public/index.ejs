@@ -6,7 +6,8 @@
     <title>
         <%=htmlWebpackPlugin.options.title %>
     </title>
-    <script src="js/lib/phaser.js"></script>
+    <!-- <script src="js/lib/phaser.js"></script> -->
+    <script src="//cdn.jsdelivr.net/npm/phaser-ce@2.8.5/build/phaser.js"></script>
     <!-- <script src="js/index.js"></script> -->
     <!-- <script src="bundle.client.js"></script> -->
 
@@ -52,18 +53,63 @@
                     <label id="crew-stats-4" class="crew-stats">3 Thumper</label>
                 </div>
             </div>
+
+            <!-- crew pool -->
+            <section class="crew-pool-section">
+                <div class="crew-pool-wrapper">
+                    <div class="crew-pool-grid">
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                        <div class="crew-pool-item" draggable="true"></div>
+                    </div>
+                </div>
+            </section>
+
         </div>
 
-        <div id="vitals-column" class="column-wrapper">
-            <!-- <center><label>VITALS</label></center> -->
-        </div>
+
+        <!-- <div id="vitals-column" class="column-wrapper">
+            <!-- <center><label>VITALS</label></center>
+        </div> -->
 
         <div id="pulse-column" class="column-wrapper">
             <center><label>PULSE</label></center>
             <button id="pulseClicker">CLICK</button>
+            <ul id="pulse-grid"></ul>
         </div>
 
     </section>
+
+    <section id="items" style="display:none">
+        <div id="items-pulse-wrapper" class="pulse-item" onclick="pulseItemHandler(event)">
+            <div class="pulse-header">
+                <label id="pulse-item-label" class="pulse-label">Incident Name</label>
+            </div>
+            <label id="pulse-item-description" class="pulse-desc">Incident Description</label>
+        </div>
+    </section>
+
 </body>
 
 </html>

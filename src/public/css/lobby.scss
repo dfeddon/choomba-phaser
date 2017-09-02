@@ -1,13 +1,16 @@
 #lobbyState {
     display: grid;
-    grid-template-columns: 1.3fr 0.7fr 1fr;
-    grid-template-rows: auto auto auto;
-    // grid-column-gap: 1px;
-    // grid-row-gap: 1px;
+    grid-template-columns: 1.0fr 1.0fr; // 1fr;
+    grid-template-rows: auto auto;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
     background-color: black;
+    // width: 100%;
     // user-select: none; // disallow text selection
     @include user-select(none); // mixin to disable text selection
     cursor: default; // remove text edit caret
+    // width: 100vw; // fullscreen width
+    // height: 100vh; // fullscreen height
 }
 
 .column-wrapper {
@@ -15,20 +18,24 @@
     font-family: $oxygen;
     color: #ff0;
     display: subgrid;
-    justify-content: center;
+    // justify-content: center;
     align-items: center;
     padding: 20px;
     font-size: 15px;
     // line-height: 1;
     // font-family: 'hobeaux-rococeaux-background', Helvetica;
-    font-weight: 200;
+    // font-weight: 20;
     // cursor: pointer;
     transition: all .3s ease;
+    // width: 100vw; // fullscreen width
+    // height: 90vh; // fullscreen height
 }
 
+// squad
 #squad-row {
     display: grid;
     padding-top: 20px;
+    padding-bottom: 20px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     // grid-column-gap: 1px;
     // grid-row-gap: 1px;
@@ -61,6 +68,7 @@
 
 .crew-names {
     text-align: center;
+    font-size: 11px;
     // border: 1 solid "#fff";
 }
 
@@ -69,6 +77,102 @@
     margin: 0 auto;
     text-align: center;
     color: #000;
+    font-size: 11px;
+    // height: 15px;
     background-color: #F5A623;
     border: 1px solid #F5A623;
+}
+
+// crew pool
+.crew-pool-section {
+    // display: flex;
+    // flex: 1 1 auto;
+    // padding-top: 25px;
+    // overflow-y: scroll;
+    // height: 350px;
+    // border: 1px solid #5D5C5C;
+}
+
+.crew-pool-wrapper {
+    display: flex;
+    flex-direction: column;
+    // width: 100%;
+    // flex: 1 1 align-self;
+    overflow-y: scroll;
+    // height: 100%;
+    height: 350px;
+}
+
+.crew-pool-grid {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+    grid-auto-rows: 100px;
+    grid-auto-flow: row dense;
+    // height: ;
+    // flex-grow: 1;
+}
+
+.crew-pool-item {
+    grid-column-start: auto;
+    grid-row-start: auto;
+    margin: 5px;
+    background-color: #2F2E2E;
+}
+
+// pulse
+#pulse-column {
+    // height: 100%;
+    // width: 75%
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#pulse-grid {
+    // height: 90%;
+    display: grid;
+    overflow-y: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    grid-template-rows: auto;
+    grid-row-gap: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    // padding: 5px 5px;
+    // grid-column-gap: 1px;
+    // grid-row-gap: 1px;
+    max-height: 200px;
+    font-family: $oxygen;
+    color: #CFB2E2;
+    background-color: #252525;
+    border-radius: 7px;
+    max-height: 450px;
+}
+
+.pulse-item {
+    display: flex;
+    flex-direction: column;
+    // grid-template-rows: auto; //1fr 1fr;
+    // width: 100%;
+    // height: 100px;
+    padding-left: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    background-color: #4A90E2;
+    border-radius: 5px;
+    padding-top: 10px;
+}
+
+.pulse-header {
+    background-color: #04293C;
+    padding-left: 5px;
+}
+
+.pulse-label {
+    color: #fff;
+}
+
+.pulse-desc {
+    color: #04293C;
+    padding-top: 5px;
 }
