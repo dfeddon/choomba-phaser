@@ -1,6 +1,6 @@
 #lobbyState {
     display: grid;
-    grid-template-columns: 1.0fr 1.0fr; // 1fr;
+    grid-template-columns: 1fr 400px;
     grid-template-rows: auto auto;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
@@ -98,13 +98,14 @@
     flex-direction: column;
     // width: 100%;
     // flex: 1 1 align-self;
-    overflow-y: scroll;
+    overflow-y: auto;
     // height: 100%;
     height: 350px;
 }
 
 .crew-pool-grid {
     display: grid;
+    // overflow-y: auto;
     grid-gap: 5px;
     grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
     grid-auto-rows: 100px;
@@ -126,6 +127,10 @@
     // width: 75%
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+#pulseClicker {
+    background-color: #fff;
 }
 
 #pulse-grid {

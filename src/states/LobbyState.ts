@@ -1,9 +1,11 @@
 import { IncidentVO } from "../models/IncidentsVO";
+import NameGenerator from "fantastical";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
   charDragTarget: any;
   glob: number = 0;
+  doc: any = document;
 
   preload() {
     console.log("== LobbyState.preload ==");
@@ -13,6 +15,7 @@ export default class LobbyState extends Phaser.State {
     console.log("== LobbyState.create ==");
     this.game.state.start("NavigationState", true, false);
     this.doRun();
+    console.log("***", NameGenerator);
   }
 
   dragStart(e: any) {
@@ -33,34 +36,36 @@ export default class LobbyState extends Phaser.State {
     document.getElementById("lobbyState").style.display = "grid";
 
     // listen for pulse click event (stub)
-    document.onclick = function(e) {
-		console.log("onclick", e.target);
-		var i = e.target as any;
-		console.log(i.id);
+    this.doc.onclick = function(e: MouseEvent) {
+      console.log("* onclick", e.target);
+      var i = e.target as any;
+      console.log(i.id);
 
-		switch(i.id) {
-			case "pulseClicker":
-				console.log("add pulse item");
-				_this.glob++;
-				var item: IncidentVO = new IncidentVO();
-				item.name = "Turf War " + _this.glob;
-				item.description = "Sensors alerted near Sinjun Corps red tower just outside Frisco Sprawl. Too-tall Redline Hackers suspected.";
-				_this.addIncident(item);
-			break;
-		}
-	}
+      switch(i.id) {
+        case "pulseClicker":
+          console.log("add pulse item");
+          _this.glob++;
+          var item: IncidentVO = new IncidentVO();
+          item.name = "Turf War " + _this.glob;
+          item.description = "Sensors alerted near Sinjun Corps red tower just outside Frisco Sprawl. Too-tall Redline Hackers suspected.";
+          _this.addIncident(item);
+        break;
+      }
+	  }
 	
-	document.pulseItemHandler = function(e: any) {
-		console.log("pulseItemHandler", e.target);
-		// hide lobby UI
-		document.getElementById("lobbyState").style.display = "none";
-		// show game canvas
-		document.getElementById("gameView").style.display = "grid";
-		// un-pause game
-		_this.game.paused = false;
-		// switch to NavigationState
-		_this.game.state.states.NavigationState.doRun();
-	}
+    this.doc.pulseItemHandler = function(e: any) {
+      console.log("pulseItemHandler", e.target);
+      // hide lobby UI
+      document.getElementById("lobbyState").style.display = "none";
+      // show game canvas
+      document.getElementById("gameView").style.display = "grid";
+      // un-pause game
+      _this.game.paused = false;
+      // switch to NavigationState
+      // _this.game.state.states.NavigationState.doRun();
+      _this.game.state.start("NavigationState", true, false);
+    }
+  
     // drag and drop
     document.ondragstart = function(e) {
       console.log("ondragstart", e.target);
@@ -92,19 +97,19 @@ export default class LobbyState extends Phaser.State {
       console.log("ontouchstart", i.id);
       e.stopImmediatePropagation();
     };
-  }
+  } // end doRun()
 
-  	pulseItemHandler() {
-        console.log("* pulse clicked");
-        // hide lobby UI
-        document.getElementById("lobbyState").style.display = "none";
-        // show game canvas
-        document.getElementById("gameView").style.display = "grid";
-        // un-pause game
-        this.game.paused = false;
-        // switch to NavigationState
-        this.game.state.states.NavigationState.doRun();
-	};
+  	// pulseItemHandler() {
+    //     console.log("* pulse clicked");
+    //     // hide lobby UI
+    //     document.getElementById("lobbyState").style.display = "none";
+    //     // show game canvas
+    //     document.getElementById("gameView").style.display = "grid";
+    //     // un-pause game
+    //     this.game.paused = false;
+    //     // switch to NavigationState
+    //     this.game.state.states.NavigationState.doRun();
+	// };
 
 	// buildIncidentItem(vo: IncidentVO) {
 

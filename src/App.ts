@@ -8,14 +8,16 @@ import ResultsState from "./states/ResultsState";
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
-  man1: Phaser.Sprite;
-  man2: Phaser.Sprite;
-  zomb1: Phaser.Sprite;
-  cat1: Phaser.Sprite;
-  cute1: Phaser.Sprite;
+  // man1: Phaser.Sprite;
+  // man2: Phaser.Sprite;
+  // zomb1: Phaser.Sprite;
+  // cat1: Phaser.Sprite;
+  // cute1: Phaser.Sprite;
 
   constructor() {
     console.log("* Choomba");
+    // let gen: any = NameGenerator.generator('diablo', 'demons', 10, 0);
+    // console.log(gen);//('diablo', 'demons', 10, 0));
     // this.game = new Phaser.Game(
       super(
       window.innerWidth * window.devicePixelRatio,// - 15,

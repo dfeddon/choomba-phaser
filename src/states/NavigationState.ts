@@ -1,4 +1,11 @@
 import CharacterView from "../views/CharacterViews";
+import { CharacterVO } from "../models/CharactersVO";
+import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
+import { AtlasVO } from "../models/AtlasVO";
+import { AtlasFrameVO } from "../models/AtlasFramesVO";
+
+import * as data from "../public/assets/atlas.json";
+import { VectorVO } from "../models/VectorsVO";
 
 export default class NavigationState extends Phaser.State {
   crewCombatAttack: Phaser.Group;
@@ -11,6 +18,8 @@ export default class NavigationState extends Phaser.State {
   zomb1: Phaser.Sprite;
   cat1: Phaser.Sprite;
   cute1: Phaser.Sprite;
+
+  json: JSON;
 
   test: CharacterView;
 
@@ -35,14 +44,40 @@ export default class NavigationState extends Phaser.State {
   create() {
     console.log("== NavigationState.create ==");
 
+    // local json file contains all character atlas animation data
+    this.json = (<any>data).characters;
+
+    // run on create
     this.doRun();
   }
 
   doCombat() {
-    // this.man1 = this.game.add.sprite(0, 0, "uniqueKey", 0);
-    // this.man1.animations.add("idle");
-    this.test = new CharacterView(this.game, 200, 200);//, "catlvl01");
+    var vo:CharacterVO = new CharacterVO();
+    vo.key = "catlvl01";
+    vo.name = "Cool Cat";
+    vo.vector = new VectorVO(200, 200);
+    vo.atlas = new AtlasVO();
+    // define animation keys
+    for (var i in this.json[vo.key]) {
+      // console.log(i);
+      vo.atlas.keys.push(i);
+    }
+    // define animations
+    var data, prefix, frame;
+    for (var j in vo.atlas.keys) {
+      // set data
+      data = this.json[vo.key][vo.atlas.keys[j]];
+      // instantiate prefix
+      prefix = new AtlasPrefixTypeVO(null, vo.atlas.keys[j], data.prefix);
+      // instatiate frame
+      frame = new AtlasFrameVO(prefix, data.start, data.stop, data.suffix, data.zeroPad);
+      // add to animation frames
+      vo.atlas.frames.push(frame);
+    }
+    console.log("* character vo", vo);
+    this.test = new CharacterView(this.game, vo);//, "catlvl01");
 
+    // load characters
     this.cat1 = this.game.add.sprite(
       0,
       0,

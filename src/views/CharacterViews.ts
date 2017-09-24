@@ -1,25 +1,25 @@
-export default class CharacterView extends Phaser.Sprite {
-	constructor(game: Phaser.Game, x: number, y: number) {
-	console.log("== CharacterView.constructor");
+import { CharacterVO } from "../models/CharactersVO";
+import { AtlasFrameVO } from "../models/AtlasFramesVO";
+import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
 
-	super(game, x, y, "catlvl01", 0); //, 'spriteName', 0);
+export default class CharacterView extends Phaser.Sprite {
+	
+	constructor(game: Phaser.Game, vo:CharacterVO) {
+	console.log("== CharacterView.constructor ==", vo);
+
+	super(game, vo.vector.x, vo.vector.y, vo.key, 0); //, 'spriteName', 0);
 
 	// anchor, mid x, y bototm (feet)
 	this.anchor.setTo(0.5, 1);
 
 	// animations
-	// idle
-	this.animations.add("idle", Phaser.Animation.generateFrameNames("Idle/skeleton-Idle_", 0, 17, ".png", 1), 10, true, false);
-	// walk
-	this.animations.add("walk", Phaser.Animation.generateFrameNames("Walk/skeleton-Walk_", 0, 21, ".png", 1), 10, true, false);
-	// death
-	this.animations.add("death", Phaser.Animation.generateFrameNames("Death/skeleton-Death_", 0, 21, ".png", 1), 10, true, false);
-	// death
-	this.animations.add("hit", Phaser.Animation.generateFrameNames("GetHit/skeleton-GetHit_", 0, 21, ".png", 1), 10, true, false);
-	// walk
-	this.animations.add("attack", Phaser.Animation.generateFrameNames("Shoot/skeleton-Shoot_", 0, 21, ".png", 1), 10, true, false);
+	for (let framevo of vo.atlas.frames) {
+		// console.log('frame', framevo);
+		this.animations.add(framevo.prefix.prefixKey, Phaser.Animation.generateFrameNames(framevo.prefix[framevo.prefix.prefixKey], framevo.start, framevo.stop, framevo.suffix, framevo.zeroPad), 10, true, false);
+	}
 
-	this.animations.play("idle", 24, true);
+	// play default (idle) animation
+	this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_IDLE, 24, true);
 	game.physics.arcade.enable(this);
 	game.add.existing(this);
 
@@ -31,27 +31,28 @@ export default class CharacterView extends Phaser.Sprite {
 
 		if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 			this.body.velocity.x = -150;
-			this.animations.play("walk");
+			this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_WALK);
 
 			if (this.scale.x == 1) {
 			this.scale.x = -1;
 			}
 		} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+			console.log(this.animations);
 			this.body.velocity.x = 150;
-			this.animations.play("walk");
+			this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_WALK);
 
 			if (this.scale.x == -1) {
 			this.scale.x = 1;
 			}
 		} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-			this.animations.play("attack");
+			this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_ATTACK1);
 			this.toBackground();
 		} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.H)) {
-			this.animations.play("hit");
+			this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_HIT1);
 			this.toForeground();
 		} else {
 			// this.animations.frame = 0;
-			this.animations.play("idle");
+			this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_IDLE);
 		}
 	}
 
