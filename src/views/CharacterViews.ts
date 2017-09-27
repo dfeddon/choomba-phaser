@@ -10,7 +10,8 @@ export default class CharacterView extends Phaser.Sprite {
 	super(game, vo.vector.x, vo.vector.y, vo.key, 0); //, 'spriteName', 0);
 
 	// anchor, mid x, y bototm (feet)
-	this.anchor.setTo(0.5, 1);
+	this.anchor.setTo(0.5, 1); // horizontally centered, vertical bottom (on feet)
+    this.scale.setTo(0.75, 0.75); // scale to 75%
 
 	// animations
 	for (let framevo of vo.atlas.frames) {
@@ -33,16 +34,16 @@ export default class CharacterView extends Phaser.Sprite {
 			this.body.velocity.x = -150;
 			this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_WALK);
 
-			if (this.scale.x == 1) {
-			this.scale.x = -1;
-			}
+			if (this.scale.x > 0) this.scale.x = -0.75;//this.scale.x;
+			console.log("*", this.scale.x);
+
 		} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 			console.log(this.animations);
 			this.body.velocity.x = 150;
 			this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_WALK);
 
-			if (this.scale.x == -1) {
-			this.scale.x = 1;
+			if (this.scale.x < 0) {
+			this.scale.x = 0.75;
 			}
 		} else if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
 			this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_ATTACK1);
@@ -60,8 +61,8 @@ export default class CharacterView extends Phaser.Sprite {
 		// create blur effect
 		var blurX: any = this.game.add.filter("BlurX");
 		var blurY: any = this.game.add.filter("BlurY");
-		blurX.blur = 10;
-		blurY.blur = 10;
+		blurX.blur = 7;
+		blurY.blur = 7;
 		this.filters = [blurX, blurY];
 
 		// dim alpha

@@ -4,7 +4,7 @@ import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
 import { AtlasVO } from "../models/AtlasVO";
 import { AtlasFrameVO } from "../models/AtlasFramesVO";
 
-import * as data from "../public/assets/atlas.json";
+// import * as data from "../public/assets/atlas.json";
 import { VectorVO } from "../models/VectorsVO";
 
 export default class NavigationState extends Phaser.State {
@@ -16,10 +16,13 @@ export default class NavigationState extends Phaser.State {
   man1: Phaser.Sprite;
   man2: Phaser.Sprite;
   zomb1: Phaser.Sprite;
-  cat1: Phaser.Sprite;
+  cat1: CharacterView;//Phaser.Sprite;
   cute1: Phaser.Sprite;
 
-  json: JSON;
+  crew: Phaser.Group;
+  defenders: Phaser.Group;
+
+  // json: JSON;
 
   test: CharacterView;
 
@@ -45,138 +48,61 @@ export default class NavigationState extends Phaser.State {
     console.log("== NavigationState.create ==");
 
     // local json file contains all character atlas animation data
-    this.json = (<any>data).characters;
+    // this.json = (<any>data).characters;
+    // console.log(this.json);
 
     // run on create
     this.doRun();
   }
 
   doCombat() {
-    var vo:CharacterVO = new CharacterVO();
-    vo.key = "catlvl01";
-    vo.name = "Cool Cat";
-    vo.vector = new VectorVO(200, 200);
-    vo.atlas = new AtlasVO();
-    // define animation keys
-    for (var i in this.json[vo.key]) {
-      // console.log(i);
-      vo.atlas.keys.push(i);
-    }
-    // define animations
-    var data, prefix, frame;
-    for (var j in vo.atlas.keys) {
-      // set data
-      data = this.json[vo.key][vo.atlas.keys[j]];
-      // instantiate prefix
-      prefix = new AtlasPrefixTypeVO(null, vo.atlas.keys[j], data.prefix);
-      // instatiate frame
-      frame = new AtlasFrameVO(prefix, data.start, data.stop, data.suffix, data.zeroPad);
-      // add to animation frames
-      vo.atlas.frames.push(frame);
-    }
-    console.log("* character vo", vo);
-    this.test = new CharacterView(this.game, vo);//, "catlvl01");
+    // var vo: CharacterVO = new CharacterVO("catlvl01", "Cool Cat", new VectorVO(200, 200));
+    // // console.log("* character vo", vo);
+    // this.test = new CharacterView(this.game, vo);//, "catlvl01");
+    this.crew = this.game.add.group();
+    // this.crew.visible = false;
 
     // load characters
-    this.cat1 = this.game.add.sprite(
-      0,
-      0,
-      "catlvl01",
-      "Idle/skeleton-Idle_0.png"
-    );
-    this.cat1.animations.add(
-      "catlvl01_idle",
-      Phaser.Animation.generateFrameNames(
-        "Idle/skeleton-Idle_",
-        0,
-        17,
-        ".png",
-        1
-      ),
-      10,
-      true,
-      false
-    );
-    this.cat1.scale.setTo(0.75, 0.75); // scale to 75%
-    this.cat1.anchor.setTo(0.5, 1); // centered
-    this.cat1.position.x = 100;
-    this.cat1.position.y = 400;
-    this.cat1.play("catlvl01_idle", 24, true);
+    var cat1vo: CharacterVO = new CharacterVO("catlvl01", "Cat 1", new VectorVO(100, 400));
+    this.cat1 = new CharacterView(this.game, cat1vo);
+    this.crew.add(this.cat1);
 
-    this.man1 = this.game.add.sprite(
-      0,
-      0,
-      "char01",
-      "Idle/skeleton-Idle_0.png"
-    );
-    this.man1.animations.add(
-      "char01_idle",
-      Phaser.Animation.generateFrameNames(
-        "Idle/skeleton-Idle_",
-        0,
-        9,
-        ".png",
-        1
-      ),
-      10,
-      true,
-      false
-    );
-    this.man1.scale.setTo(0.75, 0.75); // scale to 75%
-    this.man1.anchor.setTo(0.5, 1); // centered
-    this.man1.position.x = 200;
-    this.man1.position.y = 400;
-    this.man1.play("char01_idle", 24, true);
+    var man1vo: CharacterVO = new CharacterVO("char01", "Man 1", new VectorVO(200, 400));
+    this.man1 = new CharacterView(this.game, man1vo);
+    this.crew.add(this.man1);
 
-    this.cute1 = this.game.add.sprite(
-      0,
-      0,
-      "cutechar01",
-      "Idle/skeleton-Idle_0.png"
-    );
-    this.cute1.animations.add(
-      "cute01_idle",
-      Phaser.Animation.generateFrameNames(
-        "Idle/skeleton-Idle_",
-        0,
-        9,
-        ".png",
-        1
-      ),
-      10,
-      true,
-      false
-    );
-    this.cute1.scale.setTo(0.45, 0.45); // scale to 75%
-    this.cute1.anchor.setTo(0.5, 1); // centered
-    this.cute1.position.x = 285;
-    this.cute1.position.y = 400;
-    this.cute1.play("cute01_idle", 24, true);
+    var cute1vo: CharacterVO = new CharacterVO("cutechar01", "Cute 1", new VectorVO(285, 400));
+    this.cute1 = new CharacterView(this.game, cute1vo);
+    this.crew.add(this.cute1);
 
-    this.zomb1 = this.game.add.sprite(
-      0,
-      0,
-      "zombie01",
-      "Idle/skeleton-Idle_0.png"
-    );
-    this.zomb1.animations.add(
-      "zomb1_idle",
-      Phaser.Animation.generateFrameNames(
-        "Idle/skeleton-Idle_",
-        0,
-        17,
-        ".png",
-        1
-      ),
-      10,
-      true,
-      false
-    );
-    this.zomb1.scale.setTo(0.75, 0.75); // scale to 75%
-    this.zomb1.anchor.setTo(0.5, 1); // center x/y values
-    this.zomb1.position.x = 400;
-    this.zomb1.position.y = 400;
-    this.zomb1.play("zomb1_idle", 24, true);
+    var zomb1vo: CharacterVO = new CharacterVO("zombie01", "Zombie 1", new VectorVO(400, 400));
+    this.zomb1 = new CharacterView(this.game, zomb1vo);
+    this.crew.add(this.zomb1);
+
+    // this.zomb1 = this.game.add.sprite(
+    //   0,
+    //   0,
+    //   "zombie01",
+    //   "Idle/skeleton-Idle_0.png"
+    // );
+    // this.zomb1.animations.add(
+    //   "zomb1_idle",
+    //   Phaser.Animation.generateFrameNames(
+    //     "Idle/skeleton-Idle_",
+    //     0,
+    //     17,
+    //     ".png",
+    //     1
+    //   ),
+    //   10,
+    //   true,
+    //   false
+    // );
+    // this.zomb1.scale.setTo(0.75, 0.75); // scale to 75%
+    // this.zomb1.anchor.setTo(0.5, 1); // center x/y values
+    // this.zomb1.position.x = 400;
+    // this.zomb1.position.y = 400;
+    // this.zomb1.play("zomb1_idle", 24, true);
   }
 
   doRun() {

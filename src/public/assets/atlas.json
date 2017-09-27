@@ -73,6 +73,117 @@
                 "suffix": ".png",
                 "zeroPad": 1
             }
+        },
+        "char01": {
+            "idle": {
+                "prefix": "Idle/skeleton-Idle_",
+                "start": 0,
+                "stop": 9,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "walk": {
+                "prefix": "Walk/skeleton-Walk_",
+                "start": 0,
+                "stop": 17,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "death": {
+                "prefix": "Death/skeleton-Death_",
+                "start": 0,
+                "stop": 21,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "hit1": {
+                "prefix": "GetHit/skeleton-GetHit_",
+                "start": 0,
+                "stop": 9,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "attack1": {
+                "prefix": "Shoot/skeleton-Shoot_",
+                "start": 0,
+                "stop": 9,
+                "suffix": ".png",
+                "zeroPad": 1
+            }
+        },
+        "cutechar01": {
+            "idle": {
+                "prefix": "Idle/skeleton-Idle_",
+                "start": 0,
+                "stop": 9,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "walk": {
+                "prefix": "Walk/skeleton-Walk_",
+                "start": 0,
+                "stop": 17,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "death": {
+                "prefix": "Death/skeleton-Death_",
+                "start": 0,
+                "stop": 21,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "hit1": {
+                "prefix": "GetHit/skeleton-GetHit_",
+                "start": 0,
+                "stop": 13,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "attack1": {
+                "prefix": "Magic Shoot/skeleton-MagicShoot_",
+                "start": 0,
+                "stop": 17,
+                "suffix": ".png",
+                "zeroPad": 1
+            }
+        },
+        "zombie01": {
+            "idle": {
+                "prefix": "Idle/skeleton-Idle_",
+                "start": 0,
+                "stop": 17,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "walk": {
+                "prefix": "Walk/skeleton-Walk_",
+                "start": 0,
+                "stop": 21,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "death": {
+                "prefix": "Death/skeleton-Death_",
+                "start": 0,
+                "stop": 21,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "hit1": {
+                "prefix": "GetHit/skeleton-GetHit_",
+                "start": 0,
+                "stop": 13,
+                "suffix": ".png",
+                "zeroPad": 1
+            },
+            "attack1": {
+                "prefix": "Attack/skeleton-Attack_",
+                "start": 0,
+                "stop": 17,
+                "suffix": ".png",
+                "zeroPad": 1
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 module.exports = [{
-    devtool: "inline-source-map",
+    devtool: "#inline-source-map",
     entry: "./src/App.ts",
     // context: path.resolve(__dirname, './src/'),
     output: {
@@ -43,10 +43,12 @@ module.exports = [{
                         loader: "style-loader" // creates style nodes from JS strings
                     },
                     {
-                        loader: "css-loader" // translates CSS into CommonJS
+                        loader: "css-loader", // translates CSS into CommonJS
+                        options: { sourceMap: true }
                     },
                     {
-                        loader: "sass-loader" // compiles Sass to CSS
+                        loader: "sass-loader", // compiles Sass to CSS
+                        options: { sourceMap: true }
                     }
                 ]
             }

@@ -1,6 +1,9 @@
 import { AttributeVO } from "./AttributesVO";
 import { AtlasVO } from "./AtlasVO";
 import { VectorVO } from "./VectorsVO";
+import { AtlasPrefixTypeVO } from "./AtlasPrefixTypesVO";
+import { AtlasFrameVO } from "./AtlasFramesVO";
+import * as jsonData from "../public/assets/atlas.json";
 
 class CharacterVO {
   // privates
@@ -100,8 +103,34 @@ class CharacterVO {
 	}
 
   // constructor
-  constructor(data: CharacterVO | {} = {}) {
-    Object.assign(this, data);
+  constructor(key: string, name: string, vector: VectorVO) {
+    console.log("* CharacterVO constructor");
+    this.key = key;
+    this.name = name;
+    this.vector = vector;
+
+    this.atlas = new AtlasVO();
+    // define animation keys
+    console.log("* data", jsonData);
+    var json:JSON = (<any>jsonData).characters;
+    console.log("* json", json);
+    for (var i in json[this.key]) {
+      // console.log(i);
+      this.atlas.keys.push(i);
+    }
+    // define animations
+    var data, prefix, frame;
+    for (var j in this.atlas.keys) {
+      // set data
+      data = json[this.key][this.atlas.keys[j]];
+      // instantiate prefix
+      prefix = new AtlasPrefixTypeVO(null, this.atlas.keys[j], data.prefix);
+      // instatiate frame
+      frame = new AtlasFrameVO(prefix, data.start, data.stop, data.suffix, data.zeroPad);
+      // add to animation frames
+      this.atlas.frames.push(frame);
+    }
+    // Object.assign(this, data);
     // if (!this.id) {
     //   this.id = new Date().getTime().toString();
     // }

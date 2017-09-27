@@ -4,7 +4,9 @@
     grid-template-rows: auto auto;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    background-color: black;
+    // background-color: black;
+    // background-image: url('assets/images/bg-punching.jpg');
+    // background-repeat: repeat;
     // width: 100%;
     // user-select: none; // disallow text selection
     @include user-select(none); // mixin to disable text selection
@@ -14,7 +16,7 @@
 }
 
 .column-wrapper {
-    background-color: #000;
+    // background-color: #fff;
     font-family: $oxygen;
     color: #ff0;
     display: subgrid;
