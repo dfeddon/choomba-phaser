@@ -1,11 +1,16 @@
+$get-path-to-assets: "/images/";
+//Functions
+// @function get-path-to-assets($assetPath) {
+//     @return $assetPath;
+// }
 #lobbyState {
     display: grid;
     grid-template-columns: 1fr 400px;
     grid-template-rows: auto auto;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    // background-color: black;
-    // background-image: url('assets/images/bg-punching.jpg');
+    background-color: black;
+    // background-image: url(#{$get-path-to-assets}bg-punching.png); //url('assets/images/bg-punching.jpg');
     // background-repeat: repeat;
     // width: 100%;
     // user-select: none; // disallow text selection

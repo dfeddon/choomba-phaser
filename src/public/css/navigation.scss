@@ -1,0 +1,26 @@
+$get-path-to-assets: "/images/";
+//Functions
+// @function get-path-to-assets($assetPath) {
+//     @return $assetPath;
+// }
+#navigationState {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    grid-template-rows: auto auto;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    background-color: black;
+    // background-image: url(#{$get-path-to-assets}bg-punching.png); //url('assets/images/bg-punching.jpg');
+    // background-repeat: repeat;
+    // width: 100%;
+    // user-select: none; // disallow text selection
+    @include user-select(none); // mixin to disable text selection
+    cursor: default; // remove text edit caret
+    // width: 100vw; // fullscreen width
+    // height: 100vh; // fullscreen height
+}
+
+#navigation-controls-container {
+    background-color: "#fff";
+    z-index: 1000;
+}

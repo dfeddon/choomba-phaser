@@ -184,6 +184,54 @@
                 "suffix": ".png",
                 "zeroPad": 1
             }
+        },
+        "steampunk01": {
+            "idle": {
+                "prefix": "idle/Idle (",
+                "start": 1,
+                "stop": 10,
+                "suffix": ").png",
+                "zeroPad": 1
+            },
+            "walk": {
+                "prefix": "walk/Walk (",
+                "start": 1,
+                "stop": 10,
+                "suffix": ").png",
+                "zeroPad": 1
+            }
+        },
+        "steampunk02": {
+            "idle": {
+                "prefix": "idle/Idle (",
+                "start": 1,
+                "stop": 10,
+                "suffix": ").png",
+                "zeroPad": 1
+            },
+            "walk": {
+                "prefix": "walk/Walk (",
+                "start": 1,
+                "stop": 10,
+                "suffix": ").png",
+                "zeroPad": 1
+            }
+        },
+        "robot01": {
+            "idle": {
+                "prefix": "idle/Idle (",
+                "start": 1,
+                "stop": 10,
+                "suffix": ").png",
+                "zeroPad": 1
+            },
+            "walk": {
+                "prefix": "walk/Walk (",
+                "start": 1,
+                "stop": 15,
+                "suffix": ").png",
+                "zeroPad": 1
+            }
         }
     }
 }

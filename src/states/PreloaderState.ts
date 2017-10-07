@@ -5,10 +5,12 @@ export default class PreloaderState extends Phaser.State {
 			  
 			  this.game.load.crossOrigin = true;
               // this.load.image('preloadBar', 'assets/loader.png');
-              this.game.load.atlasJSONHash("char01", "../images/spritesheets/char01.png", "../images/spritesheets/char01.json");
-              this.game.load.atlasJSONHash("cutechar01", "../images/spritesheets/cutechar01.png", "../images/spritesheets/cutechar01.json");
-              this.game.load.atlasJSONHash("zombie01", "../images/spritesheets/zombie01.png", "../images/spritesheets/zombie01.json");
-              this.game.load.atlasJSONHash("catlvl01", "../images/spritesheets/catlvl01.png", "../images/spritesheets/catlvl01.json");
+            //   this.game.load.atlasJSONHash("char01", "../images/spritesheets/char01.png", "../images/spritesheets/char01.json");
+              this.game.load.atlasJSONHash("steampunk01", "../images/spritesheets/steampunk01.png", "../images/spritesheets/steampunk01.json");
+              this.game.load.atlasJSONHash("steampunk02", "../images/spritesheets/steampunk02.png", "../images/spritesheets/steampunk02.json");
+              this.game.load.atlasJSONHash("robot01", "../images/spritesheets/robot01.png", "../images/spritesheets/robot01.json");
+            //   this.game.load.atlasJSONHash("zombie01", "../images/spritesheets/zombie01.png", "../images/spritesheets/zombie01.json");
+            //   this.game.load.atlasJSONHash("catlvl01", "../images/spritesheets/catlvl01.png", "../images/spritesheets/catlvl01.json");
 	
 			  // load filters
               this.game.load.script("filter_blurX", "https://cdn.rawgit.com/photonstorm/phaser/master/v2/filters/BlurX.js");

@@ -81,7 +81,7 @@ class AtlasPrefixTypeVO {
     type: string,
     value: string | {} = {}
   ) {
-    console.log("constructor", prefix, type, value);
+    // console.log("constructor", prefix, type, value);
     if (prefix) Object.assign(this, prefix);
     else if (type && value) this[type] = value;
     // if (value) {

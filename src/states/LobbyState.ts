@@ -13,9 +13,13 @@ export default class LobbyState extends Phaser.State {
 
   create() {
     console.log("== LobbyState.create ==");
-    this.game.state.start("NavigationState", true, false);
+    // this.game.state.start("NavigationState", true, false);
     this.doRun();
     console.log("***", NameGenerator);
+  }
+
+  shutdown() {
+    this.game.world.removeAll();
   }
 
   dragStart(e: any) {
