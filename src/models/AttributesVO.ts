@@ -1,7 +1,8 @@
 import { EnhancementVO } from "./EnhancementsVO";
+import { AbstractVO } from "./AbstractVO";
 
-class AttributeVO {
-  private _uid: number;
+class AttributeVO extends AbstractVO {
+  // private _uid: number;
   private _strength: number;
   private _agility: number;
   private _alacrity: number;
@@ -10,6 +11,7 @@ class AttributeVO {
   private _enchancements: Array<EnhancementVO>;
 
   constructor(data: AttributeVO | {} = {}) {
+    super();
     Object.assign(this, data);
   }
 }

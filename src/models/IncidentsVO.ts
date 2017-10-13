@@ -1,35 +1,65 @@
-class IncidentVO {
-	private _uid: number;
-	private _name: string;
-	private _description: string;
-	private _structure: number;
-	private _entity: number;
+import { AbstractVO } from "./AbstractVO";
+import { EntityVO } from "./EntitiesVO";
+import { StructureVO } from "./StructuresVO";
 
-	public get uid(): number {
-		return this._uid;
-	}
+class IncidentVO extends AbstractVO {
+  // constants
+  public static readonly INCIDENT_TYPE_INFILTRATE: number = 1;
+  public static readonly INCIDENT_TYPE_DEFEND: number = 2;
+  public static readonly INCIDENT_TYPE_BRAWL: number = 3;
+  public static readonly INCIDENT_TYPE_CREW: number = 4;
+  public static readonly INCIDENT_TYPE_STRUCTURE: number = 5;
+  public static readonly INCIDENT_TYPE_ALLIANCE: number = 6;
 
-	public set uid(value: number) {
-		this._uid = value;
-	}
+  private _name: string;
+  private _description: string;
+  private _type: number;
+  private _structure: StructureVO;
+  private _entity: EntityVO;
 
-	public get name(): string {
-		return this._name;
-	}
+  public get name(): string {
+    return this._name;
+  }
 
-	public set name(value: string) {
-		this._name = value;
-	}
+  public set name(value: string) {
+    this._name = value;
+  }
 
-	public get description(): string {
-		return this._description;
-	}
+  public get description(): string {
+    return this._description;
+  }
 
-	public set description(value: string) {
-		this._description = value;
-	}
-	
-	
+  public set description(value: string) {
+    this._description = value;
+  }
+
+  public get structure(): StructureVO {
+    return this._structure;
+  }
+
+  public set structure(value: StructureVO) {
+    this._structure = value;
+  }
+
+  public get entity(): EntityVO {
+    return this._entity;
+  }
+
+  public set entity(value: EntityVO) {
+    this._entity = value;
+  }
+
+  public get type(): number {
+    return this._type;
+  }
+
+  public set type(value: number) {
+    this._type = value;
+  }
+
+  constructor() {
+    super();
+  }
 }
 
 export { IncidentVO };

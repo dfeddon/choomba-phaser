@@ -4,16 +4,19 @@ import { VectorVO } from "./VectorsVO";
 import { AtlasPrefixTypeVO } from "./AtlasPrefixTypesVO";
 import { AtlasFrameVO } from "./AtlasFramesVO";
 import * as jsonData from "../public/assets/atlas.json";
+import { CharacterCombatVO } from "./CharacterCombatVO";
+import { AbstractVO } from "./AbstractVO";
 
-class CharacterVO {
+class CharacterVO extends AbstractVO {
   // privates
-  private _uid: number;
+  // private _uid: number;
   private _name: string;
   private _role: number;
   private _attributes: AttributeVO;
   private _atlas: AtlasVO;
   private _key: string;
   private _vector: VectorVO;
+  private _characterCombat: CharacterCombatVO;
 
   // getters/setters
   /** Character's unqiue id
@@ -21,13 +24,13 @@ class CharacterVO {
    * @private
    * @type {number}
    */
-  public get uid(): number {
-    return this._uid;
-  }
+  // public get uid(): number {
+  //   return this._uid;
+  // }
 
-  public set uid(value: number) {
-    this._uid = value;
-  }
+  // public set uid(value: number) {
+  //   this._uid = value;
+  // }
 
   /** Character's name
    * @member
@@ -102,8 +105,17 @@ class CharacterVO {
 		this._vector = value;
 	}
 
+	public get characterCombat(): CharacterCombatVO {
+		return this._characterCombat;
+	}
+
+	public set characterCombat(value: CharacterCombatVO) {
+		this._characterCombat = value;
+	}
+
   // constructor
   constructor(key: string, name: string, vector: VectorVO) {
+    super();
     console.log("* CharacterVO constructor");
     this.key = key;
     this.name = name;

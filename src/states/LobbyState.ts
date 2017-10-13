@@ -1,5 +1,6 @@
 import { IncidentVO } from "../models/IncidentsVO";
 import NameGenerator from "fantastical";
+import { EntityVO } from "../models/EntitiesVO";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
@@ -49,16 +50,24 @@ export default class LobbyState extends Phaser.State {
         case "pulseClicker":
           console.log("add pulse item");
           _this.glob++;
-          var item: IncidentVO = new IncidentVO();
-          item.name = "Turf War " + _this.glob;
-          item.description = "Sensors alerted near Sinjun Corps red tower just outside Frisco Sprawl. Too-tall Redline Hackers suspected.";
-          _this.addIncident(item);
+          // create incident vo
+          var incident: IncidentVO = new IncidentVO();
+          incident.name = "Turf War " + _this.glob;
+          incident.description = "Sensors alerted near Sinjun Corps red tower just outside Frisco Sprawl. Too-tall Redline Hackers suspected.";
+          incident.type = IncidentVO.INCIDENT_TYPE_INFILTRATE;
+          incident.entity = new EntityVO();
+          // incident.entity.crew
+
+          // incident.structure = 0;
+          _this.addIncident(incident);
         break;
       }
 	  }
 	
     this.doc.pulseItemHandler = function(e: any) {
-      console.log("pulseItemHandler", e.target);
+      console.log("pulseItemHandler", e.getAttribute('data-uid'));
+      var incident = JSON.parse(e.getAttribute('data-uid'));
+      console.log("* incident", incident, incident._uid);
       // hide lobby UI
       document.getElementById("lobbyState").style.display = "none";
       // show game canvas
@@ -130,7 +139,8 @@ export default class LobbyState extends Phaser.State {
 		var name: any = document.getElementById("pulse-item-label");
     var desc: any = document.getElementById("pulse-item-description");
 		name.innerText = vo.name;
-		desc.innerText = vo.description;
+    desc.innerText = vo.description;
+    wrapper.setAttribute("data-uid", JSON.stringify(vo));//.toString());// = vo;
 	}
 
 	renameDescendantsOfNode = function(node: any, suffix: number) {

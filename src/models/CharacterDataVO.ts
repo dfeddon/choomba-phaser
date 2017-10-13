@@ -1,4 +1,6 @@
-class CharacterDataVO {
+import { AbstractVO } from "./AbstractVO";
+
+class CharacterDataVO extends AbstractVO {
   private _key: string;
   private _name: string;
 
@@ -19,6 +21,7 @@ class CharacterDataVO {
 	}
 
   constructor(key: string, name: string) {
+		super();
 	// Object.assign(this, data);
 	this._key = key;
 	this._name = name;

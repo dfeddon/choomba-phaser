@@ -2,7 +2,7 @@ var path = require("path");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+var HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
 
 module.exports = [{
     devtool: "#inline-source-map",

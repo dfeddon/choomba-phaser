@@ -1,5 +1,5 @@
 import CharacterView from "../views/CharacterViews";
-import { CharacterVO } from "../models/CharactersVO";
+// import { CharacterVO } from "../models/CharactersVO";
 import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
 import { AtlasVO } from "../models/AtlasVO";
 import { AtlasFrameVO } from "../models/AtlasFramesVO";
@@ -9,12 +9,13 @@ import { VectorVO } from "../models/VectorsVO";
 import { CharacterDataVO } from "../models/CharacterDataVO";
 import CombatUIView from "../views/CombatUIView";
 import CombatStageView from "../views/CombatStageView";
+import CrewView from "../views/CrewView";
 
 export default class NavigationState extends Phaser.State {
   combatStageView: CombatStageView;
   combatUIView: CombatUIView;
-  crewCombatAttack: Phaser.Group;
-  crewCombatDefend: Phaser.Group;
+  crewCombatAttack: CrewView;// Phaser.Group;
+  crewCombatDefend: CrewView;//Phaser.Group;
   gameBG: Phaser.TileSprite;
   uiBG: Phaser.TileSprite;
   worldScale: number;
@@ -72,6 +73,7 @@ export default class NavigationState extends Phaser.State {
     this.combatStageView = new CombatStageView(this.game, this, "combatStageView", true, true, Phaser.Physics.ARCADE);
     // this.combatUIView = this.game.add.group(this.game, "combatUIView", true);
     var combatUIView:CombatUIView = new CombatUIView(this.game, this, "combatUIView", true);
+    combatUIView.navigationState = this;
     // this.combatStageView.add(this.game.world);
     // this.combatStageView.width = this.game.world.width;
 
@@ -128,19 +130,28 @@ export default class NavigationState extends Phaser.State {
       // this.combatStageView.anchor.setTo(0.5, 0.5);
       if (this.worldScale <= 1) {
         this.scaleUp = true;
+        
         // blur bg
         var blurX: any = this.game.add.filter("BlurX");
         var blurY: any = this.game.add.filter("BlurY");
         blurX.blur = 7;
         blurY.blur = 7;
         this.combatStageView.bg.filters = [blurX, blurY];
+        
         // blur all characters
-        var p: CharacterView;
+        var a: CharacterView;
+        var d: CharacterView;
         for (var i = 0; i <= 3; i++) {
-          p = this.crewCombatAttack.children[i] as CharacterView;
-          console.log(p);
-          p.toBackground();
+          a = this.crewCombatAttack.children[i] as CharacterView;
+          // ignore if attacker or target
+          a.toBackground();
+          d = this.crewCombatDefend.children[i] as CharacterView;
+          // ignore if attacker or target
+          d.toBackground();
         }
+
+        // scale view
+        this.combatStageView.scale.set(1.15, 1.15);
       }
     }
     else if (this.game.input.keyboard.isDown(Phaser.Keyboard.W)) {
@@ -148,19 +159,26 @@ export default class NavigationState extends Phaser.State {
       console.log(this.worldScale);
       if (this.worldScale >= 1.5) {
         this.scaleDown = true;
+
         // unblur bg
-        // blur bg
         var blurX: any = this.game.add.filter("BlurX");
         var blurY: any = this.game.add.filter("BlurY");
         blurX.blur = 0;
         blurY.blur = 0;
         this.combatStageView.bg.filters = [blurX, blurY];
+
         // unblur all characters
-        var p: CharacterView;
+        var a: CharacterView;
+        var d: CharacterView;
         for (var i = 0; i <= 3; i++) {
-          p = this.crewCombatAttack.children[i] as CharacterView;
-          p.toForeground();
+          a = this.crewCombatAttack.children[i] as CharacterView;
+          a.toForeground();
+          d = this.crewCombatDefend.children[i] as CharacterView;
+          d.toForeground();
         }
+
+        // un-scale view
+        this.combatStageView.scale.set(1, 1);
       }
     }
 		// else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
@@ -248,7 +266,7 @@ export default class NavigationState extends Phaser.State {
       new CharacterDataVO("steampunk02", "Steampunk 1"),
       new CharacterDataVO("robot01", "Robot 1")
     ];
-    this.doCombat(attackers, defenders);
+    this.initCombat(attackers, defenders);
 
     //  var text = "Hello World!";
     //  var style = { font: "65px Arial", fill: "#ff0000", align: "center" };
@@ -256,32 +274,42 @@ export default class NavigationState extends Phaser.State {
 
   }
 
-  doCombat(attackersArray: CharacterDataVO[], defendersArary: CharacterDataVO[]) {
-    console.log("== NavigationState.doCombat() ==");
+  initCombat(attackersArray: CharacterDataVO[], defendersArary: CharacterDataVO[]) {
+    console.log("== NavigationState.initCombat() ==");
 
+    this.crewCombatAttack = new CrewView(this.game, this, "crewAttackers", true);
+    this.crewCombatAttack.addCrew(attackersArray, true);
+    this.crewCombatDefend = new CrewView(this.game, this, "crewDefenders", true);
+    this.crewCombatDefend.addCrew(defendersArary, false);
     // create attackers group
-    this.crewCombatAttack = this.game.add.group();
+    // this.crewCombatAttack = this.game.add.group();
     // add it to game stage
-    this.combatStageView.add(this.crewCombatAttack);
+    this.combatStageView.crewAttack = this.crewCombatAttack;
+    this.combatStageView.crewDefend = this.crewCombatDefend;
     
     // add attacking characters to group, from back to front
-    var attacker: CharacterView;
-    var lastVector: VectorVO = new VectorVO(15, (this.game.height / 3) * 2);
+    // var attacker: CharacterView;
+    // var lastVector: VectorVO = new VectorVO(15, (this.game.height / 3) * 2);
 
-    for (var i = 0; i < attackersArray.length; i++) {
-      // create character view
-      attacker = new CharacterView(this.game, new CharacterVO(attackersArray[i].key, attackersArray[i].name, new VectorVO(lastVector.x, lastVector.y)));
-      // add character to group
-      this.crewCombatAttack.add(attacker);
-      // update last vector
-      lastVector.x = attacker.x + 125;//attacker.width;
-    }
+    // for (var i = 0; i < attackersArray.length; i++) {
+    //   // create character view
+    //   attacker = new CharacterView(this.game, new CharacterVO(attackersArray[i].key, attackersArray[i].name, new VectorVO(lastVector.x, lastVector.y)));
+    //   // add character to group
+    //   this.crewCombatAttack.add(attacker);
+    //   // update last vector
+    //   lastVector.x = attacker.x + 125;//attacker.width;
+    // }
 
     // direct camera to follow player 2
     // var cam = this.game.camera;
     // // this.combatStageView.add(cam);
 
     // cam.follow(this.crewCombatAttack.children[3] as Phaser.Sprite);
+  }
+
+  inputEvent(key: string) {
+    console.log("* input Event", key);
+    console.log("* character", "fired key", key);
   }
 }
 // export { NavigationState };

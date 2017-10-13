@@ -1,7 +1,10 @@
+import NavigationState from "../states/NavigationState";
+
 export default class CombatUIView extends Phaser.Group {
 	
 	abilityUI: Phaser.Group;
 	profileUI: Phaser.Group;
+	navigationState: NavigationState;
 
 	constructor(game: Phaser.Game, parent: any | null, name: string, addToStage?: boolean | false, enableBody?: boolean | false, physicsBodyType?: any) {
 		console.log("== CombatUIView.constructor ==");
@@ -43,6 +46,7 @@ export default class CombatUIView extends Phaser.Group {
 		}
 	}
 	downListener(e:Phaser.Graphics) {
-		console.log("down", e.key);
+		console.log("down", e.key, this.navigationState.inputEvent(e.key as string));
+		// first, find active player
 	}
 }

@@ -1,17 +1,18 @@
 import { EntityVO } from './EntitiesVO';
 import { CharacterVO } from "./CharactersVO";
 import { StructureVO } from "./StructuresVO";
+import { AbstractVO } from "./AbstractVO";
 
 /** Entity class.
  * @class
  */
-class PlayerVO {
+class PlayerVO extends AbstractVO {
   /** Player unique id.
 	 * @member
 	 * @private
 	 * @type {number}
 	 */
-  private _uid: number;
+  // private _uid: number;
 
   /** Player name.
 	 * @member
@@ -42,22 +43,6 @@ class PlayerVO {
   private _alliances: Array<EntityVO>;
 
   private _entities: Array<EntityVO>;
-
-  /** Player uid getter.
-   * @method
-   * @public
-   * @returns {number}
-   */
-  public get uid(): number {
-    return this._uid;
-  }
-
-  /** Player uid setter.
-   * @param {number} value Player's uid.
-   */
-  public set uid(value: number) {
-    this._uid = value;
-  }
 
   /** Player name getter.
    * @method
@@ -96,6 +81,7 @@ class PlayerVO {
    * @param {PlayerVO} data may optionally receive a PlayerVO.
    */
   constructor(data: PlayerVO | {} = {}) {
+    super();
     Object.assign(this, data);
     // if (!this.id) {
     //   this.id = new Date().getTime().toString();

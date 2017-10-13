@@ -7,7 +7,7 @@
         <%=htmlWebpackPlugin.options.title %>
     </title>
     <!-- <script src="js/lib/phaser.js"></script> -->
-    <script src="//cdn.jsdelivr.net/npm/phaser-ce@2.8.5/build/phaser.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser-ce@2.8.7/build/phaser.js"></script>
     <!-- <script src="js/index.js"></script> -->
     <!-- <script src="bundle.client.js"></script> -->
 
@@ -109,7 +109,7 @@
     </section>
 
     <section id="items" style="display:none">
-        <div id="items-pulse-wrapper" class="pulse-item" onclick="pulseItemHandler(event)">
+        <div id="items-pulse-wrapper" class="pulse-item" data-uid="" onclick="pulseItemHandler(this)">
             <div class="pulse-header">
                 <label id="pulse-item-label" class="pulse-label">Incident Name</label>
             </div>
