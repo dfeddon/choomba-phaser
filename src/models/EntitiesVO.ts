@@ -1,34 +1,33 @@
 import { AbstractVO } from "./AbstractVO";
 import { CrewVO } from "./CrewsVO";
+import { StructureVO } from "./StructuresVO";
+import { ArtifactVO } from "./ArtifactsVO";
+import { AllianceVO } from "./AlliancesVO";
+import { PlayerVO } from "./PlayersVO";
 
-/** Entity class defines the base construct of the player's self.
+/** Entity class defines the base construct of the player's entity/self.
  * @class
  */
 class EntityVO extends AbstractVO {
-
-  /** entity name
-	 * @member
-	 * @private
-	 * @type {string}
-	 */
+  private _player: PlayerVO;
   private _name: string;
-
-  /** entity level
-	 * @member
-	 * @private
-	 * @type {number}
-	 */
   private _level: number;
-
+  private _members: EntityVO[];
+  private _alliances: AllianceVO[];
+  private _affiliates: EntityVO[];
+  private _properties: StructureVO[];
+  private _artifacts: ArtifactVO[];
   private _crew: CrewVO;
-//   private _rivals: Array<EntityVO>;
+  private _biz: number;
+  private _creds: number;
+  private _fame: number;
 
   /** name getter
    * @method
    * @public
    * @returns {string}
    */
-  
+
   public get name(): string {
     return this._name;
   }
@@ -58,19 +57,20 @@ class EntityVO extends AbstractVO {
     this._level = value;
   }
 
-	public get crew(): CrewVO {
-		return this._crew;
-	}
+  public get crew(): CrewVO {
+    return this._crew;
+  }
 
-	public set crew(value: CrewVO) {
-		this._crew = value;
-	}
+  public set crew(value: CrewVO) {
+    this._crew = value;
+  }
 
   /** entity constructor
    * @constructor
    * @param {EntityVO} data may optionally receive an EntityVO
    */
-  constructor() { //data: EntityVO | {} = {}) {
+  constructor() {
+    //data: EntityVO | {} = {}) {
     super();
     // Object.assign(this, data);
   }

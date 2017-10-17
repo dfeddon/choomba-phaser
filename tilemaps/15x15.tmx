@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="64" tileheight="64" nextobjectid="1">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="64" tileheight="64" nextobjectid="18">
  <tileset firstgid="1" source="tileset1.tsx"/>
- <imagelayer name="Image Layer 1">
+ <imagelayer name="Image Layer 1" visible="0">
   <image source="bg1.jpg" width="1027" height="1280"/>
  </imagelayer>
  <layer name="fg" width="15" height="15">
@@ -25,21 +25,42 @@
  </layer>
  <layer name="floors" width="15" height="15">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,18,50,50,19,0,0,0,0,0,0,0,0,0,0,
-0,26,27,27,49,0,0,0,0,0,0,0,0,0,0,
-0,137,28,36,37,0,0,0,0,0,0,0,0,0,0,
-0,137,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,135,138,137,138,137,138,137,138,137,0,0,0,0,0,
-0,0,0,0,136,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,137,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,135,138,137,0,0,0,136,0,0,0,0,
-0,0,0,0,0,0,138,0,0,0,138,0,0,0,0,
-0,0,0,0,0,0,136,0,0,0,136,0,0,0,0,
-0,0,0,0,0,0,138,0,0,0,138,0,0,0,0,
-0,0,0,0,0,0,136,135,136,135,136,0,0,0,0,
-0,0,0,0,0,0,0,0,138,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,138,0,0,0,0,0,0
+0,0,0,0,0,0,0,1,0,0,14,14,14,14,14,
+0,0,0,0,0,0,0,1,0,0,14,14,14,14,14,
+0,0,0,0,0,0,0,1,0,0,14,14,14,14,14,
+0,0,0,0,0,0,0,1,0,0,14,14,14,14,14,
+0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,
+0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,
+0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,
+0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,
+0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,
+0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,
+0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,
+14,14,14,14,14,0,0,1,0,0,0,0,0,0,0,
+14,14,14,14,14,0,0,1,0,0,0,0,0,0,0,
+14,14,14,14,14,0,0,1,0,0,0,0,0,0,0,
+14,14,14,14,14,0,0,1,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup color="#ffff0a" name="security">
+  <object id="11" name="security" x="448" y="320" width="64" height="64"/>
+  <object id="14" name="security" x="320" y="448" width="64" height="64"/>
+  <object id="15" name="security" x="576" y="448" width="64" height="64"/>
+  <object id="17" name="security" x="448" y="832" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup color="#fc0107" name="combat">
+  <object id="5" name="Combat" x="448" y="448" width="64" height="64"/>
+  <object id="6" name="Combat" x="128" y="448" width="64" height="64"/>
+  <object id="7" name="Combat" x="768" y="448" width="64" height="64"/>
+  <object id="8" name="Combat" x="768" y="192" width="64" height="64"/>
+  <object id="9" name="Combat" x="128" y="704" width="64" height="64"/>
+  <object id="10" name="Combat" x="448" y="0" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup color="#21ff06" name="artifact">
+  <object id="1" name="artifact" x="768" y="128" width="64" height="64"/>
+  <object id="4" name="artifact" x="128" y="768" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup color="#0000ff" name="spawn">
+  <object id="16" name="spawn" x="448" y="896" width="64" height="64"/>
+ </objectgroup>
 </map>

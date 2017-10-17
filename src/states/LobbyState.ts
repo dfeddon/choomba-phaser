@@ -1,5 +1,5 @@
 import { IncidentVO } from "../models/IncidentsVO";
-import NameGenerator from "fantastical";
+import { NameGenerator } from "fantastical";
 import { EntityVO } from "../models/EntitiesVO";
 
 export default class LobbyState extends Phaser.State {
@@ -54,7 +54,7 @@ export default class LobbyState extends Phaser.State {
           var incident: IncidentVO = new IncidentVO();
           incident.name = "Turf War " + _this.glob;
           incident.description = "Sensors alerted near Sinjun Corps red tower just outside Frisco Sprawl. Too-tall Redline Hackers suspected.";
-          incident.type = IncidentVO.INCIDENT_TYPE_INFILTRATE;
+          incident.type = IncidentVO.INCIDENT_TYPE_SPAWN;
           incident.entity = new EntityVO();
           // incident.entity.crew
 

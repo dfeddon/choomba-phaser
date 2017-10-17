@@ -4,12 +4,12 @@ import { StructureVO } from "./StructuresVO";
 
 class IncidentVO extends AbstractVO {
   // constants
-  public static readonly INCIDENT_TYPE_INFILTRATE: number = 1;
+  public static readonly INCIDENT_TYPE_SPAWN: number = 1;
   public static readonly INCIDENT_TYPE_DEFEND: number = 2;
   public static readonly INCIDENT_TYPE_BRAWL: number = 3;
-  public static readonly INCIDENT_TYPE_CREW: number = 4;
-  public static readonly INCIDENT_TYPE_STRUCTURE: number = 5;
-  public static readonly INCIDENT_TYPE_ALLIANCE: number = 6;
+  // public static readonly INCIDENT_TYPE_CREW: number = 4;
+  // public static readonly INCIDENT_TYPE_STRUCTURE: number = 5;
+  // public static readonly INCIDENT_TYPE_ALLIANCE: number = 6;
 
   private _name: string;
   private _description: string;

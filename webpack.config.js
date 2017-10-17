@@ -1,8 +1,9 @@
-var path = require("path");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
-var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-var HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
+const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = [{
     devtool: "#inline-source-map",
@@ -58,6 +59,16 @@ module.exports = [{
         new HtmlWebpackPlugin({
             title: "Choomba.io",
             template: "src/public/index.ejs"
+        }),
+        new UglifyJSPlugin({
+            // parallel: {
+            //     cache: true,
+            //     workers: 1
+            // },
+            // output: {
+            //     comments: false,
+            //     beautify: false
+            // }
         }),
         // new HtmlWebpackIncludeAssetsPlugin({
         //     assets: ['css/index.css'],
