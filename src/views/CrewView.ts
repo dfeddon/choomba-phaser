@@ -3,20 +3,29 @@ import CharacterView from "./CharacterViews";
 import { CharacterVO } from "../models/CharactersVO";
 import { VectorVO } from "../models/VectorsVO";
 
-export default class CrewView extends Phaser.Group {
+export default class CrewView extends Phaser.Sprite {
 
 	attackGroup: Phaser.Group;
 	defendGroup: Phaser.Group;
 	private _bg: Phaser.TileSprite;
 	private _ratio: number;
 	worldscale: number;
+	currentState: number;
 
-	constructor(game: Phaser.Game, parent: any | null, name: string, addToStage?: boolean | false, enableBody?: boolean | false, physicsBodyType?: any) {
+	constructor(game: Phaser.Game, x: number, y: number, key: string, frame?: number) {
 		console.log("== CrewView.constructor ==");
 	
-		super(game, parent, name, addToStage, enableBody, physicsBodyType);
+		super(game, x, y, key, frame);
 
-		return this;
+		this.currentState = 0;
+
+		game.physics.enable(this);
+	    // game.add.existing(this);
+		// return this;
+	}
+
+	created() {
+		console.log("== CrewView.created() ==");
 	}
 
 	addCrew(crewArray: CharacterDataVO[], isLeft: boolean) {
@@ -34,9 +43,29 @@ export default class CrewView extends Phaser.Group {
 			// create character view
 			characterView = new CharacterView(this.game, new CharacterVO(crewArray[i].key, crewArray[i].name, new VectorVO(lastVector.x, lastVector.y)));
 			// add character to group
-			this.add(characterView);
+			this.addChild(characterView);
 			// update last vector by width of character
 			lastVector.x = characterView.x + 125; //characterView.width;
     	}
+	}
+
+	setState(state: number) {
+		// console.log("Crew.setCurrentState", state, this.children.length);
+		if (state === this.currentState) return;
+
+		this.currentState = state;
+
+		for (var i = 0; i < this.children.length; i++) {
+			// console.log(this.children[i] as CharacterView);
+			(this.children[i] as CharacterView).setState(state);
+		}
+
+		switch(state) {
+			case 0: this.body.velocity.x = 0; break;
+			case 1: this.body.velocity.x = 150; break;
+			case 2: this.body.velocity.x = -150; break;
+		}
+
+
 	}
 }

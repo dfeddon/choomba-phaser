@@ -21,6 +21,7 @@ export default class NavigationState extends Phaser.State {
   worldScale: number;
   scaleUp: boolean;
   scaleDown: boolean;
+  walkLeft: boolean = false;
 
   // crew: Phaser.Group;
   // defenders: Phaser.Group;
@@ -65,27 +66,39 @@ export default class NavigationState extends Phaser.State {
     // size game canvas
     this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
     // set game bounds
-    this.game.world.setBounds(0, 0, 2000, window.innerHeight);
+    // this.game.world.setBounds(0, 0, 2000, window.innerHeight);
+    console.log('*****', this.game.world);
     // start arcade physics
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    
     // game & ui groups
     // this.combatStageView = this.game.add.group(this.game, "combatStageView", true, true, Phaser.Physics.ARCADE);
-    this.combatStageView = new CombatStageView(this.game, this, "combatStageView", true, true, Phaser.Physics.ARCADE);
+    this.combatStageView = new CombatStageView(this.game, this, "combatStageView", true);//, true, Phaser.Physics.ARCADE);
+    // add combat stage to world (for camera scroll)
+    this.game.world.add(this.combatStageView);
+    // set game bounds
+    // this.game.world.setBounds(this.combatStageView.x, this.combatStageView.y, 2000, this.combatStageView.height);//window.innerHeight);
+    
     // this.combatUIView = this.game.add.group(this.game, "combatUIView", true);
-    var combatUIView:CombatUIView = new CombatUIView(this.game, this, "combatUIView", true);
+    var combatUIView:CombatUIView = new CombatUIView(this.game, null, "combatUIView", true);
     combatUIView.navigationState = this;
+    this.combatUIView = combatUIView;
+    // combatUIView.fixedToCamera = true;
     // this.combatStageView.add(this.game.world);
     // this.combatStageView.width = this.game.world.width;
 
     // size game and ui groups
+    
     // establish scale
     var ratio = (window.innerHeight / this.game.cache.getImage("bg").height) / 3;
     // console.log('=========', this.game.height, this.game.height * ratio * 2);
     // add bg as tilesprite to gameBG
-    this.combatStageView.bg = new Phaser.TileSprite(this.game, 0, 0, this.game.world.width * ratio * 2, this.game.height * ratio * 2, 'bg');
+    // TODO: set bg width to world/combatStageView width
+    this.combatStageView.bg = new Phaser.TileSprite(this.game, 0, 0, 2000, this.game.height * ratio * 2, 'bg');
     // resize bg image height to fit window
     this.combatStageView.ratio = ratio;
     this.combatStageView.addView();
+    // this.combatStageView.bg.width = this.combatStageView.width;
     // this.combatStageView.bg.tileScale.set(ratio * 2, ratio * 2);
     // this.combatStageView.add(this.gameBG);
     // send to back
@@ -95,8 +108,10 @@ export default class NavigationState extends Phaser.State {
     // ui group
     combatUIView.y = window.innerHeight / 3 * 2;
     // console.log("* combatUIView", this.combatUIView.x, this.combatUIView.y);
+    
     // add bg
-    this.uiBG = this.game.add.tileSprite(0, 0, this.game.world.width * ratio * 2, window.innerHeight / 3, "uibg");
+    this.uiBG = this.game.make.tileSprite(0, 0, this.game.world.width * ratio * 2, window.innerHeight / 3, "uibg", 0);
+    
     // add bg to stage ui
     combatUIView.add(this.uiBG);
     combatUIView.addView();
@@ -110,9 +125,11 @@ export default class NavigationState extends Phaser.State {
       console.log("exiting navigation state");
       // pause game
       // _this.game.paused = true;
+      
       // hide navigationState
       document.getElementById("navigation-ui-container").style.display = "none";
       document.getElementById("navigation-controls-container").style.display = "none";
+      
       // switch to ResultsState
       _this.game.state.start("ResultsState", true, false);
     });
@@ -181,7 +198,38 @@ export default class NavigationState extends Phaser.State {
         this.combatStageView.scale.set(1, 1);
       }
     }
-		// else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || this.walkLeft) {
+      // console.log("NavigationState.update.keyboard.right");
+      this.crewCombatAttack.setState(1);
+      
+      console.log("* x", this.crewCombatAttack.position.x, this.game.world.width);//, this.combatUIView.tileMap);
+      console.log("*", Math.floor(this.combatUIView.player.position.x / 64), Math.floor(this.combatUIView.player.position.y / 64), this.combatUIView.player.position.x, this.combatUIView.player.position.y);
+      
+      // if moving...
+      if (this.crewCombatAttack.position.x < this.game.world.width) {
+        this.combatUIView.player.position.y += 0.2;
+        console.log(this.combatUIView.player.position.x, this.combatUIView.player.position.y);
+        // if valid tile...
+        if (this.combatUIView.tileMap.getTile(Math.floor(this.combatUIView.player.position.x/64), Math.floor(this.combatUIView.player.position.y/64), "layer1", true).index >= 0) {
+          // log data
+          console.log("* tile!", this.combatUIView.tileMap.getTile(Math.floor(this.combatUIView.player.position.x / 64), Math.floor(this.combatUIView.player.position.y / 64), "layer1", true));
+          // if matching x/y object layer object
+          // get forward/backward direction value integers ( 0:none, 1:north, 2:south, 3:east, 4:west )  
+        }
+      }
+      // this.walkLeft = false;
+      // this.combatStageView.bg.tilePosition.x -= 0.5;
+    }
+		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+      // console.log("NavigationState.update.keyboard.left");
+      this.crewCombatAttack.setState(2);
+      console.log("* x", this.crewCombatAttack.position.x);
+      if (this.crewCombatAttack.position.x > 0) {
+        this.combatUIView.player.position.y -= 0.2;
+      }
+    }
+    else if (this.crewCombatAttack.currentState !== 0) 
+      this.crewCombatAttack.setState(0);
     //   this.body.velocity.x = -150;
     //   this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_WALK);
 
@@ -266,7 +314,7 @@ export default class NavigationState extends Phaser.State {
       new CharacterDataVO("steampunk02", "Steampunk 1"),
       new CharacterDataVO("robot01", "Robot 1")
     ];
-    this.initCombat(attackers, defenders);
+    this.initCombat(attackers, []);//defenders);
 
     //  var text = "Hello World!";
     //  var style = { font: "65px Arial", fill: "#ff0000", align: "center" };
@@ -274,19 +322,23 @@ export default class NavigationState extends Phaser.State {
 
   }
 
-  initCombat(attackersArray: CharacterDataVO[], defendersArary: CharacterDataVO[]) {
+  initCombat(attackersArray: CharacterDataVO[], defendersArray: CharacterDataVO[]) {
     console.log("== NavigationState.initCombat() ==");
-
-    this.crewCombatAttack = new CrewView(this.game, this, "crewAttackers", true);
+    this.crewCombatAttack = new CrewView(this.game, 0, 0, "", 0);
     this.crewCombatAttack.addCrew(attackersArray, true);
-    this.crewCombatDefend = new CrewView(this.game, this, "crewDefenders", true);
-    this.crewCombatDefend.addCrew(defendersArary, false);
+    if (defendersArray && defendersArray.length > 0) {
+      console.log("* adding defenders crew");
+      this.crewCombatDefend = new CrewView(this.game, 0, 0, "", 0);
+      this.crewCombatDefend.addCrew(defendersArray, false);
+    }
     // create attackers group
     // this.crewCombatAttack = this.game.add.group();
+    
     // add it to game stage
     this.combatStageView.crewAttack = this.crewCombatAttack;
-    this.combatStageView.crewDefend = this.crewCombatDefend;
-    
+    if (this.crewCombatDefend)
+      this.combatStageView.crewDefend = this.crewCombatDefend;
+    // this.game.debug.spriteInfo(this.combatStageView.crewAttack, 32, 32);
     // add attacking characters to group, from back to front
     // var attacker: CharacterView;
     // var lastVector: VectorVO = new VectorVO(15, (this.game.height / 3) * 2);
@@ -301,10 +353,13 @@ export default class NavigationState extends Phaser.State {
     // }
 
     // direct camera to follow player 2
+    // this.game.physics.arcade.enable(this.crewCombatAttack);
     // var cam = this.game.camera;
-    // // this.combatStageView.add(cam);
-
-    // cam.follow(this.crewCombatAttack.children[3] as Phaser.Sprite);
+    // console.log("* world", this.game.world);//.getBounds());//.width);
+    // this.combatStageView.add(this.game.camera);
+    // console.log("* crew w/h", this.crewCombatAttack.width, this.crewCombatAttack.height);
+    // cam.follow(this.crewCombatAttack);//.children[3] as Phaser.Sprite);
+    // cam.follow(this.crewCombatAttack as Phaser.Sprite, Phaser.Camera.FOLLOW_LOCKON);
   }
 
   inputEvent(key: string) {

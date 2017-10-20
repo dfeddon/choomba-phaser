@@ -18,7 +18,10 @@ export default class PreloaderState extends Phaser.State {
 
 		// load tiles & tilemaps
 		this.game.load.tilemap('tilemap1', "../images/tilemaps/maps/tilemap1.json", null, Phaser.Tilemap.TILED_JSON);
-		this.game.load.image("tiles1", "../images/tilemaps/tiles/set1.png");
+		this.game.load.image("tiles1", "../images/tilemaps/tiles/tileset-punks.png");
+
+		// minimap player
+		this.game.load.image("player", "../images/player_minimap.png");
 	}
 
 	create() {
