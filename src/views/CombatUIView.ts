@@ -1,4 +1,5 @@
 import NavigationState from "../states/NavigationState";
+import { TilemapObjectVO } from "../models/TilemapObjectsVO";
 
 export default class CombatUIView extends Phaser.Group {
 	
@@ -75,10 +76,10 @@ export default class CombatUIView extends Phaser.Group {
 		p.y = Math.floor(p.y / 64) * 64;
 
 		// get objects
-		var objs = this.tileMap.objects["objects1"];
+		var objs: object = this.tileMap.objects["objects1"];
 
 		// find key based on point
-		var obj: Object = null;
+		var obj: TilemapObjectVO = null;
 		for (var key in objs) {
 			// console.log("key", objs[key].x, objs[key].y);
 			if (objs[key].x === p.x && objs[key].y === p.y) {
@@ -90,13 +91,60 @@ export default class CombatUIView extends Phaser.Group {
 		return obj;
 		// console.log("* objects", this.tileMap.objects["objects1"]);
 	}
+	getMapObjectByName(n: string) {
+		console.log("getMapObjectsByName", n);
+
+		// get objects
+		var objs: object = this.tileMap.objects["objects1"];
+
+		// find key based on point
+		var obj: TilemapObjectVO = null;
+		for (var key in objs) {
+			// console.log("key", objs[key].x, objs[key].y);
+			if (objs[key].name === n) {
+				console.log("* GOT OBJ", objs[key]);
+				obj = objs[key];
+				break;
+			}
+		}
+		return obj;
+		// console.log("* objects", this.tileMap.objects["objects1"]);
+	}
+
+	playerMove(dir: number) {
+		console.log("* playerMove", dir);
+		// dir 1 = right, 2 = left
+		if (dir === 1) {
+			this.player.position.y += 0.2;
+			// console.log(this.player.position.x, this.player.position.y);
+			// if valid tile...
+			if (this.tileMap.getTile(Math.floor(this.player.position.x / 64), Math.floor(this.player.position.y / 64), "layer1", true).index >= 0) {
+				// log data
+				// console.log("* tile!", this.tileMap.getTile(Math.floor(this.player.position.x / 64), Math.floor(this.player.position.y / 64), "layer1", true));
+				// if matching x/y object layer object
+				
+				if (~~this.player.x % 64 === 0 && ~~this.player.y % 64 === 0) {
+					var tileObj: TilemapObjectVO = this.getMapObjectByPosition(new Phaser.Point(this.player.position.x, this.player.position.y));
+
+					if (tileObj) {
+						console.log("* got TileObj", tileObj);
+						// tileObj.hasPlayer = true;
+						console.log("* change direction?", tileObj.properties);
+					}
+				}
+				// get forward/backward direction value integers ( 0:none, 1:north, 2:south, 3:east, 4:west )
+			}	
+		} else if (dir === 2) {
+			this.player.position.y -= 0.2;
+		}
+	}
 
 	addMinimap() {
 		console.log("* minimap");
 
 		this.mapUI = this.game.make.group();
 		// this.mapUI.fixedToCamera = false;
-		this.mapLayer = this.game.make.group(this.mapUI);
+		this.mapLayer = this.game.make.group();//this.mapUI);
 		// this.mapLayer.fixedToCamera = false;
 
 		this.mapUI.position.x = this.game.width / 2;//this.width / 2;
@@ -108,13 +156,12 @@ export default class CombatUIView extends Phaser.Group {
 		map.addTilesetImage('tileset-punks', 'tiles1');
 		// this.mapUI.add(map);
 
-		var layer = map.createLayer("layer1", map.width * map.tileWidth, map.height * map.tileHeight, this.mapUI);
-		layer.fixedToCamera = true;
+		var layer = map.createLayer("layer1", map.width * map.tileWidth, map.height * map.tileHeight);//, this.mapUI);
 		layer.inputEnabled = true;
 		layer.events.onInputDown.add(this.mapInputHandler, this);
-		// this.game.input.mou
+		// layer.checkWorldBounds = true;
 		// layer.renderSettings.enableScrollDelta = true;
-		var layer2 = map.createLayer("player", map.width * map.tileWidth, map.height * map.tileHeight, this.mapUI);
+		var layer2 = map.createLayer("player", map.width * map.tileWidth, map.height * map.tileHeight);//, this.mapUI);
 		// layer.scale.set(0.5, 0.5);
 		// layer2.scale.add(0.5, 0.5);
 		console.log("* layer", layer);
@@ -126,7 +173,7 @@ export default class CombatUIView extends Phaser.Group {
 
 		// assign
 		this.mapUI.add(this.mapLayer);
-		this.mapLayer.add(this.mapLayer1);
+		this.mapLayer.add(layer);
 		this.mapLayer.add(layer2);
 
 		// draw border around mapUI
@@ -142,17 +189,39 @@ export default class CombatUIView extends Phaser.Group {
 		mask.endFill();
 		this.add(mask);
 		this.mapLayer.mask = mask;
-		// mask.fixedToCamera = false;
+		// mask.fixedToCamera = true;
+		// this.mapLayer.fixedToCamera = true;
 
 		// this.mapUI.setAll('anchor.x', 0.5);
 		// this.mapUI.setAll('anchor.y', 0.5);
 
+		// get spawn object
+		var spawn: TilemapObjectVO = this.getMapObjectByName("spawn");
+		console.log("* spawn", spawn);
+
 		// add player icon TODO: set start x & y values at spawn tile-object
-		this.player = this.game.make.sprite(0, 0, "player", 0);//, this.mapLayer);
+		this.player = this.game.make.sprite(spawn.x, spawn.y, "player", 0);//, this.mapLayer);
 		// this.player.scale.set(0.35, 0.35);
 		console.log("* player", this.player.width);
 		this.player.anchor.add(0, 0);
 		layer2.addChild(this.player);
+
+		// center map on player
+		console.log(this.mapLayer.width, this.mapLayer.height);
+		// this.mapLayer.x = (this.mapUI.width / 2) - this.player.position.x;
+		// this.mapLayer.y = (this.mapUI.height / 2) - this.player.position.y;
+		console.log('* mapLayer pos', this.mapLayer.position);
+
+		// fixed?
+		this.fixedToCamera = false;
+		this.mapUI.fixedToCamera = false;
+		this.mapLayer.fixedToCamera = true;
+		layer2.fixedToCamera = false;
+		this.mapLayer.mask.fixedToCamera = false;
+		this.abilityUI.fixedToCamera = false;
+		
+		layer.fixedToCamera = false;
+		this.player.fixedToCamera = false;
 	}
 
 	downListener(e:Phaser.Graphics) {
@@ -161,6 +230,7 @@ export default class CombatUIView extends Phaser.Group {
 		switch (e.key) {
 			case "ability_1":
 				this.mapLayer.x -= 32; // 64 - [scale 0.5]
+				// this.mapLayer.
 				break;
 			case "ability_2":
 				this.mapLayer.x += 32; // 64 - [scale 0.5]

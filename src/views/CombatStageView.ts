@@ -53,15 +53,17 @@ export default class CombatStageView extends Phaser.Group {
 
 		// boundary collision
 		value.body.collideWorldBounds = true;
+		console.log("* crew", value.width, value.height);
 
 		// camera
 		// this.game.renderer.renderSession.roundPixels = true;
-		var cam = this.game.camera;
+		var cam = this.game.world.camera;
 		cam.setBoundsToWorld();
-		cam.setSize(value.width, value.height);
+		// cam.bounds.setTo(0, 0, this.width, this.height);
+ 		cam.setSize(value.width, value.height);
 		// value.anchor.setTo(0, 0);
 		// cam.follow(value, Phaser.Camera.FOLLOW_LOCKON);//this.children[3] as Phaser.Sprite);
-		// cam.deadzone = new Phaser.Rectangle(100, 100, 200, 200);
+		// cam.deadzone = new Phaser.Rectangle(0, 0, 400, 600);
 		console.log("* cam", this.height, this.game.height, cam.bounds);//.height);
 		this.game.debug.cameraInfo(cam, 40, 40);
 	}
@@ -82,7 +84,7 @@ export default class CombatStageView extends Phaser.Group {
 	addView() {
 		console.log("== CombatStageView.addView ==");
 		this.width = window.innerWidth;
-		console.log("* width", this.width, window.innerWidth);
+		console.log("* width", this.width, this.height, window.innerWidth, window.innerHeight);
 		this.worldscale = 1;
 		// this.pivot.set(0.5 * this.parent.width, 0.5 * this.parent.height);
 		this.pivot.set(0, 0);
@@ -91,7 +93,12 @@ export default class CombatStageView extends Phaser.Group {
 		// this.bg = new Phaser.TileSprite(this.game, 0, 0, this.width, this.game.height * this.ratio * 2, "bg");
 		// this.bg.tileScale.set(this.ratio * 2, this.ratio * 2);
 		// this.game.world.add(this.crewAttack);
-		console.log("combat view dimens", this.width, this.game.width, this.game.world);
+		console.log("== combat view dimens ==");
+		console.log("combatStageView", this.width, this.height);
+		console.log("stage", this.game.stage.width, this.game.stage.height);
+		console.log("game", this.game.width, this.game.height);
+		console.log("world", this.game.world.bounds.width, this.game.world.bounds.height);
+		console.log("camera", this.game.camera.bounds.width, this.game.camera.bounds.height);
 
 	}
 
@@ -102,7 +109,7 @@ export default class CombatStageView extends Phaser.Group {
 		// this.worldscale = 1;
       	// this.pivot.set(0.5 * this.width, 0.5 * this.height);
 		  // this.scale.set(Phaser.Math.clamp(this.worldscale, 1, 1.5));
-		//   this.game.camera.focusOnXY(this.crewAttack.x, this.crewAttack.y);
+		//   this.game.world.camera.focusOnXY(this.crewAttack.x, this.crewAttack.y);
 	}
 
 }

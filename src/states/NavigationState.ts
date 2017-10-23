@@ -10,6 +10,7 @@ import { CharacterDataVO } from "../models/CharacterDataVO";
 import CombatUIView from "../views/CombatUIView";
 import CombatStageView from "../views/CombatStageView";
 import CrewView from "../views/CrewView";
+import { TilemapObjectVO } from "../models/TilemapObjectsVO";
 
 export default class NavigationState extends Phaser.State {
   combatStageView: CombatStageView;
@@ -73,7 +74,9 @@ export default class NavigationState extends Phaser.State {
     
     // game & ui groups
     // this.combatStageView = this.game.add.group(this.game, "combatStageView", true, true, Phaser.Physics.ARCADE);
+
     this.combatStageView = new CombatStageView(this.game, this, "combatStageView", true);//, true, Phaser.Physics.ARCADE);
+
     // add combat stage to world (for camera scroll)
     this.game.world.add(this.combatStageView);
     // set game bounds
@@ -201,60 +204,21 @@ export default class NavigationState extends Phaser.State {
 		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || this.walkLeft) {
       // console.log("NavigationState.update.keyboard.right");
       this.crewCombatAttack.setState(1);
-      
-      console.log("* x", this.crewCombatAttack.position.x, this.game.world.width);//, this.combatUIView.tileMap);
-      console.log("*", Math.floor(this.combatUIView.player.position.x / 64), Math.floor(this.combatUIView.player.position.y / 64), this.combatUIView.player.position.x, this.combatUIView.player.position.y);
-      
+
       // if moving...
       if (this.crewCombatAttack.position.x < this.game.world.width) {
-        this.combatUIView.player.position.y += 0.2;
-        console.log(this.combatUIView.player.position.x, this.combatUIView.player.position.y);
-        // if valid tile...
-        if (this.combatUIView.tileMap.getTile(Math.floor(this.combatUIView.player.position.x/64), Math.floor(this.combatUIView.player.position.y/64), "layer1", true).index >= 0) {
-          // log data
-          console.log("* tile!", this.combatUIView.tileMap.getTile(Math.floor(this.combatUIView.player.position.x / 64), Math.floor(this.combatUIView.player.position.y / 64), "layer1", true));
-          // if matching x/y object layer object
-          // get forward/backward direction value integers ( 0:none, 1:north, 2:south, 3:east, 4:west )  
-        }
+        this.combatUIView.playerMove(1);
       }
-      // this.walkLeft = false;
-      // this.combatStageView.bg.tilePosition.x -= 0.5;
     }
 		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-      // console.log("NavigationState.update.keyboard.left");
       this.crewCombatAttack.setState(2);
-      console.log("* x", this.crewCombatAttack.position.x);
       if (this.crewCombatAttack.position.x > 0) {
-        this.combatUIView.player.position.y -= 0.2;
+        this.combatUIView.playerMove(2);
       }
     }
-    else if (this.crewCombatAttack.currentState !== 0) 
+    else if (this.crewCombatAttack.currentState !== 0) {
       this.crewCombatAttack.setState(0);
-    //   this.body.velocity.x = -150;
-    //   this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_WALK);
-
-    //   if (this.scale.x > 0) this.scale.x = -0.5; //this.scale.x;
-    //   // console.log("*", this.scale.x);
-    //   this.anchor.setTo(1, 1); // keep anchor forward-facing
-    // } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-    //   // console.log(this.animations);
-    //   this.body.velocity.x = 150;
-    //   this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_WALK);
-    //   this.anchor.setTo(0, 1); // keep anchor forward-facing
-
-    //   if (this.scale.x < 0) {
-    //     this.scale.x = 0.5;
-    //   }
-    // } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-    //   this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_ATTACK1);
-    //   // this.toBackground();
-    // } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.H)) {
-    //   this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_HIT1);
-    //   this.toForeground();
-    // } else {
-    //   // this.animations.frame = 0;
-    //   this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_IDLE);
-    // }
+    }
       
     // scale down
     if (this.scaleDown) {
