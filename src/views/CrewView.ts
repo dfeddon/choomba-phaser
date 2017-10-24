@@ -5,6 +5,9 @@ import { VectorVO } from "../models/VectorsVO";
 
 export default class CrewView extends Phaser.Sprite {
 
+	static readonly PLAYER_MOVING_FORWARD: number = 1;
+	static readonly PLAYER_MOVING_BACKWARD: number = 2;
+
 	attackGroup: Phaser.Group;
 	defendGroup: Phaser.Group;
 	private _bg: Phaser.TileSprite;
@@ -19,7 +22,7 @@ export default class CrewView extends Phaser.Sprite {
 
 		this.currentState = 0;
 
-		game.physics.enable(this);
+		// game.physics.enable(this);
 	    // game.add.existing(this);
 		// return this;
 	}
@@ -60,11 +63,12 @@ export default class CrewView extends Phaser.Sprite {
 			(this.children[i] as CharacterView).setState(state);
 		}
 
-		switch(state) {
-			case 0: this.body.velocity.x = 0; break;
-			case 1: this.body.velocity.x = 150; break;
-			case 2: this.body.velocity.x = -150; break;
-		}
+		// move crew
+		// switch(state) {
+		// 	case 0: this.body.velocity.x = 0; break;
+		// 	case 1: this.body.velocity.x = 150; break;
+		// 	case 2: this.body.velocity.x = -150; break;
+		// }
 
 
 	}

@@ -5,8 +5,8 @@ import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
 export default class CharacterView extends Phaser.Sprite {
 
 	public static readonly CHARACTER_STATE_IDLE = 0;
-	public static readonly CHARACTER_STATE_WALK_RIGHT = 1;
-	public static readonly CHARACTER_STATE_WALK_LEFT = 2;
+	public static readonly CHARACTER_STATE_WALK_FORWARD = 1;
+	public static readonly CHARACTER_STATE_WALK_BACKWARD = 2;
 
 	vo: CharacterVO;
 	imgScale: number;

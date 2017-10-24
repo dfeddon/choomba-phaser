@@ -11,13 +11,14 @@ import CombatUIView from "../views/CombatUIView";
 import CombatStageView from "../views/CombatStageView";
 import CrewView from "../views/CrewView";
 import { TilemapObjectVO } from "../models/TilemapObjectsVO";
+import { BackgroundView } from "../views/BackgroundView";
 
 export default class NavigationState extends Phaser.State {
   combatStageView: CombatStageView;
   combatUIView: CombatUIView;
   crewCombatAttack: CrewView;// Phaser.Group;
   crewCombatDefend: CrewView;//Phaser.Group;
-  gameBG: Phaser.TileSprite;
+  // gameBG: Phaser.TileSprite;
   uiBG: Phaser.TileSprite;
   worldScale: number;
   scaleUp: boolean;
@@ -97,7 +98,8 @@ export default class NavigationState extends Phaser.State {
     // console.log('=========', this.game.height, this.game.height * ratio * 2);
     // add bg as tilesprite to gameBG
     // TODO: set bg width to world/combatStageView width
-    this.combatStageView.bg = new Phaser.TileSprite(this.game, 0, 0, 2000, this.game.height * ratio * 2, 'bg');
+    // this.combatStageView.bg = new Phaser.TileSprite(this.game, 0, 0, 4000, this.game.height * ratio * 2, 'bg');
+    this.combatStageView.bg = new BackgroundView(this.game, ratio);
     // resize bg image height to fit window
     this.combatStageView.ratio = ratio;
     this.combatStageView.addView();
@@ -113,7 +115,8 @@ export default class NavigationState extends Phaser.State {
     // console.log("* combatUIView", this.combatUIView.x, this.combatUIView.y);
     
     // add bg
-    this.uiBG = this.game.make.tileSprite(0, 0, this.game.world.width * ratio * 2, window.innerHeight / 3, "uibg", 0);
+    // console.log("****", this.game.world.width);
+    this.uiBG = this.game.make.tileSprite(0, 0, window.innerWidth, window.innerHeight / 3, "uibg", 0);
     
     // add bg to stage ui
     combatUIView.add(this.uiBG);
@@ -203,18 +206,28 @@ export default class NavigationState extends Phaser.State {
     }
 		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || this.walkLeft) {
       // console.log("NavigationState.update.keyboard.right");
-      this.crewCombatAttack.setState(1);
+      this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_WALK_FORWARD);//this.combatUIView.player.vo.backwardDir);
 
       // if moving...
-      if (this.crewCombatAttack.position.x < this.game.world.width) {
-        this.combatUIView.playerMove(1);
+      // if (this.crewCombatAttack.position.x < this.game.world.width) {
+      console.log('bg.x', this.combatStageView.bg.x, this.combatStageView.bg.width);
+      if (this.combatStageView.bg.x <= 0 && this.combatStageView.bg.x > 0 - this.combatStageView.bg.totalWidth) {
+        this.combatUIView.playerMove(CrewView.PLAYER_MOVING_FORWARD);
+        this.combatStageView.bg.x -= 2.5;
       }
+      else if (this.crewCombatAttack.currentState !== 0)
+        this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_IDLE);
     }
 		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-      this.crewCombatAttack.setState(2);
-      if (this.crewCombatAttack.position.x > 0) {
-        this.combatUIView.playerMove(2);
+      // console.log(this.combatStageView.bg.x);
+      // if (this.crewCombatAttack.position.x > 0) {
+      if (this.combatStageView.bg.x < 0) {
+        this.combatUIView.playerMove(CrewView.PLAYER_MOVING_BACKWARD);//this.combatUIView.player.vo.forwardDir);
+        this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_WALK_BACKWARD);
+        this.combatStageView.bg.x += 2.5;
       }
+      else if (this.crewCombatAttack.currentState !== 0)
+        this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_IDLE);
     }
     else if (this.crewCombatAttack.currentState !== 0) {
       this.crewCombatAttack.setState(0);

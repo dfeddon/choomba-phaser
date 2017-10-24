@@ -1,10 +1,11 @@
 import CrewView from "./CrewView";
+import { BackgroundView } from "./BackgroundView";
 
 export default class CombatStageView extends Phaser.Group {
 
 	private _crewAttack: CrewView;//Phaser.Group;
 	private _crewDefend: CrewView;//Phaser.Group;
-	private _bg: Phaser.TileSprite;
+	private _bg: BackgroundView;//Phaser.Sprite;
 	private _ratio: number;
 	worldscale: number;
 
@@ -17,11 +18,11 @@ export default class CombatStageView extends Phaser.Group {
 		return this;
 	}
 
-	public get bg(): Phaser.TileSprite {
+	public get bg(): BackgroundView {
 		return this._bg;
 	}
 
-	public set bg(value: Phaser.TileSprite) {
+	public set bg(value: BackgroundView) {
 		console.log("* bg setter", value);
 
 		this._bg = value;
@@ -36,7 +37,8 @@ export default class CombatStageView extends Phaser.Group {
 	public set ratio(value: number) {
 		console.log("* ratio setter", value);
 		this._ratio = value;
-		this._bg.tileScale.set(value * 2, value * 2);
+		// this._bg.tileScale.set(value * 2, value * 2);
+		this._bg.scale.set(value * 2, value * 2);
 	}
 
 	public get crewAttack(): CrewView {
@@ -52,20 +54,20 @@ export default class CombatStageView extends Phaser.Group {
 		this.game.world.add(value);
 
 		// boundary collision
-		value.body.collideWorldBounds = true;
+		// value.body.collideWorldBounds = true;
 		console.log("* crew", value.width, value.height);
 
 		// camera
 		// this.game.renderer.renderSession.roundPixels = true;
-		var cam = this.game.world.camera;
-		cam.setBoundsToWorld();
+		// var cam = this.game.world.camera;
+		// cam.setBoundsToWorld();
 		// cam.bounds.setTo(0, 0, this.width, this.height);
- 		cam.setSize(value.width, value.height);
+ 		// cam.setSize(value.width, value.height);
 		// value.anchor.setTo(0, 0);
 		// cam.follow(value, Phaser.Camera.FOLLOW_LOCKON);//this.children[3] as Phaser.Sprite);
 		// cam.deadzone = new Phaser.Rectangle(0, 0, 400, 600);
-		console.log("* cam", this.height, this.game.height, cam.bounds);//.height);
-		this.game.debug.cameraInfo(cam, 40, 40);
+		// console.log("* cam", this.height, this.game.height, cam.bounds);//.height);
+		// this.game.debug.cameraInfo(cam, 40, 40);
 	}
 
 	public get crewDefend(): CrewView {
