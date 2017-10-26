@@ -210,7 +210,7 @@ export default class NavigationState extends Phaser.State {
 
       // if moving...
       // if (this.crewCombatAttack.position.x < this.game.world.width) {
-      console.log('bg.x', this.combatStageView.bg.x, this.combatStageView.bg.width);
+      // console.log('bg.x', this.combatStageView.bg.x, this.combatStageView.bg.width);
       if (this.combatStageView.bg.x <= 0 && this.combatStageView.bg.x > 0 - this.combatStageView.bg.totalWidth) {
         this.combatUIView.playerMove(CrewView.PLAYER_MOVING_FORWARD);
         this.combatStageView.bg.x -= 2.5;

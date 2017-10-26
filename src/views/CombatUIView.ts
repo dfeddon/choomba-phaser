@@ -12,10 +12,12 @@ export default class CombatUIView extends Phaser.Group {
 	mapUI: Phaser.Group;
 	tileMap: Phaser.Tilemap;
 	mapLayer1: Phaser.TilemapLayer;
+	activeTileSet: Phaser.Tileset;
 	player: MinimapPlayerView;//Phaser.Sprite;
 	mapLayer: Phaser.Group;
 	navigationState: NavigationState;
 	border: Phaser.Graphics;
+	isMapCentering: boolean;
 
 	constructor(game: Phaser.Game, parent: any | null, name: string, addToStage?: boolean | false, enableBody?: boolean | false, physicsBodyType?: any) {
 		console.log("== CombatUIView.constructor ==");
@@ -142,15 +144,23 @@ export default class CombatUIView extends Phaser.Group {
 		}
 		// if valid tile...
 		if (this.tileMap.getTile(Math.floor(this.player.position.x / 64), Math.floor(this.player.position.y / 64), "layer1", true) && this.tileMap.getTile(Math.floor(this.player.position.x / 64), Math.floor(this.player.position.y / 64), "layer1", true).index >= 0) {
-			// log data
-			// console.log("* tile!", this.tileMap.getTile(Math.floor(this.player.position.x / 64), Math.floor(this.player.position.y / 64), "layer1", true));
+
+			// store tile reference
+			var tile: Phaser.Tile = this.tileMap.getTile(Math.floor(this.player.position.x / 64), Math.floor(this.player.position.y / 64));
 			
 			// if matching x/y object layer object				
 			if (~~this.player.x % 64 === 0 && ~~this.player.y % 64 === 0) {
-				var tileObj: TilemapObjectVO = this.getMapObjectByPosition(new Phaser.Point(this.player.position.x, this.player.position.y));
+				var tileObj: TilemapObjectVO = this.getMapObjectByPosition(new Phaser.Point(Math.floor(this.player.position.x), Math.floor(this.player.position.y)));
 
+				// re-center map
 				this.centerPlayerOnMap(dir);
 
+				// change "visitable" tile to "visited"
+				if (tile.properties.visitedTileId) {
+					this.tileMap.replace(tile.index, this.activeTileSet.firstgid + tile.properties.visitedTileId, tile.x, tile.y, 1, 1, "layer1");
+				}
+
+				// check for tile *object*
 				if (tileObj) {
 					console.log("* got TileObj", tileObj);
 					// tileObj.hasPlayer = true;
@@ -166,7 +176,14 @@ export default class CombatUIView extends Phaser.Group {
 		// }
 	}
 
+	centeredComplete() {
+		console.log("map center compelte");
+		this.isMapCentering = false;
+	}
+
 	centerPlayerOnMap(dir: number) {
+		if (this.isMapCentering) return;
+		else this.isMapCentering = true;
 		// this.mapLayer.x = this.border.width / 2 - 32 - this.player.x;
 		// this.mapLayer.y = this.border.height / 2 - 32 - this.player.y;
 
@@ -174,14 +191,23 @@ export default class CombatUIView extends Phaser.Group {
 		var offsetY: number = 0;
 		var adjust: number = 16;
 
-		switch(dir) {
-			case MinimapPlayerVO.PLAYER_MOVING_NORTH: offsetY = -adjust; break;
-			case MinimapPlayerVO.PLAYER_MOVING_SOUTH: offsetY = adjust; break;
-			case MinimapPlayerVO.PLAYER_MOVING_EAST: offsetX = -adjust; break;
-			case MinimapPlayerVO.PLAYER_MOVING_WEST: offsetX = adjust; break;
-		}
-		
-		this.game.add.tween(this.mapLayer).to({ x: this.border.width / 2 - 32 - this.player.x + offsetX, y: this.border.height / 2 - 32 - this.player.y + offsetY }, 2000, Phaser.Easing.Exponential.Out, true);
+		// switch(dir) {
+		// 	case MinimapPlayerVO.PLAYER_MOVING_NORTH: offsetY = -adjust; break;
+		// 	case MinimapPlayerVO.PLAYER_MOVING_SOUTH: offsetY = adjust; break;
+		// 	case MinimapPlayerVO.PLAYER_MOVING_EAST: offsetX = -adjust; break;
+		// 	case MinimapPlayerVO.PLAYER_MOVING_WEST: offsetX = adjust; break;
+		// }
+		// if (Math.abs(this.player.position.x) * -1 > 0)
+		// 	offsetX = -64;
+		// else offsetX = 64;
+		// if (Math.abs(this.player.position.y) * -1 > 0)
+		// 	offsetY = 64;
+		// else offsetY = -64;
+		console.log("* mapLayer pre:", this.mapLayer.position.x, this.mapLayer.position.y, this.player.position.x, this.player.position.y);
+		console.log(Math.abs(this.mapLayer.x) * -1, Math.abs(this.mapLayer.y) * -1);
+		var tween = this.game.add.tween(this.mapLayer).to({ x: (this.border.width / 2) - 32 - this.player.x + offsetX, y: (this.border.height / 2) - 32 + (Math.abs(this.player.y) * -1) + offsetY }, 2000, Phaser.Easing.Exponential.Out, true);
+		tween.onComplete.add(this.centeredComplete, this);
+		console.log("* mapLayer post:", this.border.width / 2 - 32 - this.player.x + offsetX, this.border.height / 2 - 32 - this.player.y + offsetY, this.player.position.x, this.player.position.y);
 	}
 
 	addMinimap() {
@@ -198,7 +224,7 @@ export default class CombatUIView extends Phaser.Group {
 		var map: Phaser.Tilemap = this.game.make.tilemap('tilemap1', 64, 64, 15, 15);
 		console.log("* tilemap", map);
 		console.log("* objects", map.objects['objects1']);
-		map.addTilesetImage('tileset-punks', 'tiles1');
+		this.activeTileSet = map.addTilesetImage('tileset-punks', 'tiles1');
 		// this.mapUI.add(map);
 
 		var layer = map.createLayer("layer1", map.width * map.tileWidth, map.height * map.tileHeight);//, this.mapUI);
