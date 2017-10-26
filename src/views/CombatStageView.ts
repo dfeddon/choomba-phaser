@@ -8,6 +8,7 @@ export default class CombatStageView extends Phaser.Group {
 	private _bg: BackgroundView;//Phaser.Sprite;
 	private _ratio: number;
 	worldscale: number;
+	items: object[];
 
 	constructor(game: Phaser.Game, parent: any | null, name: string, addToStage?: boolean | false, enableBody?: boolean | false, physicsBodyType?: any) {
 		console.log("== CombatStageView.constructor ==");

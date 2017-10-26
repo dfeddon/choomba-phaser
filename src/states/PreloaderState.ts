@@ -22,6 +22,13 @@ export default class PreloaderState extends Phaser.State {
 
 		// minimap player
 		this.game.load.image("player", "../images/player_minimap.png");
+
+		// map items
+		this.game.load.image("item_canister", "../images/trashcan.gif");
+
+		// particle
+		this.game.load.image("particle_yellow", "../images/glow_yellow.png");
+
 	}
 
 	create() {
