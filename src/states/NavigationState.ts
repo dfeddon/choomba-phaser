@@ -12,6 +12,7 @@ import CombatStageView from "../views/CombatStageView";
 import CrewView from "../views/CrewView";
 import { TilemapObjectVO } from "../models/TilemapObjectsVO";
 import { BackgroundView } from "../views/BackgroundView";
+import { NavigationController } from "../controllers/NavigationController";
 
 export default class NavigationState extends Phaser.State {
   combatStageView: CombatStageView;
@@ -31,6 +32,11 @@ export default class NavigationState extends Phaser.State {
   // json: JSON;
 
   test: CharacterView;
+
+  // constructor() {
+  //   super();
+  //   console.log("constuctor");
+  // }
 
   preload() {
     console.log("== NavigationState.preload ==");
@@ -90,6 +96,9 @@ export default class NavigationState extends Phaser.State {
     // combatUIView.fixedToCamera = true;
     // this.combatStageView.add(this.game.world);
     // this.combatStageView.width = this.game.world.width;
+
+    // controller
+    var controller = new NavigationController(this, this.combatStageView, combatUIView);
 
     // size game and ui groups
     
@@ -204,8 +213,11 @@ export default class NavigationState extends Phaser.State {
         this.combatStageView.scale.set(1, 1);
       }
     }
-		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || this.walkLeft) {
-      // console.log("NavigationState.update.keyboard.right");
+		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) && this.crewCombatAttack.isMobile) {
+      console.log("* move forward", this.combatStageView.bg.x);
+      // move minimap player
+      this.combatUIView.player.vo.dir = CrewView.PLAYER_MOVING_FORWARD;
+      // move crew
       this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_WALK_FORWARD);//this.combatUIView.player.vo.backwardDir);
 
       // if moving...
@@ -218,10 +230,11 @@ export default class NavigationState extends Phaser.State {
       else if (this.crewCombatAttack.currentState !== 0)
         this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_IDLE);
     }
-		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) && this.crewCombatAttack.isMobile) {
       // console.log(this.combatStageView.bg.x);
       // if (this.crewCombatAttack.position.x > 0) {
       if (this.combatStageView.bg.x < 0) {
+        this.combatUIView.player.vo.dir = CrewView.PLAYER_MOVING_BACKWARD;
         this.combatUIView.playerMove(CrewView.PLAYER_MOVING_BACKWARD);//this.combatUIView.player.vo.forwardDir);
         this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_WALK_BACKWARD);
         this.combatStageView.bg.x += 2.5;
@@ -315,6 +328,10 @@ export default class NavigationState extends Phaser.State {
     this.combatStageView.crewAttack = this.crewCombatAttack;
     if (this.crewCombatDefend)
       this.combatStageView.crewDefend = this.crewCombatDefend;
+
+    // enable mobility
+    this.crewCombatAttack.isMobile = true;
+
     // this.game.debug.spriteInfo(this.combatStageView.crewAttack, 32, 32);
     // add attacking characters to group, from back to front
     // var attacker: CharacterView;

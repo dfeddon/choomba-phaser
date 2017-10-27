@@ -8,13 +8,15 @@ class BackgroundView extends Phaser.Sprite {
 		console.log("== BackgroundView.constructor ==");
 		super(game, x, y, key, frame);
 
+		var gridWidth = 1600; // 2400
+
 		// set dimensions
-		this.totalWidth = 12500;
-		this.width = 13000;
+		this.totalWidth = gridWidth;
+		this.width = gridWidth;
 		this.height = game.height;
 
 		// bg1 tilesprite
-		this._bg1 = new Phaser.TileSprite(this.game, 0, 0, 13000 + window.innerWidth, this.game.height * ratio * 2, "bg");
+		this._bg1 = new Phaser.TileSprite(this.game, 0, 0, gridWidth + window.innerWidth, this.game.height * ratio * 2, "bg");
 		this.addChild(this._bg1);
 
 		// add additional parallax bgs
@@ -23,13 +25,19 @@ class BackgroundView extends Phaser.Sprite {
 		// add items
 		// add bg items
 		// this.items.push({x: 500, image: "item_canister"});
-		var item0 = this.game.add.sprite(800, 400, "item_canister", 0);
+		var item0 = this.game.add.sprite(800 + (window.innerWidth / 2), 400, "item_canister", 0);
 		item0.anchor.setTo(0, 1);
 		item0.scale.setTo(0.75, 0.75);
 		item0.inputEnabled = true;
 		var itm = this.addChild(item0);
 		item0.events.onInputDown.add(this.itemTouched, this);
 
+		var item1 = this.game.add.sprite(1600 + window.innerWidth / 2, 400, "item_door_1", 0);
+		item1.anchor.setTo(0, 1);
+		item1.scale.setTo(0.85, 0.85);
+		item1.inputEnabled = true;
+		var itm1 = this.addChild(item1);
+		item1.events.onInputDown.add(this.itemTouched, this);
 		// itm.bringToTop();
 		// console.log("* img", item0);
 		// var img = this.add(item0);
@@ -38,6 +46,8 @@ class BackgroundView extends Phaser.Sprite {
 
 	itemTouched() {
 		console.log("* item touched");
+
+		/*
 		var emitter = this.game.add.emitter(800, 250, 200);
 
 		emitter.makeParticles("particle_yellow", [0, 1, 2, 3, 4, 5]);
@@ -56,6 +66,7 @@ class BackgroundView extends Phaser.Sprite {
 		//	false means don't explode all the sprites at once, but instead release at a rate of one particle per 100ms
 		//	The 5000 value is the lifespan of each particle before it's killed
 		emitter.start(true, 5000, 100);
+		*/
 	}
 }
 

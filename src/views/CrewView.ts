@@ -14,6 +14,7 @@ export default class CrewView extends Phaser.Sprite {
 	private _ratio: number;
 	worldscale: number;
 	currentState: number;
+	isMobile: boolean;
 
 	constructor(game: Phaser.Game, x: number, y: number, key: string, frame?: number) {
 		console.log("== CrewView.constructor ==");
@@ -21,7 +22,7 @@ export default class CrewView extends Phaser.Sprite {
 		super(game, x, y, key, frame);
 
 		this.currentState = 0;
-
+		this.isMobile = false;
 		// game.physics.enable(this);
 	    // game.add.existing(this);
 		// return this;

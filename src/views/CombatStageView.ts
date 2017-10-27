@@ -56,7 +56,7 @@ export default class CombatStageView extends Phaser.Group {
 
 		// boundary collision
 		// value.body.collideWorldBounds = true;
-		console.log("* crew", value.width, value.height);
+		// console.log("* crew", value.x, value.y, value.width, value.height);
 
 		// camera
 		// this.game.renderer.renderSession.roundPixels = true;
