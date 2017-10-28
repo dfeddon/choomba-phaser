@@ -43,6 +43,20 @@ export default class CombatUIView extends Phaser.Group {
 		// var scaleRatio = window.devicePixelRatio / 3;
 
 		console.log("* pixel ratio", devicePixelRatio, devicePixelRatio % 1);
+
+		var topLine: number = 8;
+		
+		// profile
+		var abilityIcon:Phaser.Sprite = this.game.add.sprite(0, topLine, "profile_1");
+		this.add(abilityIcon);
+		// name & class
+		var textColor: string = "#ccc";
+		var characterName: Phaser.Text = this.game.add.text(75, topLine + 15, "Amir Cipher", { font: "15px Arial", fill: textColor });
+		var characterClass: Phaser.Text = this.game.add.text(75, topLine + 35, "HACKER", { font: "13px Arial", fill: textColor });
+		this.add(characterName);
+		this.add(characterClass);
+
+		// abilities
 		this.abilityUI = this.game.make.group();
 		this.add(this.abilityUI);
 		var ratio = devicePixelRatio - (devicePixelRatio % 1);
@@ -50,18 +64,25 @@ export default class CombatUIView extends Phaser.Group {
 		var recX = 50 + 5;//(sq + 10) * ratio;//devicePixelRatio;
 		var gap = 10;
 		var abilitySlots: Phaser.Graphics;
+		var abilityIcon: Phaser.Sprite;
 		for (var i = 0; i < 5; i++) {
 			abilitySlots = this.game.make.graphics(50, 0);//, this);
 			abilitySlots.key = "ability_" + (i + 1).toString();
 			abilitySlots.lineStyle(2, 0xa9a9a9, 1);
 			abilitySlots.beginFill(0x000000);
 			console.log("* ratio", ratio, sq);
-			abilitySlots.drawRect(recX * i, 15, 50, 50);//sq * ratio, sq * ratio);
+			abilitySlots.drawRect(recX * i, topLine, 50, 50);//sq * ratio, sq * ratio);
 			abilitySlots.inputEnabled = true;
 			// abilitySlots.input.priorityID = 0;
 			abilitySlots.events.onInputDown.add(this.downListener, this);
+			// icon
+			abilityIcon = this.game.add.sprite(recX * (i + 1) - 4, topLine + 2, "ability_" + (i + 1).toString());
+			abilityIcon.scale.setTo(0.95, 0.95);
+			// abilityIcon.scale.setTo
 			// add to group
 			this.abilityUI.add(abilitySlots);
+			this.abilityUI.add(abilityIcon);
+			this.abilityUI.x = 150;
 		}
 	}
 
@@ -75,22 +96,26 @@ export default class CombatUIView extends Phaser.Group {
 		console.log("**", mapX, mapY);
 		console.log("* map position", this.mapLayer1.map.getTile(Math.floor(mapX / 64), Math.floor(mapY / 64), "layer1", true));
 		var obj = this.getMapObjectByPosition(new Phaser.Point(Math.floor(mapX), Math.floor(mapY)));
+		if (obj)
+			console.log("** tp", obj.x, obj.y, Math.abs(this.player.position.x), Math.abs(this.player.position.y));
 	}
 
 	getMapObjectByPosition(p: Phaser.Point) {
 		console.log("getMapObjectsByPosition", p);
-		console.log("map pos", this.mapLayer.x, this.mapLayer.y);
+		// console.log("== mapLayer", this.mapLayer.x, this.mapLayer.y);//, Math.abs(this.mapLayer.x) * -1, Math.abs(this.mapLayer.y) * -1);
+		// console.log("== player", this.player.x, this.player.y);
 		// align point with map (ignoring "whitespace")
-		p.x = p.x + (Math.abs(this.mapLayer.x) * -1);
-		p.y = p.y + (Math.abs(this.mapLayer.y) * -1);
+		p.x = p.x + (this.mapLayer.x * -1);
+		p.y = p.y + (this.mapLayer.y * -1);
+		// console.log('+ phase 1', p.x, p.y);
 		// because map is scaled in half, multiple point by its inverse => 2
 		p.x = p.x *= 2;
 		p.y = p.y *= 2;
-		console.log("new point", p);
+		// console.log("+ phase 2", p.x, p.y);
 		// convert positions to base points
 		p.x = Math.floor(p.x / 64) * 64;
 		p.y = Math.floor(p.y / 64) * 64;
-		console.log("* point adj", p.x, p.y);
+		// console.log("+ phase 3", p.x, p.y);
 
 		// get objects
 		var objs: object = this.tileMap.objects["objects1"];
@@ -98,9 +123,9 @@ export default class CombatUIView extends Phaser.Group {
 		// find key based on point
 		var obj: TilemapObjectVO = null;
 		for (var key in objs) {
-			console.log("key", objs[key].x, objs[key].y);
+			// console.log("key", objs[key].x, objs[key].y, ' / ', p.x, p.y);
 			if (objs[key].x === p.x && objs[key].y === p.y) {
-				console.log("* GOT OBJ", objs[key]);
+				// console.log("* GOT OBJ", objs[key]);
 				return objs[key];
 				// obj = objs[key];
 				// break;
@@ -234,7 +259,7 @@ export default class CombatUIView extends Phaser.Group {
 		console.log("* mapLayer pre:", this.mapLayer.position.x, this.mapLayer.position.y, this.position.x, this.position.y);
 		console.log(Math.abs(this.mapLayer.x) * -1, Math.abs(this.mapLayer.y) * -1);
 		var toX = (this.border.width / 2) - 32 - this.player.x;// + offsetX;
-		var toY = (this.border.height / 2) - 32 + (Math.abs(this.player.y) * -1);// + offsetY;
+		var toY = (this.border.height / 2) - 32 - this.player.y;// * -1);// + offsetY;
 		var tween = this.game.add.tween(this.mapLayer).to({ x: toX, y: toY }, 2000, Phaser.Easing.Exponential.Out, true);
 		tween.onComplete.addOnce(this.centeredComplete, this);
 		console.log("* mapLayer post:", this.border.width / 2 - 32 - this.player.x + offsetX, this.border.height / 2 - 32 - this.player.y + offsetY, this.player.position.x, this.player.position.y);

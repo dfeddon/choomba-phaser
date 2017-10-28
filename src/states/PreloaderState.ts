@@ -30,6 +30,16 @@ export default class PreloaderState extends Phaser.State {
 		// particle
 		this.game.load.image("particle_yellow", "../images/glow_yellow.png");
 
+		// abilities
+		this.game.load.image("ability_1", "../images/22_1.png");
+		this.game.load.image("ability_2", "../images/77_1.png");
+		this.game.load.image("ability_3", "../images/55_1.png");
+		this.game.load.image("ability_4", "../images/68_1.png");
+		this.game.load.image("ability_5", "../images/74_1.png");
+
+		// profiles
+		this.game.load.image("profile_1", "../images/portrait_1_1.png");
+
 	}
 
 	create() {
