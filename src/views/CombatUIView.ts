@@ -307,7 +307,7 @@ export default class CombatUIView extends Phaser.Group {
 		// draw border around mapUI
 		var lineWidth: number = 2;
 		var border = this.game.make.graphics(0, 0);
-		border.lineStyle(lineWidth, 0xffffff, 1);
+		border.lineStyle(lineWidth, 0xcccccc, 1);
 		border.drawRect(this.mapUI.x, this.mapUI.y, window.innerWidth / 2 - lineWidth, this.game.height - this.getBounds(this.parent).y - lineWidth);//this.mapUI.height - 120);
 		this.add(border);
 		this.border = border;
