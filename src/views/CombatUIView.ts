@@ -7,8 +7,8 @@ import CharacterView from "./CharacterViews";
 
 export default class CombatUIView extends Phaser.Group {
 	
-	abilityUI: Phaser.Group;
-	profileUI: Phaser.Group;
+	// abilityUI: Phaser.Group;
+	// profileUI: Phaser.Group;
 	mapUI: Phaser.Group;
 	tileMap: Phaser.Tilemap;
 	mapLayer1: Phaser.TilemapLayer;
@@ -44,33 +44,42 @@ export default class CombatUIView extends Phaser.Group {
 
 		console.log("* pixel ratio", devicePixelRatio, devicePixelRatio % 1);
 
-		var topLine: number = 8;
+		var topLine: number = 15;
 		
 		// profile
-		var abilityIcon:Phaser.Sprite = this.game.add.sprite(0, topLine, "profile_1");
-		this.add(abilityIcon);
+		var profileUI = this.game.make.group();
+		this.add(profileUI);
+
+		var characterProfile:Phaser.Sprite = this.game.add.sprite(0, 0, "profile_1");
 		// name & class
 		var textColor: string = "#ccc";
-		var characterName: Phaser.Text = this.game.add.text(75, topLine + 15, "Amir Cipher", { font: "15px Arial", fill: textColor });
-		var characterClass: Phaser.Text = this.game.add.text(75, topLine + 35, "HACKER", { font: "13px Arial", fill: textColor });
-		this.add(characterName);
-		this.add(characterClass);
+		var characterName: Phaser.Text = this.game.add.text(75, 0, "Amir Cipher", { font: "17px Poiret One", fill: textColor });
+		var characterClass: Phaser.Text = this.game.add.text(75, characterName.y + 25, "Rank 3 Hacker", { font: "17px Indie Flower", fill: "#6c6c6c" });
+		profileUI.add(characterProfile);
+		profileUI.add(characterName);
+		profileUI.add(characterClass);
+		// var profileBorder: Phaser.Graphics = this.game.make.graphics(0, 0);
+		// profileBorder.lineStyle(2, 0x6c6c6c, 1);
+		// // profileBorder.beginFill(0x000000);
+		// profileBorder.drawRect(profileUI.x, profileUI.y, profileUI.width, profileUI.height);
+		// profileUI.add(profileBorder);
 
 		// abilities
-		this.abilityUI = this.game.make.group();
-		this.add(this.abilityUI);
-		var ratio = devicePixelRatio - (devicePixelRatio % 1);
+		var abilityUI = this.game.make.group();
+		this.add(abilityUI);
+		// var ratio = devicePixelRatio - (devicePixelRatio % 1);
 		var sq = 50;
-		var recX = 50 + 5;//(sq + 10) * ratio;//devicePixelRatio;
-		var gap = 10;
+		var gap = 5;
+		var recX = 50 + gap;//(sq + 10) * ratio;//devicePixelRatio;
 		var abilitySlots: Phaser.Graphics;
 		var abilityIcon: Phaser.Sprite;
+		var firstSlot: Phaser.Graphics;
 		for (var i = 0; i < 5; i++) {
 			abilitySlots = this.game.make.graphics(50, 0);//, this);
 			abilitySlots.key = "ability_" + (i + 1).toString();
-			abilitySlots.lineStyle(2, 0xa9a9a9, 1);
+			abilitySlots.lineStyle(2, 0x6c6c6c, 1);
 			abilitySlots.beginFill(0x000000);
-			console.log("* ratio", ratio, sq);
+			// console.log("* ratio", ratio, sq);
 			abilitySlots.drawRect(recX * i, topLine, 50, 50);//sq * ratio, sq * ratio);
 			abilitySlots.inputEnabled = true;
 			// abilitySlots.input.priorityID = 0;
@@ -78,12 +87,33 @@ export default class CombatUIView extends Phaser.Group {
 			// icon
 			abilityIcon = this.game.add.sprite(recX * (i + 1) - 4, topLine + 2, "ability_" + (i + 1).toString());
 			abilityIcon.scale.setTo(0.95, 0.95);
+			if (i === 0) {
+				firstSlot = abilitySlots;
+			}
 			// abilityIcon.scale.setTo
 			// add to group
-			this.abilityUI.add(abilitySlots);
-			this.abilityUI.add(abilityIcon);
-			this.abilityUI.x = 150;
+			abilityUI.add(abilitySlots);
+			abilityUI.add(abilityIcon);
 		}
+		abilityUI.x = 150;
+
+		// adjust for centering
+		profileUI.x = 15;
+		profileUI.y = topLine;
+		// v center text
+		characterName.y = (profileUI.height / 2) - (characterClass.height / 2) - (characterName.height / 2);
+		characterClass.y = characterName.y + characterName.height + 5;
+		// v center ability buttons
+		abilityUI.y = (profileUI.height / 2) - (abilityUI.height / 2);
+		// h center profile top
+
+		// console.log("*xy", firstSlot.x, profileUI.x, abilityUI.x, abilityUI.width);
+		// add border
+		var profileBorder: Phaser.Graphics = this.game.make.graphics(profileUI.x, profileUI.y);
+		profileBorder.lineStyle(2, 0x6c6c6c, 1);
+		// profileBorder.beginFill(0x000000);
+		profileBorder.drawRect(characterProfile.x, characterProfile.y, abilityUI.x + firstSlot.x + abilityUI.width - profileUI.x + 10, profileUI.height);
+		this.add(profileBorder);
 	}
 
 	mapInputHandler(e: Phaser.TilemapLayer, point:PointerEvent) {
@@ -307,7 +337,7 @@ export default class CombatUIView extends Phaser.Group {
 		// draw border around mapUI
 		var lineWidth: number = 2;
 		var border = this.game.make.graphics(0, 0);
-		border.lineStyle(lineWidth, 0xcccccc, 1);
+		border.lineStyle(lineWidth, 0x6c6c6c, 1);
 		border.drawRect(this.mapUI.x, this.mapUI.y, window.innerWidth / 2 - lineWidth, this.game.height - this.getBounds(this.parent).y - lineWidth);//this.mapUI.height - 120);
 		this.add(border);
 		this.border = border;
@@ -357,7 +387,7 @@ export default class CombatUIView extends Phaser.Group {
 		// this.mapLayer.fixedToCamera = false;
 		// layer2.fixedToCamera = false;
 		// this.mapLayer.mask.fixedToCamera = false;
-		// this.abilityUI.fixedToCamera = false;
+		// abilityUI.fixedToCamera = false;
 		
 		// layer.fixedToCamera = true;
 		// this.player.fixedToCamera = true;
@@ -368,20 +398,19 @@ export default class CombatUIView extends Phaser.Group {
 		// this.mapLayer1.position.setTo(100, 100);
 		switch (e.key) {
 			case "ability_1":
-				this.mapLayer.x -= 32; // 64 - [scale 0.5]
-				// this.mapLayer.
+				// this.mapLayer.x -= 32; // 64 - [scale 0.5]
 				break;
 			case "ability_2":
-				this.mapLayer.x += 32; // 64 - [scale 0.5]
+				// this.mapLayer.x += 32; // 64 - [scale 0.5]
 				break;
 			case "ability_3":
-				this.mapLayer.y -= 32; // 64 - [scale 0.5]
+				// this.mapLayer.y -= 32; // 64 - [scale 0.5]
 				break;
 			case "ability_4":
-				this.mapLayer.y += 32; // 64 - [scale 0.5]
+				// this.mapLayer.y += 32; // 64 - [scale 0.5]
 				break;
 			case "ability_5":
-				this.navigationState.walkLeft = true;
+				// this.navigationState.walkForward = true;
 	    }
 		console.log("*** x", this.mapLayer1.getTileX(1));
 		console.log("*** y", this.mapLayer1.getTileY(0));

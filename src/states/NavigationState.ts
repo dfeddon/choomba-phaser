@@ -24,7 +24,8 @@ export default class NavigationState extends Phaser.State {
   worldScale: number;
   scaleUp: boolean;
   scaleDown: boolean;
-  walkLeft: boolean = false;
+  walkForward: boolean = false;
+  walkBackward: boolean = false;
 
   // crew: Phaser.Group;
   // defenders: Phaser.Group;
@@ -213,7 +214,7 @@ export default class NavigationState extends Phaser.State {
         this.combatStageView.scale.set(1, 1);
       }
     }
-		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) && this.crewCombatAttack.isMobile) {
+		else if ((this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || this.walkForward) && this.crewCombatAttack.isMobile) {
       console.log("* move forward", this.combatStageView.bg.x);
       // move minimap player
       this.combatUIView.player.vo.dir = CrewView.PLAYER_MOVING_FORWARD;
@@ -230,7 +231,7 @@ export default class NavigationState extends Phaser.State {
       else if (this.crewCombatAttack.currentState !== 0)
         this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_IDLE);
     }
-		else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) && this.crewCombatAttack.isMobile) {
+		else if ((this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || this.walkBackward) && this.crewCombatAttack.isMobile) {
       // console.log(this.combatStageView.bg.x);
       // if (this.crewCombatAttack.position.x > 0) {
       if (this.combatStageView.bg.x < 0) {
