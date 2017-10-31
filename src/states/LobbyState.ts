@@ -1,6 +1,8 @@
 import { IncidentVO } from "../models/IncidentsVO";
 import { NameGenerator } from "fantastical";
 import { EntityVO } from "../models/EntitiesVO";
+import { CrewVO } from "../models/CrewsVO";
+import { CharacterDataVO } from "../models/CharacterDataVO";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
@@ -46,16 +48,42 @@ export default class LobbyState extends Phaser.State {
       var i = e.target as any;
       console.log(i.id);
 
+      // stub: incident participants
+      var paticipants: CrewVO[];
+      var localCrew = new CrewVO();
+      var remoteCrew = new CrewVO();
+      
+      var attackers: CharacterDataVO[] = [
+        new CharacterDataVO("steampunk02", "Cat 1"), 
+        new CharacterDataVO("steampunk01", "Man 1"),
+        new CharacterDataVO("steampunk01", "Steampunk 1"),
+        new CharacterDataVO("robot01", "Robot 1")
+      ];
+      var defenders: CharacterDataVO[] = [
+        new CharacterDataVO("steampunk02", "Cat 1"), 
+        new CharacterDataVO("steampunk01", "Man 1"),
+        new CharacterDataVO("steampunk02", "Steampunk 1"),
+        new CharacterDataVO("robot01", "Robot 1")
+      ];
+
       switch(i.id) {
         case "pulseClicker":
           console.log("add pulse item");
           _this.glob++;
           // create incident vo
           var incident: IncidentVO = new IncidentVO();
-          incident.name = "Turf War " + _this.glob;
-          incident.description = "Sensors alerted near Sinjun Corps red tower just outside Frisco Sprawl. Too-tall Redline Hackers suspected.";
-          incident.type = IncidentVO.INCIDENT_TYPE_SPAWN;
-          incident.entity = new EntityVO();
+          if (_this.glob === 1) {
+            incident.name = "Infiltration " + _this.glob;
+            incident.description = "Hacking into facility...";
+            incident.type = IncidentVO.INCIDENT_TYPE_SPAWN;
+            incident.entity = new EntityVO();
+          }
+          else if (_this.glob === 2) {
+            incident.name = "Turf War " + _this.glob;
+            incident.description = "Sensors alerted near Sinjun Corps red tower just outside Frisco Sprawl. Too-tall Redline Hackers suspected.";
+            incident.type = IncidentVO.INCIDENT_TYPE_DEFEND;
+            incident.entity = new EntityVO();
+          }
           // incident.entity.crew
 
           // incident.structure = 0;
@@ -76,7 +104,14 @@ export default class LobbyState extends Phaser.State {
       _this.game.paused = false;
       // switch to NavigationState
       // _this.game.state.states.NavigationState.doRun();
-      _this.game.state.start("NavigationState", true, false);
+
+      // update models
+      // incident
+      // crew
+      // defending crew (if combat)
+
+      // now, start state (key, clearWorld, clearCache, param)
+      _this.game.state.start("NavigationState", true, false, incident);
     }
   
     // drag and drop

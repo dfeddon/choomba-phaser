@@ -14,8 +14,11 @@ import { TilemapObjectVO } from "../models/TilemapObjectsVO";
 import { BackgroundView } from "../views/BackgroundView";
 import { NavigationController } from "../controllers/NavigationController";
 import { CharacterVO } from "../models/CharactersVO";
+import { IncidentVO } from "../models/IncidentsVO";
 
 export default class NavigationState extends Phaser.State {
+  private _inCombat: boolean;
+  private _incident: IncidentVO;
   combatStageView: CombatStageView;
   combatUIView: CombatUIView;
   crewCombatAttack: CrewView;// Phaser.Group;
@@ -35,10 +38,43 @@ export default class NavigationState extends Phaser.State {
 
   test: CharacterView;
 
-  // constructor() {
-  //   super();
-  //   console.log("constuctor");
-  // }
+  constructor(incident: IncidentVO) {
+    super();
+
+    if (incident)
+      this.incident = incident;
+
+    console.log("== NavigationState constuctor ==");
+  }
+
+	public get inCombat(): boolean {
+		return this._inCombat;
+	}
+
+	public set inCombat(value: boolean) {
+    this._inCombat = value;
+    
+		if (value === true) {
+      this.combatBegin();
+    } else {
+      this.combatEnd();
+    }
+	}
+
+	public get incident(): IncidentVO {
+		return this._incident;
+	}
+
+	public set incident(value: IncidentVO) {
+		this._incident = value;
+  }
+  
+  init(args: IncidentVO) {
+    console.log("== NavigationState.init ==", args);
+    
+    // set incident selected from lobby
+    this.incident = args;
+  }
 
   preload() {
     console.log("== NavigationState.preload ==");
@@ -60,7 +96,8 @@ export default class NavigationState extends Phaser.State {
   create() {
     console.log("== NavigationState.create ==");
 
-    var _this = this;
+    // var _this = this;
+    var thisRef = this;
 
     // console.log("* world", this.game.stage.height); // world.width, this.game.world.height);
 
@@ -148,7 +185,7 @@ export default class NavigationState extends Phaser.State {
       document.getElementById("navigation-controls-container").style.display = "none";
       
       // switch to ResultsState
-      _this.game.state.start("ResultsState", true, false);
+      thisRef.game.state.start("ResultsState", true, false);
     });
 
     // run on create
@@ -279,16 +316,27 @@ export default class NavigationState extends Phaser.State {
   }
 
   doRun() {
-    console.log("== NavigationState.doRun ==");
+    console.log("== NavigationState.doRun ==", this.incident);
     // var _this = this;
 
-    // show navigation ui
+    // show/hide navigation ui
     document.getElementById("navigation-ui-container").style.display = "none";
     document.getElementById("navigation-controls-container").style.display = "none";//"grid";
 
     // // clear game world
     // this.game.world.removeAll();
 
+    // init by incident
+    switch(this.incident.type) {
+      case IncidentVO.INCIDENT_TYPE_SPAWN: 
+      break;
+      
+      case IncidentVO.INCIDENT_TYPE_DEFEND: 
+      break;
+
+      case IncidentVO.INCIDENT_TYPE_BRAWL:
+      break;
+    }
 
     // Stretch to fill
     // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
@@ -306,7 +354,7 @@ export default class NavigationState extends Phaser.State {
       new CharacterDataVO("steampunk02", "Steampunk 1"),
       new CharacterDataVO("robot01", "Robot 1")
     ];
-    this.initCombat(attackers, []);//defenders);
+    this.initIncident(attackers, []);//defenders);
 
     //  var text = "Hello World!";
     //  var style = { font: "65px Arial", fill: "#ff0000", align: "center" };
@@ -314,8 +362,8 @@ export default class NavigationState extends Phaser.State {
 
   }
 
-  initCombat(attackersArray: CharacterDataVO[], defendersArray: CharacterDataVO[]) {
-    console.log("== NavigationState.initCombat() ==");
+  initIncident(attackersArray: CharacterDataVO[], defendersArray: CharacterDataVO[]) {
+    console.log("== NavigationState.initIncident() ==");
     this.crewCombatAttack = new CrewView(this.game, 0, 0, "", 0);
     this.crewCombatAttack.addCrew(attackersArray, true);
     if (defendersArray && defendersArray.length > 0) {
@@ -357,6 +405,33 @@ export default class NavigationState extends Phaser.State {
     // cam.follow(this.crewCombatAttack);//.children[3] as Phaser.Sprite);
     // cam.follow(this.crewCombatAttack as Phaser.Sprite, Phaser.Camera.FOLLOW_LOCKON);
   }
+
+
+	combatBegin() {
+		console.log("== combatBegin ==");
+
+    // show defending crew
+    // this.initIncident();
+
+		// cease all crew movement
+		this.combatStageView.crewAttack.isMobile = false;
+    this.combatStageView.crewDefend.isMobile = false;
+    
+    // show combat UI
+
+    // hide navigation UI
+	}
+
+	combatEnd() {
+		console.log("== combatEnd ==");
+
+		// restore mobility
+    this.combatStageView.crewAttack.isMobile = true;
+    
+    // hide combat UI
+
+    // show navigation UI
+	}
 
   inputEvent(key: string) {
     console.log("* input Event", key);

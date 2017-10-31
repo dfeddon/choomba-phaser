@@ -28,6 +28,7 @@ export default class CombatUIView extends Phaser.Group {
 
 		return this;
 	}
+	
 	addView() {
 		console.log("== CombatUIView.create ==");
 		// draw ability slots

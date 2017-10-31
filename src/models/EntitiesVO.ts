@@ -9,7 +9,7 @@ import { PlayerVO } from "./PlayersVO";
  * @class
  */
 class EntityVO extends AbstractVO {
-  private _player: PlayerVO;
+  private _owner: PlayerVO;
   private _name: string;
   private _level: number;
   private _members: EntityVO[];
@@ -22,6 +22,15 @@ class EntityVO extends AbstractVO {
   private _creds: number;
   private _fame: number;
 
+
+	public get owner(): PlayerVO {
+		return this._owner;
+	}
+
+	public set owner(value: PlayerVO) {
+		this._owner = value;
+	}
+  
   /** name getter
    * @method
    * @public

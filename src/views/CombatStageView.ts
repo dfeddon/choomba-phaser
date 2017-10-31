@@ -102,9 +102,8 @@ export default class CombatStageView extends Phaser.Group {
 		console.log("game", this.game.width, this.game.height);
 		console.log("world", this.game.world.bounds.width, this.game.world.bounds.height);
 		console.log("camera", this.game.camera.bounds.width, this.game.camera.bounds.height);
-
 	}
-
+	
 	update() {
 		super.update();
 		// console.log("*", this.crewAttack.position.x);

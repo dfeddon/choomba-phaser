@@ -1,0 +1,37 @@
+{
+    "getIncidents": [{
+            "name": "Incident Name",
+            "description": "Incident description...",
+            "type": 1,
+            "properties": [],
+            "participants": [{
+                    "entity": {
+                        "owner": {
+                            "characters": []
+                        },
+                        "name": "",
+                        "level": 1,
+                        "members": [],
+                        "alliances": [],
+                        "affiliates": [],
+                        "properties": [],
+                        "artifacts": [],
+                        "biz": 1,
+                        "creds": 1000,
+                        "fame": 1
+                    },
+                    "role": 1
+                },
+                {
+                    "entity": {
+                        "characteres": []
+                    },
+                    "role": 2
+                }
+            ]
+        },
+        {
+
+        }
+    ]
+}
