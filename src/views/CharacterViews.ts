@@ -1,6 +1,7 @@
 import { CharacterVO } from "../models/CharactersVO";
 import { AtlasFrameVO } from "../models/AtlasFramesVO";
 import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
+import NavigationState from "../states/NavigationState";
 
 export default class CharacterView extends Phaser.Sprite {
 
@@ -17,6 +18,7 @@ export default class CharacterView extends Phaser.Sprite {
 
 		super(game, vo.vector.x, vo.vector.y, vo.key, 0); //, 'spriteName', 0);
 		this.vo = vo;
+		vo.view = this; // store reference
 		this.imgScale = 0.50;
 		this.currentState = 0;
 
@@ -36,6 +38,17 @@ export default class CharacterView extends Phaser.Sprite {
 		this.animations.play(AtlasPrefixTypeVO.PREFIX_TYPE_IDLE, 24, true);
 		// game.physics.arcade.enable(this);
 		// game.add.existing(this);
+
+		// click handler
+		this.inputEnabled = true;
+		this.events.onInputDown.add(this.clickHandler, this);
+	}
+
+	clickHandler() {
+		var signal: Phaser.Signal = new Phaser.Signal();
+		var state: NavigationState = this.game.state.getCurrentState() as NavigationState;
+		signal.addOnce(state.characterClickHandler, this, 1, this.vo);
+		signal.dispatch();
 	}
 
 	setState(state: number) {

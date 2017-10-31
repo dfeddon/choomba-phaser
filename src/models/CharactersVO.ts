@@ -6,6 +6,7 @@ import { AtlasFrameVO } from "./AtlasFramesVO";
 import * as jsonData from "../public/assets/atlas.json";
 import { CharacterCombatVO } from "./CharacterCombatVO";
 import { AbstractVO } from "./AbstractVO";
+import CharacterView from "../views/CharacterViews";
 
 class CharacterVO extends AbstractVO {
   // privates
@@ -17,6 +18,7 @@ class CharacterVO extends AbstractVO {
   private _key: string;
   private _vector: VectorVO;
   private _characterCombat: CharacterCombatVO;
+  private _view: CharacterView;
 
   // getters/setters
   /** Character's unqiue id
@@ -97,21 +99,29 @@ class CharacterVO extends AbstractVO {
     this._key = value;
   }
 
-	public get vector(): VectorVO {
-		return this._vector;
-	}
+  public get vector(): VectorVO {
+    return this._vector;
+  }
 
-	public set vector(value: VectorVO) {
-		this._vector = value;
-	}
+  public set vector(value: VectorVO) {
+    this._vector = value;
+  }
 
-	public get characterCombat(): CharacterCombatVO {
-		return this._characterCombat;
-	}
+  public get characterCombat(): CharacterCombatVO {
+    return this._characterCombat;
+  }
 
-	public set characterCombat(value: CharacterCombatVO) {
-		this._characterCombat = value;
-	}
+  public set characterCombat(value: CharacterCombatVO) {
+    this._characterCombat = value;
+  }
+
+  public get view(): CharacterView {
+    return this._view;
+  }
+
+  public set view(value: CharacterView) {
+    this._view = value;
+  }
 
   // constructor
   constructor(key: string, name: string, vector: VectorVO) {
@@ -121,10 +131,13 @@ class CharacterVO extends AbstractVO {
     this.name = name;
     this.vector = vector;
 
+    // combat
+    this._characterCombat = new CharacterCombatVO();
+
     this.atlas = new AtlasVO();
     // define animation keys
     console.log("* data", jsonData);
-    var json:JSON = (<any>jsonData).characters;
+    var json: JSON = (<any>jsonData).characters;
     console.log("* json", json);
     for (var i in json[this.key]) {
       // console.log(i);
@@ -138,7 +151,13 @@ class CharacterVO extends AbstractVO {
       // instantiate prefix
       prefix = new AtlasPrefixTypeVO(null, this.atlas.keys[j], data.prefix);
       // instatiate frame
-      frame = new AtlasFrameVO(prefix, data.start, data.stop, data.suffix, data.zeroPad);
+      frame = new AtlasFrameVO(
+        prefix,
+        data.start,
+        data.stop,
+        data.suffix,
+        data.zeroPad
+      );
       // add to animation frames
       this.atlas.frames.push(frame);
     }

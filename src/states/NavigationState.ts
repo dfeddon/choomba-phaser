@@ -13,6 +13,7 @@ import CrewView from "../views/CrewView";
 import { TilemapObjectVO } from "../models/TilemapObjectsVO";
 import { BackgroundView } from "../views/BackgroundView";
 import { NavigationController } from "../controllers/NavigationController";
+import { CharacterVO } from "../models/CharactersVO";
 
 export default class NavigationState extends Phaser.State {
   combatStageView: CombatStageView;
@@ -360,6 +361,10 @@ export default class NavigationState extends Phaser.State {
   inputEvent(key: string) {
     console.log("* input Event", key);
     console.log("* character", "fired key", key);
+  }
+
+  characterClickHandler(vo: CharacterVO) {
+    console.log("* got character click signal", vo.name, vo.view.x, vo.view.y, vo.characterCombat);
   }
 }
 // export { NavigationState };

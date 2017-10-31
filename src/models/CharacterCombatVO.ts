@@ -9,11 +9,11 @@ class CharacterCombatVO extends AbstractVO {
   private _target: CharacterCombatTargetVO[];
   private _conditions: CharacterCombatConditionVO[];
 
-  constructor(isSource: boolean, abilityType:number, target?:number[]) {
+  constructor(isSource?: boolean, abilityType?:number, target?:number[]) {
     super();
     // Object.assign(this, data);
-	this._isSource = isSource;
-	this._abilityType = abilityType;
+    this._isSource = isSource;
+    this._abilityType = abilityType;
   }
 }
 

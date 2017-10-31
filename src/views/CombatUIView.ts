@@ -44,7 +44,7 @@ export default class CombatUIView extends Phaser.Group {
 
 		console.log("* pixel ratio", devicePixelRatio, devicePixelRatio % 1);
 
-		var topLine: number = 15;
+		var topLine: number = 0;
 		
 		// profile
 		var profileUI = this.game.make.group();
@@ -98,7 +98,7 @@ export default class CombatUIView extends Phaser.Group {
 		abilityUI.x = 150;
 
 		// adjust for centering
-		profileUI.x = 15;
+		profileUI.x = 3;//15;
 		profileUI.y = topLine;
 		// v center text
 		characterName.y = (profileUI.height / 2) - (characterClass.height / 2) - (characterName.height / 2);
