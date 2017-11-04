@@ -7,6 +7,7 @@ import * as jsonData from "../public/assets/atlas.json";
 import { CharacterCombatVO } from "./CharacterCombatVO";
 import { AbstractVO } from "./AbstractVO";
 import CharacterView from "../views/CharacterViews";
+import * as NameGenerator from "fantastical";
 
 class CharacterVO extends AbstractVO {
   // privates
@@ -18,6 +19,7 @@ class CharacterVO extends AbstractVO {
   private _key: string;
   private _vector: VectorVO;
   private _characterCombat: CharacterCombatVO;
+  private _owner: number;
   private _view: CharacterView;
 
   // getters/setters
@@ -124,11 +126,14 @@ class CharacterVO extends AbstractVO {
   }
 
   // constructor
-  constructor(key: string, name: string, vector: VectorVO) {
+  constructor(key: string, name?: string, vector?: VectorVO) {
     super();
     console.log("* CharacterVO constructor");
     this.key = key;
-    this.name = name;
+    if (name)
+      this.name = name;
+    else this.name = NameGenerator.species.human(false);
+    console.log("* character name:", this.name);
     this.vector = vector;
 
     // combat

@@ -32,7 +32,7 @@ export default class CrewView extends Phaser.Sprite {
 		console.log("== CrewView.created() ==");
 	}
 
-	addCrew(crewArray: CharacterDataVO[], isLeft: boolean) {
+	addCrewMembers(crewArray: CharacterDataVO[], isLeft: boolean) {
 		console.log("== CrewView.addCrew ==", crewArray, isLeft);
 		var vectorX: number = 0;//15;
 		if (!isLeft) {

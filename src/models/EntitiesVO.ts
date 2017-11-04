@@ -2,8 +2,9 @@ import { AbstractVO } from "./AbstractVO";
 import { CrewVO } from "./CrewsVO";
 import { StructureVO } from "./StructuresVO";
 import { ArtifactVO } from "./ArtifactsVO";
-import { AllianceVO } from "./AlliancesVO";
 import { PlayerVO } from "./PlayersVO";
+import { CharacterVO } from "./CharactersVO";
+import { AllianceVO } from "./AlliancesVO";
 
 /** Entity class defines the base construct of the player's entity/self.
  * @class
@@ -12,9 +13,10 @@ class EntityVO extends AbstractVO {
   private _owner: PlayerVO;
   private _name: string;
   private _level: number;
-  private _members: EntityVO[];
-  private _alliances: AllianceVO[];
-  private _affiliates: EntityVO[];
+  // private _members: EntityVO[];
+  // private _alliances: AllianceVO[];
+  private _affiliates: AllianceVO[];
+  private _freelancers: CharacterVO[];
   private _properties: StructureVO[];
   private _artifacts: ArtifactVO[];
   private _crew: CrewVO;

@@ -7,10 +7,13 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = [{
     devtool: "#inline-source-map",
-    entry: "./src/App.ts",
+    entry: {
+        client: "./src/App.ts",
+        server: "./src/Server.ts"
+    },
     // context: path.resolve(__dirname, './src/'),
     output: {
-        filename: "bundle.client.js",
+        filename: "bundle.[name].js",
         path: path.resolve(__dirname, "dist/public")
     },
     resolve: {

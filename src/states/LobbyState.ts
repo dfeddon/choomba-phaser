@@ -3,6 +3,7 @@ import { NameGenerator } from "fantastical";
 import { EntityVO } from "../models/EntitiesVO";
 import { CrewVO } from "../models/CrewsVO";
 import { CharacterDataVO } from "../models/CharacterDataVO";
+import * as data from "../helpers/stubJson.json";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
@@ -49,22 +50,23 @@ export default class LobbyState extends Phaser.State {
       console.log(i.id);
 
       // stub: incident participants
-      var paticipants: CrewVO[];
-      var localCrew = new CrewVO();
-      var remoteCrew = new CrewVO();
+      console.log("* vo data", data);
+      // var paticipants: CrewVO[];
+      // var localCrew = new CrewVO();
+      // var remoteCrew = new CrewVO();
       
-      var attackers: CharacterDataVO[] = [
-        new CharacterDataVO("steampunk02", "Cat 1"), 
-        new CharacterDataVO("steampunk01", "Man 1"),
-        new CharacterDataVO("steampunk01", "Steampunk 1"),
-        new CharacterDataVO("robot01", "Robot 1")
-      ];
-      var defenders: CharacterDataVO[] = [
-        new CharacterDataVO("steampunk02", "Cat 1"), 
-        new CharacterDataVO("steampunk01", "Man 1"),
-        new CharacterDataVO("steampunk02", "Steampunk 1"),
-        new CharacterDataVO("robot01", "Robot 1")
-      ];
+      // var attackers: CharacterDataVO[] = [
+      //   new CharacterDataVO("steampunk02", "Cat 1"), 
+      //   new CharacterDataVO("steampunk01", "Man 1"),
+      //   new CharacterDataVO("steampunk01", "Steampunk 1"),
+      //   new CharacterDataVO("`robot01`", "Robot 1")
+      // ];
+      // var defenders: CharacterDataVO[] = [
+      //   new CharacterDataVO("steampunk02", "Cat 1"), 
+      //   new CharacterDataVO("steampunk01", "Man 1"),
+      //   new CharacterDataVO("steampunk02", "Steampunk 1"),
+      //   new CharacterDataVO("robot01", "Robot 1")
+      // ];
 
       switch(i.id) {
         case "pulseClicker":

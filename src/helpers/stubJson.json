@@ -1,17 +1,64 @@
 {
-    "getIncidents": [{
+    "incident1": [{
             "name": "Incident Name",
             "description": "Incident description...",
             "type": 1,
-            "properties": [],
+            "property": {},
             "participants": [{
                     "entity": {
-                        "owner": {
-                            "characters": []
-                        },
+                        "owner": {},
                         "name": "",
                         "level": 1,
                         "members": [],
+                        "characters": [{
+                                "name": "",
+                                "role": 1,
+                                "key": "steampunk02",
+                                "attributes": {
+                                    "strength": 1,
+                                    "agility": 2,
+                                    "alacrity": 3,
+                                    "conentration": 4,
+                                    "hacking": 5
+                                }
+                            },
+                            {
+                                "name": "",
+                                "role": 2,
+                                "key": "steampunk01",
+                                "attributes": {
+                                    "strength": 1,
+                                    "agility": 2,
+                                    "alacrity": 3,
+                                    "conentration": 4,
+                                    "hacking": 5
+                                }
+                            },
+                            {
+                                "name": "",
+                                "role": 3,
+                                "key": "steampunk01",
+                                "attributes": {
+                                    "strength": 1,
+                                    "agility": 2,
+                                    "alacrity": 3,
+                                    "conentration": 4,
+                                    "hacking": 5
+                                }
+                            },
+                            {
+                                "name": "",
+                                "role": 4,
+                                "key": "robot01",
+                                "attributes": {
+                                    "strength": 1,
+                                    "agility": 2,
+                                    "alacrity": 3,
+                                    "conentration": 4,
+                                    "hacking": 5
+                                }
+                            }
+                        ],
                         "alliances": [],
                         "affiliates": [],
                         "properties": [],
@@ -24,7 +71,7 @@
                 },
                 {
                     "entity": {
-                        "characteres": []
+                        "characters": []
                     },
                     "role": 2
                 }

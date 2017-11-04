@@ -5,6 +5,9 @@ import SplashState from "./states/SplashState";
 import NavigationState from "./states/NavigationState";
 import LobbyState from "./states/LobbyState";
 import ResultsState from "./states/ResultsState";
+import { AWSService } from './services/AWSService';
+import * as NameGenerator from "fantastical";
+import { AjaxHelper } from './helpers/AjaxHelper';
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
@@ -16,6 +19,27 @@ export default class App extends Phaser.Game {
 
   constructor() {
     console.log("* Choomba");
+    console.log("* default entity name:", NameGenerator.parties.guild());
+
+    // start AWS server (Singleton)
+    let AWS = AWSService.getInstance();
+    AWS.start();
+
+    var apiGateway: string = "https://9l3uls9g3k.execute-api.us-east-1.amazonaws.com";
+    var url: string = apiGateway + "/dev/hello";
+    // url = "https://9l3uls9g3k.execute-api.us-east-1.amazonaws.com/dev/iot/keys";
+
+    var ajax = new AjaxHelper().ajax(
+      url,
+      AjaxHelper.HTTP_METHOD_GET,
+      function(err: any, result: any) {
+        if (err) {
+          return console.log("error:", err);
+        }
+        console.log("* got ajax", result);
+      }
+    );
+    // var aws = 
     // let gen: any = NameGenerator.generator('diablo', 'demons', 10, 0);
     // console.log(gen);//('diablo', 'demons', 10, 0));
     // this.game = new Phaser.Game(

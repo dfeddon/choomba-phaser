@@ -2,14 +2,15 @@ import { EntityVO } from './EntitiesVO';
 import { CharacterVO } from "./CharactersVO";
 import { StructureVO } from "./StructuresVO";
 import { AbstractVO } from "./AbstractVO";
+import { AllianceVO } from './AlliancesVO';
 
 /** Entity class.
  * @class
  */
 class PlayerVO extends AbstractVO {
-
   private _name: string;
   private _membership: number;
+  private _alliances: AllianceVO[];
   // private _receipts: ReceiptsVO[];
 
   public get name(): string {

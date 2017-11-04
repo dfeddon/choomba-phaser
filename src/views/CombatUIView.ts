@@ -4,6 +4,7 @@ import MinimapPlayerView from "./MinimapPlayerViews";
 import { VectorVO } from "../models/VectorsVO";
 import { MinimapPlayerVO } from "../models/MinimapPlayersVO";
 import CharacterView from "./CharacterViews";
+import * as NameGenerator from "fantastical";
 
 export default class CombatUIView extends Phaser.Group {
 	
@@ -54,8 +55,9 @@ export default class CombatUIView extends Phaser.Group {
 		var characterProfile:Phaser.Sprite = this.game.add.sprite(0, 0, "profile_1");
 		// name & class
 		var textColor: string = "#ccc";
-		var characterName: Phaser.Text = this.game.add.text(75, 0, "Amir Cipher", { font: "17px Poiret One", fill: textColor });
-		var characterClass: Phaser.Text = this.game.add.text(75, characterName.y + 25, "Rank 3 Hacker", { font: "17px Indie Flower", fill: "#6c6c6c" });
+		var temp: string = NameGenerator.species.human(false);
+		var characterName: Phaser.Text = this.game.add.text(75, 0, temp, { font: "17px Anton", fill: textColor });
+		var characterClass: Phaser.Text = this.game.add.text(75, characterName.y + 25, "Rank 3 Hacker", { font: "17px Yanone Kaffeesatz", fill: "#6c6c6c" });
 		profileUI.add(characterProfile);
 		profileUI.add(characterName);
 		profileUI.add(characterClass);
@@ -339,7 +341,7 @@ export default class CombatUIView extends Phaser.Group {
 		var lineWidth: number = 2;
 		var border = this.game.make.graphics(0, 0);
 		border.lineStyle(lineWidth, 0x6c6c6c, 1);
-		border.drawRect(this.mapUI.x, this.mapUI.y, window.innerWidth / 2 - lineWidth, this.game.height - this.getBounds(this.parent).y - lineWidth);//this.mapUI.height - 120);
+		border.drawRect(this.mapUI.x, this.mapUI.y, window.innerWidth / 2 - 1, this.game.height - this.getBounds(this.parent).y - lineWidth);//this.mapUI.height - 120);
 		this.add(border);
 		this.border = border;
 

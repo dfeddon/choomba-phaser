@@ -15,6 +15,7 @@ import { BackgroundView } from "../views/BackgroundView";
 import { NavigationController } from "../controllers/NavigationController";
 import { CharacterVO } from "../models/CharactersVO";
 import { IncidentVO } from "../models/IncidentsVO";
+import { CrewVO } from "../models/CrewsVO";
 
 export default class NavigationState extends Phaser.State {
   private _inCombat: boolean;
@@ -343,17 +344,20 @@ export default class NavigationState extends Phaser.State {
 
     // start combat
     var attackers: CharacterDataVO[] = [
-      new CharacterDataVO("steampunk02", "Cat 1"), 
-      new CharacterDataVO("steampunk01", "Man 1"),
-      new CharacterDataVO("steampunk01", "Steampunk 1"),
-      new CharacterDataVO("robot01", "Robot 1")
+      new CharacterDataVO("steampunk02"),// "Cat 1"), 
+      new CharacterDataVO("steampunk01"),//, "Man 1"),
+      new CharacterDataVO("steampunk01"),//, "Steampunk 1"),
+      new CharacterDataVO("robot01")//, "Robot 1")
     ];
     var defenders: CharacterDataVO[] = [
-      new CharacterDataVO("steampunk02", "Cat 1"), 
-      new CharacterDataVO("steampunk01", "Man 1"),
-      new CharacterDataVO("steampunk02", "Steampunk 1"),
-      new CharacterDataVO("robot01", "Robot 1")
+      new CharacterDataVO("steampunk02"),//, "Cat 1"), 
+      new CharacterDataVO("steampunk01"),//, "Man 1"),
+      new CharacterDataVO("steampunk02"),//, "Steampunk 1"),
+      new CharacterDataVO("robot01")//, "Robot 1")
     ];
+    // var attackers: CrewVO = new CrewVO();
+    // attackers.characters = [
+    // ]
     this.initIncident(attackers, []);//defenders);
 
     //  var text = "Hello World!";
@@ -365,11 +369,11 @@ export default class NavigationState extends Phaser.State {
   initIncident(attackersArray: CharacterDataVO[], defendersArray: CharacterDataVO[]) {
     console.log("== NavigationState.initIncident() ==");
     this.crewCombatAttack = new CrewView(this.game, 0, 0, "", 0);
-    this.crewCombatAttack.addCrew(attackersArray, true);
+    this.crewCombatAttack.addCrewMembers(attackersArray, true);
     if (defendersArray && defendersArray.length > 0) {
       console.log("* adding defenders crew");
       this.crewCombatDefend = new CrewView(this.game, 0, 0, "", 0);
-      this.crewCombatDefend.addCrew(defendersArray, false);
+      this.crewCombatDefend.addCrewMembers(defendersArray, false);
     }
     // create attackers group
     // this.crewCombatAttack = this.game.add.group();

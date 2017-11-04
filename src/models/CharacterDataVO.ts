@@ -20,11 +20,12 @@ class CharacterDataVO extends AbstractVO {
 		this._name = value;
 	}
 
-  constructor(key: string, name: string) {
+  constructor(key: string, name?: string) {
 		super();
 	// Object.assign(this, data);
 	this._key = key;
-	this._name = name;
+	if (name)
+		this._name = name;
   }
 }
 
