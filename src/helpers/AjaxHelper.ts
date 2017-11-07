@@ -9,26 +9,29 @@ class AjaxHelper {
 
 	constructor() {
 	}
+
 	ajax(url: string, methodType: string, callback: any) {
-	var xhr = new XMLHttpRequest();
-	xhr.open(methodType, url, true);
-	xhr.send();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState === 4) {
-		if (xhr.status === 200) {
-			console.log("xhr done successfully");
-			var resp = xhr.responseText;
-			var respJson = JSON.parse(resp);
-			return callback(null, respJson);
-		} else {
-			console.log("xhr failed");
-			return callback(respJson, null);
-		}
-		} else {
-		console.log("xhr processing going on");
-		}
-	};
-	console.log("request sent succesfully");
+		var xhr = new XMLHttpRequest();
+		xhr.open(methodType, url, true);
+		// xhr.withCredentials = true;
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4) {
+			if (xhr.status === 200) {
+				console.log("xhr done successfully");
+				var resp = xhr.responseText;
+				var respJson = JSON.parse(resp);
+				return callback(null, respJson);
+			} else {
+				console.log("xhr failed", respJson);
+				return callback(respJson, null);
+			}
+			} else {
+			console.log("xhr processing going on");
+			}
+		};
+		console.log("request sent succesfully");
 	}
 }
 

@@ -21,6 +21,10 @@ module.exports = [{
         extensions: [".ts", ".tsx", ".js", ".ejs", ".json"], // note if using webpack 1 you'd also need a '' in the array as well
         modules: ["node_modules"]
     },
+    node: {
+        fs: "empty",
+        tls: "empty"
+    },
     watch: true,
     // node: { /* This hack resolves fs issue in fantasy-names modules */
     //     fs: "empty"
