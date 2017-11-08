@@ -8,7 +8,8 @@ import ResultsState from "./states/ResultsState";
 import { AWSService } from './services/AWSService';
 import * as NameGenerator from "fantastical";
 import { AjaxHelper } from './helpers/AjaxHelper';
-import { AWSIoTService } from './services/AWSIoTService';
+import { SocketClusterService } from './services/SocketClusterService';
+// import { AWSIoTService } from './services/AWSIoTService';
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
@@ -26,22 +27,23 @@ export default class App extends Phaser.Game {
     let AWS = AWSService.getInstance();
     AWS.start();
 
-    var apiGateway: string = "https://9l3uls9g3k.execute-api.us-east-1.amazonaws.com";
-    var url: string = apiGateway + "/dev/iot/keys";
+    SocketClusterService.getInstance().init();
+
+    // var apiGateway: string = "https://9l3uls9g3k.execute-api.us-east-1.amazonaws.com";
+    // var url: string = apiGateway + "/dev/iot/keys";
     // url = "https://9l3uls9g3k.execute-api.us-east-1.amazonaws.com/dev/iot/keys";
 
-    var ajax = new AjaxHelper().ajax(url,AjaxHelper.HTTP_METHOD_GET,
-      function(err: any, res: any) {
-        if (err) {
-          return console.log("error:", err);
-        }
-        console.log("* got ajax", res);
-        // connect to iot
-        IoT.connect("derek", res.iotEndpoint, res.region, res.awsAccessKey, res.awsSecretAccessKey, res.sessionToken);
-      }
-    );
-    var IoT = AWSIoTService.getInstance();
-    console.log("* iot", IoT);
+    // var ajax = new AjaxHelper().ajax(url,AjaxHelper.HTTP_METHOD_GET,
+    //   function(err: any, res: any) {
+    //     if (err) {
+    //       return console.log("error:", err);
+    //     }
+    //     console.log("* got ajax", res);
+    //     // connect to iot
+    //     // IoT.connect("derek", res.iotEndpoint, res.region, res.awsAccessKey, res.awsSecretAccessKey, res.sessionToken);
+    //   }
+    // );
+    // socketcluster
     // var aws = 
     // let gen: any = NameGenerator.generator('diablo', 'demons', 10, 0);
     // console.log(gen);//('diablo', 'demons', 10, 0));

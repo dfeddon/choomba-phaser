@@ -1,6 +1,7 @@
-import * as AWS from "aws-sdk";
+import AWS = require('aws-sdk');
+// import * as AWS from "aws-sdk";
 // import * as S3 from "aws-sdk/clients/s3";
-// import * as DB from "aws-sdk/clients/DynamoDB";
+// import * as AWS from "aws-sdk/clients/DynamoDB";
 
 class AWSService {
 	private static instance: AWSService;

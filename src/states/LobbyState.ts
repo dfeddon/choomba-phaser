@@ -4,12 +4,14 @@ import { EntityVO } from "../models/EntitiesVO";
 import { CrewVO } from "../models/CrewsVO";
 import { CharacterDataVO } from "../models/CharacterDataVO";
 import * as data from "../helpers/stubJson.json";
+import { SocketClusterService } from "../services/SocketClusterService";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
   charDragTarget: any;
   glob: number = 0;
   doc: any = document;
+  // public sc: SocketClusterService;
 
   preload() {
     console.log("== LobbyState.preload ==");
@@ -20,6 +22,8 @@ export default class LobbyState extends Phaser.State {
     // this.game.state.start("NavigationState", true, false);
     this.doRun();
     console.log("***", NameGenerator);
+    // this.sc = SocketClusterService.getInstance();
+    // console.log("cluster", this.sc);
   }
 
   shutdown() {
@@ -98,6 +102,10 @@ export default class LobbyState extends Phaser.State {
       console.log("pulseItemHandler", e.getAttribute('data-uid'));
       var incident = JSON.parse(e.getAttribute('data-uid'));
       console.log("* incident", incident, incident._uid);
+      // console.log("* sc", this.sc);
+      var sc = SocketClusterService.getInstance();
+      sc.socket.emit("createIncident", {f: sc.socketData.id, t:"incident", i: "inc-23432"});
+
       // hide lobby UI
       document.getElementById("lobbyState").style.display = "none";
       // show game canvas

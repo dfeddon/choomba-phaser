@@ -1,3 +1,4 @@
+/*
 import * as AWS from "aws-sdk";
 // import * as S3 from "aws-sdk/clients/s3";
 // import * as DB from "aws-sdk/clients/DynamoDB";
@@ -94,3 +95,4 @@ class AWSIoTService {
 }
 
 export { AWSIoTService };
+*/

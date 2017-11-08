@@ -84,10 +84,10 @@ module.exports = [{
         // new CopyWebpackPlugin([
         //     { from: "src/public/**/*", to: "/dist/public" }
         // ]),
-        new BrowserSyncPlugin({
-            host: "localhost",
-            port: 3001,
-            server: { baseDir: ["dist/public"] }
-        })
+        // new BrowserSyncPlugin({
+        //     host: "localhost",
+        //     port: 3001,
+        //     server: { baseDir: ["dist/public"] }
+        // })
     ]
 }];
