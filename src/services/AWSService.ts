@@ -19,7 +19,7 @@ class AWSService {
 	}
 
 	start() {
-		console.log("* ", AWS);
+		// console.log("* ", AWS);
 		// amazon sdk globals
 		AWS.config.region = "us-east-1";
 		AWS.config.apiVersions = {

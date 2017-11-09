@@ -16,6 +16,7 @@ class IncidentVO extends AbstractVO {
   private _type: number;
   private _structure: StructureVO;
   private _entity: EntityVO;
+  public owner: string;
 
   public get name(): string {
     return this._name;

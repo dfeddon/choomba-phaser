@@ -23,12 +23,6 @@ export default class App extends Phaser.Game {
     console.log("* Choomba");
     console.log("* default entity name:", NameGenerator.parties.guild());
 
-    // start AWS server (Singleton)
-    let AWS = AWSService.getInstance();
-    AWS.start();
-
-    SocketClusterService.getInstance().init();
-
     // var apiGateway: string = "https://9l3uls9g3k.execute-api.us-east-1.amazonaws.com";
     // var url: string = apiGateway + "/dev/iot/keys";
     // url = "https://9l3uls9g3k.execute-api.us-east-1.amazonaws.com/dev/iot/keys";
@@ -60,6 +54,12 @@ export default class App extends Phaser.Game {
       //   render: this.render
       // }
     );
+
+    // start AWS server (Singleton)
+    let AWS = AWSService.getInstance();
+    AWS.start();
+
+    SocketClusterService.getInstance().init(this);
 
     // load states
     this.state.add("BootState", BootState, false);
