@@ -101,6 +101,7 @@ class SocketClusterService {
 				incident.name = "Infiltration";// + _this.glob;
 				incident.description = "Hacking into facility...";
 				incident.type = IncidentVO.INCIDENT_TYPE_SPAWN;
+				incident.owner = data.o;
 				// incident.entity = new EntityVO();
 				(_this.game.state.getCurrentState() as LobbyState).addIncident(incident);
 			}

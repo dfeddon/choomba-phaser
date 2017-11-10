@@ -188,7 +188,7 @@ export default class LobbyState extends Phaser.State {
 
 	addIncident(vo: IncidentVO) {
     console.log("* adding pulse item", vo);
-    vo.owner = this.player;
+    // vo.owner = this.player;
     // don't add incidents created by *me*
     console.log(vo.owner, this.player);
     if (vo.owner === this.player) {
