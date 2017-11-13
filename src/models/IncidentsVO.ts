@@ -17,6 +17,7 @@ class IncidentVO extends AbstractVO {
   private _structure: StructureVO;
   private _entity: EntityVO;
   public owner: string;
+  public channel: string;
 
   public get name(): string {
     return this._name;

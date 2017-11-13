@@ -13,6 +13,7 @@ export default class LobbyState extends Phaser.State {
   doc: any = document;
   // public sc: SocketClusterService;
   sc: SocketClusterService = SocketClusterService.getInstance();
+  currentChannel: any;
   // player id stub
   player: string;
 
@@ -57,9 +58,11 @@ export default class LobbyState extends Phaser.State {
     document.getElementById("lobbyState").style.display = "grid";
 
     // listen for pulse click event (stub)
-    this.doc.onclick = function(e: MouseEvent) {
+    this.doc.getElementById('pulseClicker').onclick = function(e: MouseEvent) {
       console.log("* onclick", e.target);
       console.log("* player", _this.player);
+
+      // TODO: send custom incident socket vo
       _this.sc.createChannel("1122334455", _this.player);
       // return;
       // var i = e.target as any;
@@ -117,7 +120,16 @@ export default class LobbyState extends Phaser.State {
       // console.log("* sc", this.sc);
       // var sc = SocketClusterService.getInstance();
       // sc.socket.emit("createIncident", {f: sc.socketData.id, t:"incident", i: "inc-23432"});
-      _this.sc.createChannel(incident._uid.toString(), _this.player);
+      // _this.sc.createChannel(incident._uid.toString(), _this.player);
+      
+      // subscribe to incident channel
+      // _this.currentChannel = _this.sc.socket.subscribe(incident.channel);
+      _this.sc.joinChannel(incident.channel);
+      // send join
+      // console.log('++ channel state', _this.currentChannel.getState());
+      // _this.currentChannel.publish("mydata", function(err: any) {
+      //   if (err) console.log("err", err);
+      // });
 
       // hide lobby UI
       document.getElementById("lobbyState").style.display = "none";
@@ -188,12 +200,13 @@ export default class LobbyState extends Phaser.State {
 
 	addIncident(vo: IncidentVO) {
     console.log("* adding pulse item", vo);
-    // vo.owner = this.player;
+    
     // don't add incidents created by *me*
     console.log(vo.owner, this.player);
     if (vo.owner === this.player) {
       return console.log("++ incident creator is ME!");
     }
+    
     // clone wrapper
     var wrapper: any = document.getElementById("items-pulse-wrapper").cloneNode(true);
     var pulse = document.getElementById("pulse-grid");
