@@ -45,7 +45,7 @@ export default class NavigationState extends Phaser.State {
     if (incident)
       this.incident = incident;
 
-    console.log("== NavigationState constuctor ==");
+    console.log("== NavigationState constuctor ==", incident);
   }
 
 	public get inCombat(): boolean {

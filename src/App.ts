@@ -59,7 +59,11 @@ export default class App extends Phaser.Game {
     let AWS = AWSService.getInstance();
     AWS.start();
 
+    // start socketCluster
     SocketClusterService.getInstance().init(this);
+
+    // stub user
+    console.log("* net", new Phaser.Net(this).getQueryString("player"));
 
     // load states
     this.state.add("BootState", BootState, false);

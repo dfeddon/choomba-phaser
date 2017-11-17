@@ -20,6 +20,7 @@
         "@types/lodash": "^4.14.85",
         "aws-iot-device-sdk": "^2.1.0",
         "aws-sdk": "^2.149.0",
+        "dynamoose": "^0.8.6",
         "express": "^4.16.2",
         "fantastical": "^1.0.2",
         "lodash": "^4.17.4",

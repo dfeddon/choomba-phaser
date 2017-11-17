@@ -1,7 +1,9 @@
-import AWS = require("aws-sdk");
+// import AWS = require("aws-sdk");
 import LobbyState from "../states/LobbyState";
 import { IncidentVO } from "../models/IncidentsVO";
+import * as stub from "../helpers/stubJson.json";
 import * as _ from "lodash";
+
 // import * as AWS from "aws-sdk";
 // import * as S3 from "aws-sdk/clients/s3";
 // import * as AWS from "aws-sdk/clients/DynamoDB";
@@ -10,12 +12,16 @@ import * as _ from "lodash";
 class SocketClusterService {
 	public static readonly CHANNEL_TYPE_INCIDENT: number = 1;
 
+	public static readonly INCIDENT_TYPE_CREATED: number = 2;
+	public static readonly INCIDENT_TYPE_JOINED: number = 3;
+	public static readonly INCIDENT_TYPE_COMBAT_BEGIN: number = 4;
+
   private static instance: SocketClusterService;
   public socket: any = null;
 	// public socketData: object = {};
 	// global incidents
 	public globalIncidentsChannelName: string = "incidentsA";		
-	public incidentChannel: any = null;
+	public localIncidentChannel: any = null;
 	public currentIncidentChannel: string;
 	public game: Phaser.Game;
 	public subs: string[] = [];
@@ -89,8 +95,8 @@ class SocketClusterService {
 			_.pull(_this.subs, e);
 
 			// if exists, unsub from incident channel
-			console.log("%c++ chan", "color:yellow", _this.incidentChannel);
-			if (_this.incidentChannel) {
+			console.log("%c++ chan", "color:yellow", _this.localIncidentChannel);
+			if (_this.localIncidentChannel) {
 				console.log("%c++ destroying current incident channel", "color:yellow");
 				_this.socket.unwatch(_this.globalIncidentsChannelName);
 				_this.socket.destroyChannel(_this.globalIncidentsChannelName);
@@ -101,16 +107,21 @@ class SocketClusterService {
 			console.log("%c++ Global incidentsA channel message:", "color:yellow", data, _this.socket.id);
 			// if in lobby, add incident to punk net
 			if (_this.game.state.getCurrentState().key === "LobbyState") {
-				var incident: IncidentVO = new IncidentVO();
+				console.log("****", stub);
+				var i = (stub as any).incidents[0];
+				var incident: IncidentVO = new IncidentVO(i);
+				console.log("* i", incident);
+				// var incident: IncidentVO = new IncidentVO();
 				incident.name = "Infiltration";// + _this.glob;
 				incident.description = "Hacking into facility...";
 				incident.type = IncidentVO.INCIDENT_TYPE_SPAWN;
 				incident.owner = data.o;
 				incident.channel = data.i;
 				// incident.entity = new EntityVO();
+				// push to punk net
 				(_this.game.state.getCurrentState() as LobbyState).addIncident(incident);
 			}
-    });
+    	});
 	}
 
 	stopGlobalChannels() {
@@ -124,77 +135,100 @@ class SocketClusterService {
 		// don't re-create an extant channel
 		if (this.channelSubbed(id)) return;
 
+		// store incident vo in db?
+		// send incident vo id on createIncident socket call
 		// create incident on server
-		this.socket.emit("createIncident", { f: this.socket.id, t:2, i: id, o: owner });
+		this.socket.emit("createIncident", { f: this.socket.id, t:SocketClusterService.INCIDENT_TYPE_CREATED, i: id, o: owner });
 		// subscribe to new incident channel
-		this.incidentChannel = this.socket.subscribe(id);
+		this.localIncidentChannel = this.socket.subscribe(id);
 		// sub fail
-		this.incidentChannel.on("subscribeFail", function(err: any) {
+		this.localIncidentChannel.on("subscribeFail", function(err: any) {
 			console.log("%c++ Failed to subscribe to the sample channel due to error: " + err, "color:yellow");
 		});
-		this.incidentChannel.on("subscribe", function(data: any) {
+		this.localIncidentChannel.on("subscribe", function(data: any) {
 			console.log("%c++ Subscribed to channel: " + data, "color:yellow");
 			// add channel to subs
 			_this.subs.push(data);
 			// we are the owner of this channel
 			_this.owning.push(data);
 		});
-		// watcher
-		this.incidentChannel.watch(function(data: any) {
+		// watcher (owner)
+		this.localIncidentChannel.watch(function(data: any) {
 			console.log("%c++ incident message (owner):", "color:yellow", data, _this.socket.id);
-			switch(data.type) {
-				case 3: // joined
-					console.log("%c++ opponent has joined your channel", "color:yellow");
+			_this.incidentChannelHandler(data, true);
+		});
+	}
+	joinChannel(id: string) {
+		console.log("== SocketClusterService.joinChannel ==", id);
+		var _this = this;
+		// subscribe to custom incident channel
+		this.localIncidentChannel = this.socket.subscribe(id);
+		// sub fail
+		this.localIncidentChannel.on("subscribeFail", function(err: any) {
+			console.log("%c++ Failed to subscribe to the sample channel due to error: " + err, "color:yellow");
+		});
+		// sub success
+		this.localIncidentChannel.on("subscribe", function(data: string) {
+			console.log("%c++ Successfully joined channel: " + data, "color:yellow");
+			_this.subs.push(data);
+			// remove/disable channel from globals
+			if (_this.channelSubbed(_this.globalIncidentsChannelName)) {
+				// this.globalIncidentsChannelName.
+				console.log("*** JOINED, SO DISABLE THIS CHANNEL");
+			}
+			// dispatch "joined" event
+			_this.localIncidentChannel.publish({ c: data, type: SocketClusterService.INCIDENT_TYPE_JOINED, sid: _this.socket.id, id: "11223344" }, function(err: any) {
+				if (err)
+					console.log("* publish err", err);
+			});
+		});
+		// watcher (non-owner)
+		this.localIncidentChannel.watch(function(data: any) {
+			console.log("%c++ incident message (not owner):", "color:yellow", data, _this.socket.id);
+			_this.incidentChannelHandler(data, false);
+		});
+	}
+	incidentChannelHandler(data: any, isOwner: boolean) {
+		console.log("== incidentChannelHandler ==", data, isOwner);
+		console.log("* state", this.game.state.getCurrentState().key);
+		switch(data.type) {
+			case SocketClusterService.INCIDENT_TYPE_JOINED: // joined incident
+				if (isOwner) {
+					console.log("%c++ opponent has *joined* your channel", "color:yellow");
 					// opponent has joined
+                 	// lock global channel (by id?) if user is *not* owner (limit of 2?)...
 					// get id and query db
 					// send *all* chars with alacrity for ordering to socket
 					// var d = {p:null as any,c:null as any};
 					var chars: object[] = [{p4:1, p3:3, p2:1, p1:4},{p4:2, p3:3, p2:2, p1:3}]
 					// d.p = chars;
 					// d.c = data.c;
-					_this.socket.emit("combatBegin", {c:data.c, p:chars}, function(err: any, resp: any) {
+					this.socket.emit("combatBegin", {c:data.c, p:chars}, function(err: any, resp: any) {
 						if (err)
 							console.log("err", err);
-						else {
+						else
 							console.log("resp", resp);
-						}
 					});
-				break;
-			}
-		});
-		// this['ic_' + id] = this.socket.subscribe(id);
-		// watcher
-		// this['ic_' + id].watch(function(data: any) {
-		// 	console.log("++ ic message:", data, _this.socketData.id);
-		// });
-	}
-	joinChannel(id: string) {
-		console.log("== SocketClusterService.joinChannel ==", id);
-		var _this = this;
-		// subscribe to custom incident channel
-		this.incidentChannel = this.socket.subscribe(id);
-		// sub fail
-		this.incidentChannel.on("subscribeFail", function(err: any) {
-			console.log("%c++ Failed to subscribe to the sample channel due to error: " + err, "color:yellow");
-		});
-		// sub success
-		this.incidentChannel.on("subscribe", function(data: string) {
-			console.log("%c++ Successfully joined channel: " + data, "color:yellow");
-			_this.subs.push(data);
-			_this.incidentChannel.publish({ c: data, type: 3, sid: _this.socket.id, id: "11223344" }, function(err: any) {
-				console.log("* publish err", err);
-			});
-		});
-		// watcher
-		this.incidentChannel.watch(function(data: any) {
-			console.log("%c++ incident message (not owner):", "color:yellow", data, _this.socket.id);
-			if (data.type === 3) {
-				console.log("got joined event");
-				// if user is owner of channel...
-				// lock channel?
-				// init combat
-			}
-		});
+				} else {
+                 	console.log("%c++ you have *joined* a custom incident channel", "color:yellow");
+                 	// init combat
+				}
+			break;
+
+			case SocketClusterService.INCIDENT_TYPE_CREATED: // created incident
+				if (isOwner) {
+					console.log("%c++ you have *created* a custom incident channel", "color:yellow");
+				} else {
+					console.warn("THIS SHOULD NEVER HAVE HAPPENED!");
+				}
+			break;
+
+			case SocketClusterService.INCIDENT_TYPE_COMBAT_BEGIN:
+				console.log("%c++ you have begun COMBAT BEGIN", "color:yellow");
+				var lobby: LobbyState = (this.game.state.getCurrentState() as LobbyState);
+				lobby.combatBegin({});
+			break;
+		}
 	}
 	
 }

@@ -59,8 +59,10 @@ class IncidentVO extends AbstractVO {
     this._type = value;
   }
 
-  constructor() {
+  constructor(vo: object | {} = {}) {
     super();
+
+    if (vo) Object.assign(this, vo);
   }
 }
 

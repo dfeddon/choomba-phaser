@@ -1,84 +1,72 @@
 {
-    "incident1": [{
-            "name": "Incident Name",
-            "description": "Incident description...",
-            "type": 1,
-            "property": {},
-            "participants": [{
-                    "entity": {
-                        "owner": {},
-                        "name": "",
-                        "level": 1,
-                        "members": [],
-                        "characters": [{
-                                "name": "",
-                                "role": 1,
-                                "key": "steampunk02",
-                                "attributes": {
-                                    "strength": 1,
-                                    "agility": 2,
-                                    "alacrity": 3,
-                                    "conentration": 4,
-                                    "hacking": 5
-                                }
-                            },
-                            {
-                                "name": "",
-                                "role": 2,
-                                "key": "steampunk01",
-                                "attributes": {
-                                    "strength": 1,
-                                    "agility": 2,
-                                    "alacrity": 3,
-                                    "conentration": 4,
-                                    "hacking": 5
-                                }
-                            },
-                            {
-                                "name": "",
-                                "role": 3,
-                                "key": "steampunk01",
-                                "attributes": {
-                                    "strength": 1,
-                                    "agility": 2,
-                                    "alacrity": 3,
-                                    "conentration": 4,
-                                    "hacking": 5
-                                }
-                            },
-                            {
-                                "name": "",
-                                "role": 4,
-                                "key": "robot01",
-                                "attributes": {
-                                    "strength": 1,
-                                    "agility": 2,
-                                    "alacrity": 3,
-                                    "conentration": 4,
-                                    "hacking": 5
-                                }
-                            }
-                        ],
-                        "alliances": [],
-                        "affiliates": [],
-                        "properties": [],
-                        "artifacts": [],
-                        "biz": 1,
-                        "creds": 1000,
-                        "fame": 1
-                    },
-                    "role": 1
+    "incidents": [{
+        "id": "20150311T122706Z",
+        "name": "Incident Name",
+        "description": "Incident description...",
+        "type": 1,
+        "property": {},
+        "entity": {
+            "owner": {},
+            "name": "",
+            "level": 1,
+            "members": [],
+            "characters": [{
+                    "name": "Char1",
+                    "role": 1,
+                    "key": "steampunk02",
+                    "attributes": {
+                        "strength": 1,
+                        "agility": 2,
+                        "alacrity": 3,
+                        "conentration": 4,
+                        "hacking": 5
+                    }
                 },
                 {
-                    "entity": {
-                        "characters": []
-                    },
-                    "role": 2
+                    "name": "",
+                    "role": 2,
+                    "key": "steampunk01",
+                    "attributes": {
+                        "strength": 1,
+                        "agility": 2,
+                        "alacrity": 3,
+                        "conentration": 4,
+                        "hacking": 5
+                    }
+                },
+                {
+                    "name": "",
+                    "role": 3,
+                    "key": "steampunk01",
+                    "attributes": {
+                        "strength": 1,
+                        "agility": 2,
+                        "alacrity": 3,
+                        "conentration": 4,
+                        "hacking": 5
+                    }
+                },
+                {
+                    "name": "",
+                    "role": 4,
+                    "key": "robot01",
+                    "attributes": {
+                        "strength": 1,
+                        "agility": 2,
+                        "alacrity": 3,
+                        "conentration": 4,
+                        "hacking": 5
+                    }
                 }
-            ]
+            ],
+            "alliances": [],
+            "affiliates": [],
+            "properties": [],
+            "artifacts": [],
+            "biz": 1,
+            "creds": 1000,
+            "fame": 1
         },
-        {
-
-        }
-    ]
+        "role": 1
+    }]
 }

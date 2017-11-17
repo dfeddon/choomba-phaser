@@ -40,6 +40,9 @@ export default class PreloaderState extends Phaser.State {
 		// profiles
 		this.game.load.image("profile_1", "../images/portrait_1_1.png");
 
+		// splash image
+		this.game.load.image("splash1", "../images/splash1.jpg");
+
 	}
 
 	create() {

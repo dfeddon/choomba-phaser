@@ -16,6 +16,10 @@ export default class LobbyState extends Phaser.State {
   currentChannel: any;
   // player id stub
   player: string;
+  selectedIncident: IncidentVO;
+
+  // fnc
+  combatBegin: any;
 
   preload() {
     console.log("== LobbyState.preload ==");
@@ -63,6 +67,14 @@ export default class LobbyState extends Phaser.State {
       console.log("* player", _this.player);
 
       // TODO: send custom incident socket vo
+      // create incidentVO
+      var i = (data as any).incidents[0];
+      var incidentVO = new IncidentVO(i);
+      console.log("* derek", incidentVO);
+      // console.log("* net", new Phaser.Net(_this.game).getQueryString("player"));
+      // save it to dynamoDB?
+      // send it below (or just incident id, text, and owner)
+      // perhaps channel name is same as incident id?
       _this.sc.createChannel("1122334455", _this.player);
       // return;
       // var i = e.target as any;
@@ -114,23 +126,21 @@ export default class LobbyState extends Phaser.State {
 	  }
 	
     this.doc.pulseItemHandler = function(e: any) {
+      // user elected to JOIN an extant incident (if successful, global event by id should be disabled)
       console.log("pulseItemHandler", e.getAttribute('data-uid'));
       var incident = JSON.parse(e.getAttribute('data-uid'));
       console.log("* incident", incident, incident._uid);
-      // console.log("* sc", this.sc);
-      // var sc = SocketClusterService.getInstance();
-      // sc.socket.emit("createIncident", {f: sc.socketData.id, t:"incident", i: "inc-23432"});
-      // _this.sc.createChannel(incident._uid.toString(), _this.player);
-      
-      // subscribe to incident channel
-      // _this.currentChannel = _this.sc.socket.subscribe(incident.channel);
-      _this.sc.joinChannel(incident.channel);
-      // send join
-      // console.log('++ channel state', _this.currentChannel.getState());
-      // _this.currentChannel.publish("mydata", function(err: any) {
-      //   if (err) console.log("err", err);
-      // });
 
+      // store incident, then send with combatBegin fnc
+      this.selectedIncident = new IncidentVO(incident);
+      console.log("* assign", this.selectedIncident);
+
+      // join incident
+      _this.sc.joinChannel(incident.channel);
+    }
+
+    this.combatBegin = function(incident: IncidentVO) {
+      console.log("== combatBegin ==", incident, _this.selectedIncident);
       // hide lobby UI
       document.getElementById("lobbyState").style.display = "none";
       // show game canvas
@@ -146,7 +156,7 @@ export default class LobbyState extends Phaser.State {
       // defending crew (if combat)
 
       // now, start state (key, clearWorld, clearCache, param)
-      _this.game.state.start("NavigationState", true, false, incident);
+      _this.game.state.start("NavigationState", true, false, _this.selectedIncident);
     }
   
     // drag and drop
@@ -212,11 +222,12 @@ export default class LobbyState extends Phaser.State {
     var pulse = document.getElementById("pulse-grid");
     // insert item
     pulse.insertAdjacentElement("afterbegin", wrapper);
-		// update labels
-		var name: any = document.getElementById("pulse-item-label");
+    // update labels
+    var name: any = document.getElementById("pulse-item-label");
     var desc: any = document.getElementById("pulse-item-description");
-		name.innerText = vo.name;
+    name.innerText = vo.name;
     desc.innerText = vo.description;
+    // assign vo data to div
     wrapper.setAttribute("data-uid", JSON.stringify(vo));//.toString());// = vo;
 	}
 
