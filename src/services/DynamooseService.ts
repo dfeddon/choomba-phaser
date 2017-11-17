@@ -7,78 +7,159 @@ import { IncidentsSchema } from "./Schemas/IncidentsSchema";
 var dynamoose = require("dynamoose");
 
 class DynamooseService {
-	constructor() {
-		// super();
-		// var dynamoose = require('dynamoose');
-		dynamoose.AWS.config.update({
-			accessKeyId: 'AKIAIH2FBIAF5JYWFJFA',
-			secretAccessKey: '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',
-			region: 'us-east-1'
-		});
+  public static readonly UPDATE_TYPE_PUT: number = 1;
+  public static readonly UPDATE_TYPE_ADD: number = 2;
+  public static readonly UPDATE_TYPE_DELETE: number = 3;
+
+  public static readonly DYNAMODB_TABLE_INCIDENTS: string = "PNK_incidents";
+
+  constructor() {
+    // super();
+    // var dynamoose = require('dynamoose');
+    dynamoose.AWS.config.update({
+      accessKeyId: "AKIAIH2FBIAF5JYWFJFA",
+      secretAccessKey: "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",
+      region: "us-east-1"
+    });
+
+    // TODO: set auto-create to 'false' for production
+    dynamoose.setDefaults({ create: true });
+  }
+
+  UIDGenerator(): number {
+    var rnd = Math.floor(Math.random() * 10000 + 10000);
+    var uid = parseInt(Date.now() + "" + rnd);
+
+    return uid;
+  }
+  /*
+	app.route('/api/brands')
+		.post(controller.create(Model))
+		.get(controller.findAll(Model))
+	;
+
+	app.route('/api/brands/:id')
+		.get(controller.findById(Model))
+		.put(controller.update(Model))
+		.delete(controller.delete(Model))
+	*/
+
+  init(): void {
+    console.log("%c== DynamooseService.init() ==", "color:lime");
+    // test findbyid
+    /*this.findById(new IncidentsSchema(), 151092953629915800, function(err: any, item: any) {
+		if (err) console.log(err);
+		else console.log(item);
+	});*/
+    // test create
+    /*var obj = {id: this.UIDGenerator(), name: "Hi's Incident"};
+	this.create(new IncidentsSchema(), obj, function(err: any, item: any) {
+		if (err) console.log(err);
+		else console.log(item);
+	});*/
+    // test update / schema: any, obj: any, type: number, updateObj: object, callback: any
+    /*this.update(new IncidentsSchema(), {id: 151092953629915800}, 1, {name: "So Far"}, function(err: any, item: any) {
+		if (err) console.log(err);
+		else console.log(item);
+	});*/
+    // test delete
+    /*this.delete(new IncidentsSchema(), {id: 151092958913916260}, function(err: any) {
+		if (err) console.log(err);
+		else console.log("%c## deleted", "color:lime");
+	});*/
+
+    /*
+    var schema = new IncidentsSchema();
+    var incident = new schema.model({
+      id: this.UIDGenerator(),
+      name: "New Infiltration",
+      description: "Infiltration Description...",
+      type: 1,
+      structure: 1,
+      entity: 1
+    });
+
+    // Save to DynamoDB
+    incident.save(function(err: any) {
+      if (err) return console.error(err);
+      console.log("## save success!");
+    });
+
+    // Lookup in DynamoDB
+    schema.model.get(151092953629915800).then(function(item: any) {
+      console.log("%c## Got incident - " + JSON.stringify(item), "color:lime");
+	});
+	*/
+  }
+
+  ///////////////////////////////
+  // create
+  ///////////////////////////////
+  create(schema: any, obj: any, callback: any): any {
+    schema.model.create(obj, function(err: any, item: any) {
+      if (err) return callback(err, null); //console.error(err);
+      console.log("%c## created", "color:lime");
+      return callback(null, item);
+    });
+  }
+  ///////////////////////////////
+  // findall
+  ///////////////////////////////
+  // findAll(schema: any, options?: any) {
+  // 	schema.model.get()
+  // }
+
+  ///////////////////////////////
+  // findById #id
+  ///////////////////////////////
+  findById(schema: any, key: any, callback: any, options?: any): any {
+    schema.model.get({ id: key }, function(err: any, item: any) {
+      if (err) return callback(err, null);
+      console.log("%c## found " + JSON.stringify(item), "color:lime");
+      return callback(null, item);
+    });
+  }
+  ///////////////////////////////
+  // update #id
+  ///////////////////////////////
+  update(
+    schema: any,
+    obj: any,
+    type: number,
+    updateObj: object,
+    callback: any
+  ) {
+    var typeObj = {};
+
+    switch (type) {
+      case DynamooseService.UPDATE_TYPE_PUT:
+        typeObj = { $PUT: updateObj };
+        break;
+      case DynamooseService.UPDATE_TYPE_ADD:
+        typeObj = { $ADD: updateObj };
+        break;
+      case DynamooseService.UPDATE_TYPE_DELETE:
+        typeObj = { $DELETE: updateObj };
+		break;
 		
-		// TODO: set auto-create to 'false' for production
-		dynamoose.setDefaults( { create: true });
-	}
+		default: typeObj = { $PUT: updateObj };
+    }
 
-	UIDGenerator(): number {
-		var rnd = Math.floor(Math.random() * 10000 + 10000);
-		var uid = parseInt(Date.now() + "" + rnd);
-
-		return uid;
-	}
-
-	init(): void {
-		// var Schema = dynamoose.Schema;
-		// var IncidentsSchema = new Schema({
-		// 	// timestamps: true,
-		// 	id: { type: Number, hashKey: true },
-		// 	name: { type: String },
-		// 	description: { type: String },
-		// 	type: { type: Number },
-		// 	structure: { type: Number },
-		// 	entity: { type: Number }
-		// }, {
-		// 	timestamps: true
-		// });
-		// // IncidentsSchema.virtualset(function() {
-		// // 	this.id = this.
-		// // })
-		// console.log("## Schema", IncidentsSchema);
-		var schema = new IncidentsSchema();
-		console.log("asdlkfjas;", schema);
-		// var incidentsSchema: any = schema.model;//dynamoose.model("PNK_incidents", schema);
-		var incidentsModel: any = dynamoose.model("PNK_incidents", schema);
-		// console.log("derek", new incidentsSchema());
-		// Create cat model with default options
-		// var PNK_incidents: any = dynamoose.model('PNK_incidents', { 
-		// 	id: Number, 
-		// 	name: String,
-		// 	description: String,
-		// 	type: Number,
-		// 	structure: Number,
-		// 	entity: Number,
-		// });
-		// console.log("## Model", IncidentsSchema);
-
-		// Create a new cat object
-		var incident = new incidentsModel({
-			id: this.UIDGenerator(), 
-			name: 'New Infiltration', 
-			description: 'Infiltration Description...', 
-			type: 1, 
-			structure: 1, 
-			entity: 1
-		});
-		console.log("model", incident);
-
-		// Save to DynamoDB
-		incident.save();
-
-		// Lookup in DynamoDB
-		incident.get(1510866070385).then(function(item: any) {
-      		console.log("%c## Got incident - " + item, "color:lime");
-    	});
-	}
+    schema.model.update(obj, typeObj, function(err: any) {
+      if (err) return console.error(err);
+      console.log("%c## save success", "color:lime");
+    });
+  }
+  ///////////////////////////////
+  // delete #id
+  ///////////////////////////////
+  delete(schema: any, key: any, callback: any, options?: any): any {
+    schema.model.delete(key, options, function(err: any) {
+      if (err) return callback(err);
+      console.log("%c## deleted", "color:lime");
+      return callback(null);
+    });
+  }
 }
 
 export { DynamooseService };
