@@ -9,7 +9,7 @@ module.exports = [{
     devtool: "#inline-source-map",
     entry: {
         client: "./src/App.ts",
-        server: "./src/Server.ts"
+        // server: "./src/Server.ts"
     },
     // context: path.resolve(__dirname, './src/'),
     output: {

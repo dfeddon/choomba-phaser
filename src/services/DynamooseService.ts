@@ -28,7 +28,10 @@ class DynamooseService {
 
   UIDGenerator(): number {
     var rnd = Math.floor(Math.random() * 10000 + 10000);
-    var uid = parseInt(Date.now() + "" + rnd);
+    var d: number = Date.now();
+    var uid: number = parseInt(d + "" + rnd);
+    // var uid: number = parseInt(d) + rnd;//parseInt(Date.now() + "" + rnd);
+    console.log("* uidGen", uid, typeof(uid), d);
 
     return uid;
   }
@@ -47,10 +50,11 @@ class DynamooseService {
   init(): void {
     console.log("%c== DynamooseService.init() ==", "color:lime");
     // test findbyid
-    /*this.findById(new IncidentsSchema(), 151092953629915800, function(err: any, item: any) {
+    /*
+    this.findById(new IncidentsSchema(), 151092953629915800, function(err: any, item: any) {
 		if (err) console.log(err);
 		else console.log(item);
-	});*/
+	});//*/
     // test create
     /*var obj = {id: this.UIDGenerator(), name: "Hi's Incident"};
 	this.create(new IncidentsSchema(), obj, function(err: any, item: any) {
@@ -122,14 +126,9 @@ class DynamooseService {
   ///////////////////////////////
   // update #id
   ///////////////////////////////
-  update(
-    schema: any,
-    obj: any,
-    type: number,
-    updateObj: object,
-    callback: any
-  ) {
-    var typeObj = {};
+  update(schema: any, obj: any, type: number, updateObj: object, callback: any) {
+	
+	var typeObj = {};
 
     switch (type) {
       case DynamooseService.UPDATE_TYPE_PUT:

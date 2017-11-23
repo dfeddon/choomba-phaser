@@ -5,6 +5,8 @@ import { CrewVO } from "../models/CrewsVO";
 import { CharacterDataVO } from "../models/CharacterDataVO";
 import * as data from "../helpers/stubJson.json";
 import { SocketClusterService } from "../services/SocketClusterService";
+import { AWSService } from "../services/AWSService";
+import { IncidentsSchema } from "../services/Schemas/IncidentsSchema";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
@@ -68,6 +70,17 @@ export default class LobbyState extends Phaser.State {
 
       // TODO: send custom incident socket vo
       // create incidentVO
+      var obj: object = { 
+        id: AWSService.getInstance().dynamoose.UIDGenerator(), 
+        name: "Cipher's Incident", 
+        description: "Tunnelling down into the grim of BAMA Sprawl..."
+      };
+      // save it to dynamoDB?
+      AWSService.getInstance().dynamoose.create(new IncidentsSchema(), obj, function(err: any, item: any) {
+        if (err) return console.log(err);
+        else return _this.incidentCreatedHandler(item);// console.log(item);
+      });
+      /*
       var i = (data as any).incidents[0];
       var incidentVO = new IncidentVO(i);
       console.log("* derek", incidentVO);
@@ -76,6 +89,7 @@ export default class LobbyState extends Phaser.State {
       // send it below (or just incident id, text, and owner)
       // perhaps channel name is same as incident id?
       _this.sc.createChannel("1122334455", _this.player);
+      */
       // return;
       // var i = e.target as any;
       // console.log(i.id);
@@ -123,8 +137,8 @@ export default class LobbyState extends Phaser.State {
       //     _this.addIncident(incident);
       //   break;
       // }
-	  }
-	
+    }
+    
     this.doc.pulseItemHandler = function(e: any) {
       // user elected to JOIN an extant incident (if successful, global event by id should be disabled)
       console.log("pulseItemHandler", e.getAttribute('data-uid'));
@@ -132,21 +146,21 @@ export default class LobbyState extends Phaser.State {
       console.log("* incident", incident, incident._uid);
 
       // store incident, then send with combatBegin fnc
-      this.selectedIncident = new IncidentVO(incident);
-      console.log("* assign", this.selectedIncident);
+      _this.selectedIncident = new IncidentVO(incident);
+      console.log("* assign", _this.selectedIncident);
 
       // join incident
       _this.sc.joinChannel(incident.channel);
     }
 
     this.combatBegin = function(incident: IncidentVO) {
-      console.log("== combatBegin ==", incident, _this.selectedIncident);
+      console.log("== LobbyState.combatBegin ==", incident, this.selectedIncident, _this.selectedIncident);
       // hide lobby UI
       document.getElementById("lobbyState").style.display = "none";
       // show game canvas
       document.getElementById("gameView").style.display = "grid";
       // un-pause game
-      _this.game.paused = false;
+      this.game.paused = false;
       // switch to NavigationState
       // _this.game.state.states.NavigationState.doRun();
 
@@ -156,7 +170,7 @@ export default class LobbyState extends Phaser.State {
       // defending crew (if combat)
 
       // now, start state (key, clearWorld, clearCache, param)
-      _this.game.state.start("NavigationState", true, false, _this.selectedIncident);
+      _this.game.state.start("NavigationState", true, false, this.selectedIncident);
     }
   
     // drag and drop
@@ -208,28 +222,51 @@ export default class LobbyState extends Phaser.State {
 
 	// }
 
-	addIncident(vo: IncidentVO) {
+	addIncident(vo: any) {
     console.log("* adding pulse item", vo);
+    // vo: { [f]: , [t]ype: , [i]d: , [o]wner: }
     
     // don't add incidents created by *me*
-    console.log(vo.owner, this.player);
-    if (vo.owner === this.player) {
+    console.log(vo.o, this.player);
+    if (vo.o === this.player) {
       return console.log("++ incident creator is ME!");
     }
-    
-    // clone wrapper
-    var wrapper: any = document.getElementById("items-pulse-wrapper").cloneNode(true);
-    var pulse = document.getElementById("pulse-grid");
-    // insert item
-    pulse.insertAdjacentElement("afterbegin", wrapper);
-    // update labels
-    var name: any = document.getElementById("pulse-item-label");
-    var desc: any = document.getElementById("pulse-item-description");
-    name.innerText = vo.name;
-    desc.innerText = vo.description;
-    // assign vo data to div
-    wrapper.setAttribute("data-uid", JSON.stringify(vo));//.toString());// = vo;
-	}
+    console.log("* id", vo.i, typeof(vo.i));
+    // get incident from db by id
+    AWSService.getInstance().dynamoose.findById(new IncidentsSchema(), vo.i, function(err: any, item: any) {
+      if (err) return console.log(err);
+      
+      console.log("## got incident via db " + JSON.stringify(item), "color:lime");
+    // });
+      // clone wrapper
+      var wrapper: any = document.getElementById("items-pulse-wrapper").cloneNode(true);
+      var pulse = document.getElementById("pulse-grid");
+      // insert item
+      pulse.insertAdjacentElement("afterbegin", wrapper);
+      // update labels
+      var name: any = document.getElementById("pulse-item-label");
+      var desc: any = document.getElementById("pulse-item-description");
+      name.innerText = item.name;
+      desc.innerText = item.description;
+      // assign channel to vo
+      item.channel = vo.i;
+      // assign vo data to div
+      wrapper.setAttribute("data-uid", JSON.stringify(item));//.toString());// = vo;
+    });
+  }
+  
+  incidentCreatedHandler(i: IncidentVO) {
+    console.log("* incident created handler", i);
+    // var i: IncidentVO = (data as any).incidents[0];
+    var incidentVO = new IncidentVO(i);
+    console.log("* derek", incidentVO);
+    // console.log("* net", new Phaser.Net(_this.game).getQueryString("player"));
+    // save it to dynamoDB?
+    // send it below (or just incident id, text, and owner)
+    // perhaps channel name is same as incident id?
+    this.sc.createChannel(i.id, this.player);
+  }
+	
 
 	renameDescendantsOfNode = function(node: any, suffix: number) {
 		for (var i = 0; i < node.childNodes.length; i++) {

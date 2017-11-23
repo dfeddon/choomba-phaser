@@ -16,8 +16,8 @@ class SocketClusterService {
 	public static readonly INCIDENT_TYPE_JOINED: number = 3;
 	public static readonly INCIDENT_TYPE_COMBAT_BEGIN: number = 4;
 
-  private static instance: SocketClusterService;
-  public socket: any = null;
+	private static instance: SocketClusterService;
+  	public socket: any = null;
 	// public socketData: object = {};
 	// global incidents
 	public globalIncidentsChannelName: string = "incidentsA";		
@@ -104,22 +104,23 @@ class SocketClusterService {
 		});
 
 		incidentsGlobalChannel.watch(function(data: any) {
+			// data: { [f]: , [t]ype: , [i]d: , [o]wner: }
 			console.log("%c++ Global incidentsA channel message:", "color:yellow", data, _this.socket.id);
 			// if in lobby, add incident to punk net
 			if (_this.game.state.getCurrentState().key === "LobbyState") {
-				console.log("****", stub);
-				var i = (stub as any).incidents[0];
-				var incident: IncidentVO = new IncidentVO(i);
-				console.log("* i", incident);
-				// var incident: IncidentVO = new IncidentVO();
-				incident.name = "Infiltration";// + _this.glob;
-				incident.description = "Hacking into facility...";
-				incident.type = IncidentVO.INCIDENT_TYPE_SPAWN;
-				incident.owner = data.o;
-				incident.channel = data.i;
+				// console.log("****", stub);
+				// var i = (stub as any).incidents[0];
+				// var incident: IncidentVO = new IncidentVO(i);
+				// console.log("* i", incident);
+				// // var incident: IncidentVO = new IncidentVO();
+				// incident.name = "Infiltration";// + _this.glob;
+				// incident.description = "Hacking into facility...";
+				// incident.type = IncidentVO.INCIDENT_TYPE_SPAWN;
+				// incident.owner = data.o;
+				// incident.channel = data.i;
 				// incident.entity = new EntityVO();
 				// push to punk net
-				(_this.game.state.getCurrentState() as LobbyState).addIncident(incident);
+				(_this.game.state.getCurrentState() as LobbyState).addIncident(data);
 			}
     	});
 	}
@@ -128,8 +129,10 @@ class SocketClusterService {
 		console.log("== stopGlobalChannels ==");
 	}
 
-	createChannel(id: string, owner: string) {
+	createChannel(_id: number, owner: string) {
 		var _this = this;
+		// stub: convert id to string
+		let id: string = _id.toString();
 		console.log("%c++ SocketClusterService.createChannel()", "color:yellow", id, owner, this.subs);
 
 		// don't re-create an extant channel
@@ -200,7 +203,7 @@ class SocketClusterService {
 					// get id and query db
 					// send *all* chars with alacrity for ordering to socket
 					// var d = {p:null as any,c:null as any};
-					var chars: object[] = [{p4:1, p3:3, p2:1, p1:4},{p4:2, p3:3, p2:2, p1:3}]
+					var chars: object[] = [{p4:1, p3:3, p2:1, p1:4},{p4:2, p3:3, p2:2, p1:3}];
 					// d.p = chars;
 					// d.c = data.c;
 					this.socket.emit("combatBegin", {c:data.c, p:chars}, function(err: any, resp: any) {
