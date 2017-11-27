@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+var BitBarWebpackProgressPlugin = require("bitbar-webpack-progress-plugin");
 
 module.exports = [{
     devtool: "#inline-source-map",
@@ -89,5 +90,6 @@ module.exports = [{
         //     port: 3001,
         //     server: { baseDir: ["dist/public"] }
         // })
+        new BitBarWebpackProgressPlugin()
     ]
 }];

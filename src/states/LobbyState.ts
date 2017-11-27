@@ -73,7 +73,7 @@ export default class LobbyState extends Phaser.State {
       var obj: object = { 
         id: AWSService.getInstance().dynamoose.UIDGenerator(), 
         name: "Cipher's Incident", 
-        description: "Tunnelling down into the grim of BAMA Sprawl..."
+        description: "Tunnelling down into the grime of BAMA Sprawl..."
       };
       // save it to dynamoDB?
       AWSService.getInstance().dynamoose.create(new IncidentsSchema(), obj, function(err: any, item: any) {
@@ -185,6 +185,7 @@ export default class LobbyState extends Phaser.State {
       // console.log("ondragover", e);
       e.preventDefault();
     };
+    
     document.ondrop = function(e) {
       var i = e.target as any;
       _this.charDragTarget = i.id;
@@ -240,11 +241,11 @@ export default class LobbyState extends Phaser.State {
     // });
       // clone wrapper
       var wrapper: any = document.getElementById("items-pulse-wrapper").cloneNode(true);
-      var pulse = document.getElementById("pulse-grid");
+      var pulse: any = document.getElementById("pulse-grid");
       // insert item
       pulse.insertAdjacentElement("afterbegin", wrapper);
       // update labels
-      var name: any = document.getElementById("pulse-item-label");
+      var name: any = document.getElementById("pulse-item-label");  
       var desc: any = document.getElementById("pulse-item-description");
       name.innerText = item.name;
       desc.innerText = item.description;
@@ -260,6 +261,7 @@ export default class LobbyState extends Phaser.State {
     // var i: IncidentVO = (data as any).incidents[0];
     var incidentVO = new IncidentVO(i);
     console.log("* derek", incidentVO);
+    this.selectedIncident = incidentVO;
     // console.log("* net", new Phaser.Net(_this.game).getQueryString("player"));
     // save it to dynamoDB?
     // send it below (or just incident id, text, and owner)
