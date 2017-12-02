@@ -50,8 +50,8 @@ class SocketClusterService {
 		});
 		
 		socket.on("connect", function(data: any) {
-			console.log("%c++ CONNECTED", "color:yellow", data);
-			console.log("%c++ client id", "color:yellow", data.id);//, socket.id);
+			console.log("%c++ socket CONNECTED", "color:yellow", data);
+			console.log("%c++ socket client id", "color:yellow", data.id);//, socket.id);
 			// _this.socketData.id = data.id;
 		});
 	}

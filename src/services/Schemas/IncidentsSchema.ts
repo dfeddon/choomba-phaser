@@ -17,7 +17,8 @@ class IncidentsSchema extends dynamoose.Schema {
 		};
 
 		options = {
-			timestamps: true
+			timestamps: true,
+			useDocumentTypes: true
 		};
 
 		super(schema, options);

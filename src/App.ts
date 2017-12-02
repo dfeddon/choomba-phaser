@@ -9,6 +9,8 @@ import { AWSService } from './services/AWSService';
 import * as NameGenerator from "fantastical";
 import { AjaxHelper } from './helpers/AjaxHelper';
 import { SocketClusterService } from './services/SocketClusterService';
+import { PlayersSchema } from './services/Schemas/PlayersSchema';
+import { EntitiesSchema } from './services/Schemas/EntitiesSchema';
 // import { AWSIoTService } from './services/AWSIoTService';
 
 export default class App extends Phaser.Game {
@@ -59,6 +61,9 @@ export default class App extends Phaser.Game {
     let AWS = AWSService.getInstance();
     AWS.start();
 
+    // init dynamoose
+    // AWS.dynamoose.setGame(this);
+
     // start socketCluster
     SocketClusterService.getInstance().init(this);
 
@@ -72,8 +77,26 @@ export default class App extends Phaser.Game {
     this.state.add("NavigationState", NavigationState, false);
     this.state.add("LobbyState", LobbyState, false);
     this.state.add("ResultsState", ResultsState, false);
+
     // start boot
-    this.state.start("BootState");
+    let __this = this;
+    let playerStubId: number = parseInt(new Phaser.Net(this).getQueryString("player"));
+    // get player
+    AWS.dynamoose.findById(new PlayersSchema(), playerStubId, function (err: any, player: any) {
+      if (err) return console.log(err);
+      console.log("* player", player);
+      if (player) {
+        console.log("* getting owner from entity", player.entity);
+        // get entity
+        AWS.dynamoose.findById(new EntitiesSchema(), player.entity, function (err: any, entity: any) {
+          if (err) return console.log(err);
+          console.log("* len", entity.freelancers);
+          AWS.dynamoose.getCharactersByArray(entity.freelancers);
+          __this.state.start("BootState");
+        });
+      }
+      else console.log("!! no player found");
+    });
   }
 
   // preload() {

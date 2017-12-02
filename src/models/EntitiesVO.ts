@@ -14,7 +14,7 @@ class EntityVO extends AbstractVO {
   private _name: string;
   private _level: number;
   // private _members: EntityVO[];
-  // private _alliances: AllianceVO[];
+  private _alliances: AllianceVO[];
   private _affiliates: AllianceVO[];
   private _freelancers: CharacterVO[];
   private _properties: StructureVO[];

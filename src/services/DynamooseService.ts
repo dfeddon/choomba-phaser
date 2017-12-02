@@ -1,4 +1,6 @@
 import { IncidentsSchema } from "./Schemas/IncidentsSchema";
+import { CharactersSchema } from "./Schemas/CharactersSchema";
+import { EntityVO } from "../models/EntitiesVO";
 
 // import AWS = require('aws-sdk');
 // import * as AWS from "aws-sdk";
@@ -12,6 +14,11 @@ class DynamooseService {
   public static readonly UPDATE_TYPE_DELETE: number = 3;
 
   public static readonly DYNAMODB_TABLE_INCIDENTS: string = "PNK_incidents";
+  public static readonly DYNAMODB_TABLE_ENTITIES: string = "PNK_entities";
+  public static readonly DYNAMODB_TABLE_PLAYERS: string = "PNK_players";
+  public static readonly DYNAMODB_TABLE_CHARACTERS: string = "PNK_characters";
+
+  entity: EntityVO;
 
   constructor() {
     // super();
@@ -25,6 +32,13 @@ class DynamooseService {
     // TODO: set auto-create to 'false' for production
     dynamoose.setDefaults({ create: true });
   }
+
+  // setGame(game: Phaser.Game): void {
+  //   if (game) {
+  //     this.game = game;
+  //     console.log("* game",this.game);
+  //   }
+  // }
 
   UIDGenerator(): number {
     var rnd = Math.floor(Math.random() * 10000 + 10000);
@@ -116,8 +130,10 @@ class DynamooseService {
   ///////////////////////////////
   // findById #id
   ///////////////////////////////
-  findById(schema: any, key: any, callback: any, options?: any): any {
+  findById(schema: any, key: number, callback: any, options?: any): any {
+    console.log("%c## findById " + key, "color:lime");
     schema.model.get({ id: key }, function(err: any, item: any) {
+      console.log(item, err);
       if (err) return callback(err, null);
       console.log("%c## found " + JSON.stringify(item), "color:lime");
       return callback(null, item);
@@ -159,6 +175,24 @@ class DynamooseService {
       return callback(null);
     });
   }
+  ///////////////////////////////
+  // get players by array
+  ///////////////////////////////
+  getCharactersByArray(chars: number[]) {
+    console.log("== getCharactersByArray ==", chars);
+    // confirm global has characters array
+    // if (!this.game.global) {
+    //   this.game.global = {};
+    //   this.game.global.characters = [];
+    // }
+    for (let char of chars) {
+      console.log("+ char", char);
+      this.findById(new CharactersSchema(), char, function(err: any, result: any) {
+        console.log("* got char", result);
+      });
+    }
+  }
+
 }
 
 export { DynamooseService };

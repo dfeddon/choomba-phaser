@@ -49,16 +49,16 @@ class CharacterVO extends AbstractVO {
     this._name = value;
   }
 
-  /** Character's role
+  /** Character's class
    * @member
    * @private
    * @type {number}
    */
-  public get role(): number {
+  public get class(): number {
     return this._role;
   }
 
-  public set role(value: number) {
+  public set class(value: number) {
     this._role = value;
   }
 

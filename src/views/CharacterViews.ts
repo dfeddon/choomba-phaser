@@ -5,9 +5,9 @@ import NavigationState from "../states/NavigationState";
 
 export default class CharacterView extends Phaser.Sprite {
 
-	public static readonly CHARACTER_STATE_IDLE = 0;
-	public static readonly CHARACTER_STATE_WALK_FORWARD = 1;
-	public static readonly CHARACTER_STATE_WALK_BACKWARD = 2;
+	public static readonly CHARACTER_STATE_IDLE: number = 0;
+	public static readonly CHARACTER_STATE_WALK_FORWARD: number = 1;
+	public static readonly CHARACTER_STATE_WALK_BACKWARD: number = 2;
 
 	vo: CharacterVO;
 	imgScale: number;
@@ -26,7 +26,7 @@ export default class CharacterView extends Phaser.Sprite {
 
 		// anchor, mid x, y bototm (feet)
 		this.anchor.setTo(0, 1); // forward-facing (start right), vertical bottom (on feet)
-		this.scale.setTo(this.imgScale, this.imgScale); // scale to 75%
+		this.scale.setTo(this.imgScale, this.imgScale); // scale
 
 		// animations
 		for (let framevo of vo.atlas.frames) {

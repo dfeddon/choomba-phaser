@@ -8,9 +8,13 @@ import { AllianceVO } from './AlliancesVO';
  * @class
  */
 class PlayerVO extends AbstractVO {
+  
+  public static readonly MEMBERSHIP_TIER_FREEMIUM: number = 1;
+  public static readonly MEMBERSHIP_TIER_ADFREE: number = 2;
+
   private _name: string;
-  private _membership: number;
-  private _alliances: AllianceVO[];
+  private _membership: number = PlayerVO.MEMBERSHIP_TIER_FREEMIUM;
+  private _entity: EntityVO[];
   // private _receipts: ReceiptsVO[];
 
   public get name(): string {
@@ -20,6 +24,14 @@ class PlayerVO extends AbstractVO {
   public set name(value: string) {
     this._name = value;
   }
+
+	public get membership(): number  {
+		return this._membership;
+	}
+
+	public set membership(value: number ) {
+		this._membership = value;
+	}
 
   /** Player constructor.
    * @constructor

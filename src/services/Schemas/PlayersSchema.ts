@@ -9,20 +9,18 @@ class PlayersSchema extends dynamoose.Schema {
 		
 		schema = {
 			id: 			{ type: Number, hashKey: true },
-			name: 			{ type: String },
-			description: 	{ type: String },
-			type: 			{ type: Number },
-			structure: 		{ type: Number },
-			entity: 		{ type: Number }
+			email: 			{ type: String },
+			entity:			{ type: Number }
 		};
 
 		options = {
-			timestamps: true
+			timestamps: true,
+			useDocumentTypes: true
 		};
 
 		super(schema, options);
 
-		this.model = dynamoose.model(DynamooseService.DYNAMODB_TABLE_INCIDENTS, this);
+		this.model = dynamoose.model(DynamooseService.DYNAMODB_TABLE_PLAYERS, this);
 	}
 }
 
