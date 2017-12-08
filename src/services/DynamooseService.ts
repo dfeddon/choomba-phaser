@@ -1,6 +1,7 @@
 import { IncidentsSchema } from "./Schemas/IncidentsSchema";
 import { CharactersSchema } from "./Schemas/CharactersSchema";
 import { EntityVO } from "../models/EntitiesVO";
+import { CharacterVO } from "../models/CharactersVO";
 
 // import AWS = require('aws-sdk');
 // import * as AWS from "aws-sdk";
@@ -40,15 +41,15 @@ class DynamooseService {
   //   }
   // }
 
-  UIDGenerator(): number {
-    var rnd = Math.floor(Math.random() * 10000 + 10000);
-    var d: number = Date.now();
-    var uid: number = parseInt(d + "" + rnd);
-    // var uid: number = parseInt(d) + rnd;//parseInt(Date.now() + "" + rnd);
-    console.log("* uidGen", uid, typeof(uid), d);
+  // UIDGenerator(): number {
+  //   var rnd = Math.floor(Math.random() * 10000 + 10000);
+  //   var d: number = Date.now();
+  //   var uid: number = parseInt(d + "" + rnd);
+  //   // var uid: number = parseInt(d) + rnd;//parseInt(Date.now() + "" + rnd);
+  //   console.log("* uidGen", uid, typeof(uid), d);
 
-    return uid;
-  }
+  //   return uid;
+  // }
   /*
 	app.route('/api/brands')
 		.post(controller.create(Model))
@@ -176,7 +177,7 @@ class DynamooseService {
     });
   }
   ///////////////////////////////
-  // get players by array
+  // get characters by array
   ///////////////////////////////
   getCharactersByArray(chars: number[]) {
     console.log("== getCharactersByArray ==", chars);
@@ -191,6 +192,24 @@ class DynamooseService {
         console.log("* got char", result);
       });
     }
+  };
+
+  createCharacter(role?: number, total?: number) {
+    if (!total)
+      total = 1;
+    var vo: CharacterVO;
+    for (var i = 0; i < total; i++) {
+      vo = new CharacterVO();
+      vo.createCharacter()
+      // this.create(new CharactersSchema(), {class: role}, this.createCharacterHandler);
+    }
+    return vo;
+  }
+
+  createCharacterHandler(err: any, result: any) {
+    console.log("+ character created", err, result);
+    // get id
+    // create values from charactersvo
   }
 
 }

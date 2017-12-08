@@ -11,6 +11,9 @@ import { AjaxHelper } from './helpers/AjaxHelper';
 import { SocketClusterService } from './services/SocketClusterService';
 import { PlayersSchema } from './services/Schemas/PlayersSchema';
 import { EntitiesSchema } from './services/Schemas/EntitiesSchema';
+import { CharacterVO } from './models/CharactersVO';
+import { NumberHelper } from './helpers/NumberHelper';
+import { CharactersSchema } from './services/Schemas/CharactersSchema';
 // import { AWSIoTService } from './services/AWSIoTService';
 
 export default class App extends Phaser.Game {
@@ -81,22 +84,91 @@ export default class App extends Phaser.Game {
     // start boot
     let __this = this;
     let playerStubId: number = parseInt(new Phaser.Net(this).getQueryString("player"));
+    
     // get player
     AWS.dynamoose.findById(new PlayersSchema(), playerStubId, function (err: any, player: any) {
       if (err) return console.log(err);
       console.log("* player", player);
+
       if (player) {
         console.log("* getting owner from entity", player.entity);
+        let characterPoolLength: number = 10;
         // get entity
         AWS.dynamoose.findById(new EntitiesSchema(), player.entity, function (err: any, entity: any) {
           if (err) return console.log(err);
           console.log("* len", entity.freelancers);
-          AWS.dynamoose.getCharactersByArray(entity.freelancers);
-          __this.state.start("BootState");
+          // if character pool has empty slots, fill them
+          if (entity.freelancers.length < characterPoolLength) {
+            var newCharacters: object[] = [];
+            let num: number = characterPoolLength - entity.freelancers.length;
+            console.log("* need to generate", num, "new characters");
+            if (num === 7) {//characterPoolLength) {
+              // new user, fill pool, ensuring entity has at least *one* role for each *position*
+              console.log("* new char!");
+              // frontline (tank [1], gcannon [2]) backline (healer [3], cleanser [4]) midline (aoe [6], dot [5], buff [7], debuff [8])
+              // 1 frontline
+              let frontline: number = NumberHelper.randomRange(1, 2);
+              newCharacters.push(new CharacterVO().createCharacter(frontline));
+              // 1 backline
+              let backline: number = NumberHelper.randomRange(3, 4);
+              newCharacters.push(new CharacterVO().createCharacter(backline));
+              // 2 mid
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(5, 6)));
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(7, 8)));
+              // subtrack them
+              num -= 4;
+            }
+            // add new chars
+            for (var i = 0; i < num; i++) {
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(1, 8)).toObject());
+            }
+            // convert vo to schema
+            // var schemas: object[] = [];
+            // // var model = new CharactersSchema().model;
+            // for (let char of newCharacters) {
+            //   schemas.push(//new model({
+            //     {
+            //     id: char.id, 
+            //     name: char.name,
+            //     role: char.role,
+            //     position: 0,
+            //     grit: char.grit,
+            //     reflexes: char.reflexes,
+            //     focus: char.focus,
+            //     neuromancy: char.neuromancy,
+            //     meat: char.meat
+            //   });
+            // }
+            // console.log("* new CHARS:", schemas);//newCharacters);
+            // save new characters
+            for (let schema of newCharacters) {
+              console.log("*****", typeof(schema), schema);
+              AWS.dynamoose.create(new CharactersSchema(), schema, function(err: any, result: any) {
+                if (err) console.log(err);
+                else {
+                  console.log("%c## created: " + result, "color:lime");
+                }
+              });
+            }
+            // get characters from db
+          }
+          else { // all slots filled, get characters
+            AWS.dynamoose.getCharactersByArray(entity.freelancers);
+            __this.state.start("BootState");
+          }
         });
       }
       else console.log("!! no player found");
     });
+    var vo: CharacterVO = AWS.dynamoose.createCharacter();
+    console.log(vo.name);
+    console.log(vo.getLabelByRole());
+    console.log("* grit", vo.grit);
+    console.log("* reflexes", vo.reflexes);
+    console.log("* focus", vo.focus);
+    console.log("* meat", vo.meat);
+    console.log("* neuromancy", vo.neuromancy);
+    console.log(vo);
   }
 
   // preload() {

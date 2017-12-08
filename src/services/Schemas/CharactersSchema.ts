@@ -10,14 +10,23 @@ class CharactersSchema extends dynamoose.Schema {
 		schema = {
 			id: { type: Number, hashKey: true },
 			name: { type: String },
-			class: { type: Number },
-			position: { type: Number, default: 0 } // 0 => not in crew
-		};
+			role: { type: Number },
+			position: { type: Number, default: 0 }, // 0 => not in crew
+			grit: { type: Number },
+			reflexes: { type: Number },
+			focus: { type: Number },
+			neuromancy: { type: Number },
+			meat: { type: Number }
+		}
 
 		options = {
 			timestamps: true,
 			useDocumentTypes: true
 		};
+
+		// schema.method('autopopulate', function() {
+		// 	console.log("# CharacterSchema.autopopulate", this.class);
+		// });
 
 		super(schema, options);
 

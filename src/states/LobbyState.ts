@@ -7,6 +7,7 @@ import * as data from "../helpers/stubJson.json";
 import { SocketClusterService } from "../services/SocketClusterService";
 import { AWSService } from "../services/AWSService";
 import { IncidentsSchema } from "../services/Schemas/IncidentsSchema";
+import { NumberHelper } from "../helpers/NumberHelper";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
@@ -71,7 +72,7 @@ export default class LobbyState extends Phaser.State {
       // TODO: send custom incident socket vo
       // create incidentVO
       var obj: object = { 
-        id: AWSService.getInstance().dynamoose.UIDGenerator(), 
+        id: NumberHelper.UIDGenerator(), 
         name: "Cipher's Incident", 
         description: "Tunnelling down into the grime of BAMA Sprawl..."
       };
