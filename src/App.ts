@@ -14,6 +14,7 @@ import { EntitiesSchema } from './services/Schemas/EntitiesSchema';
 import { CharacterVO } from './models/CharactersVO';
 import { NumberHelper } from './helpers/NumberHelper';
 import { CharactersSchema } from './services/Schemas/CharactersSchema';
+import { DynamooseService } from './services/DynamooseService';
 // import { AWSIoTService } from './services/AWSIoTService';
 
 export default class App extends Phaser.Game {
@@ -102,54 +103,48 @@ export default class App extends Phaser.Game {
             var newCharacters: object[] = [];
             let num: number = characterPoolLength - entity.freelancers.length;
             console.log("* need to generate", num, "new characters");
-            if (num === 7) {//characterPoolLength) {
+            if (num === characterPoolLength) {
               // new user, fill pool, ensuring entity has at least *one* role for each *position*
               console.log("* new char!");
               // frontline (tank [1], gcannon [2]) backline (healer [3], cleanser [4]) midline (aoe [6], dot [5], buff [7], debuff [8])
               // 1 frontline
-              let frontline: number = NumberHelper.randomRange(1, 2);
-              newCharacters.push(new CharacterVO().createCharacter(frontline));
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(1, 2)));
               // 1 backline
-              let backline: number = NumberHelper.randomRange(3, 4);
-              newCharacters.push(new CharacterVO().createCharacter(backline));
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(3, 4)));
               // 2 mid
               newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(5, 6)));
               newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(7, 8)));
               // subtrack them
               num -= 4;
             }
-            // add new chars
+            // generate new chars (random)
             for (var i = 0; i < num; i++) {
               newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(1, 8)).toObject());
             }
-            // convert vo to schema
-            // var schemas: object[] = [];
-            // // var model = new CharactersSchema().model;
-            // for (let char of newCharacters) {
-            //   schemas.push(//new model({
-            //     {
-            //     id: char.id, 
-            //     name: char.name,
-            //     role: char.role,
-            //     position: 0,
-            //     grit: char.grit,
-            //     reflexes: char.reflexes,
-            //     focus: char.focus,
-            //     neuromancy: char.neuromancy,
-            //     meat: char.meat
-            //   });
-            // }
-            // console.log("* new CHARS:", schemas);//newCharacters);
-            // save new characters
+            // array to store new character ids
+            var characterIds: number[] = [];
+            // save to db
             for (let schema of newCharacters) {
               console.log("*****", typeof(schema), schema);
+              // add new character ids to array
+              characterIds.push((schema as CharacterVO).id);
+              // create new character
               AWS.dynamoose.create(new CharactersSchema(), schema, function(err: any, result: any) {
                 if (err) console.log(err);
                 else {
                   console.log("%c## created: " + result, "color:lime");
+                  // append character id's to existing entity schema...
+                  entity.freelancers.push(result.id);
                 }
               });
             }
+            // append new character ids to existing entity.freelancers array
+            // let updatedCharacters: number[] = entity.freelancers.concat(characterIds);
+            console.log("* updating enitity freelancers array", characterIds);
+            AWS.dynamoose.update(new EntitiesSchema(), { id: player.entity }, DynamooseService.UPDATE_TYPE_ADD, { freelancers: characterIds }, function (err: any, item: any) {
+              if (err) console.log(err);
+              else console.log(item);
+            });
             // get characters from db
           }
           else { // all slots filled, get characters
@@ -167,7 +162,7 @@ export default class App extends Phaser.Game {
     console.log("* reflexes", vo.reflexes);
     console.log("* focus", vo.focus);
     console.log("* meat", vo.meat);
-    console.log("* neuromancy", vo.neuromancy);
+    console.log("* cybermancy", vo.cybermancy);
     console.log(vo);
   }
 

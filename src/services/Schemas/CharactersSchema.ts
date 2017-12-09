@@ -12,10 +12,11 @@ class CharactersSchema extends dynamoose.Schema {
 			name: { type: String },
 			role: { type: Number },
 			position: { type: Number, default: 0 }, // 0 => not in crew
+			status: { type: Number, default: 1 }, // 1 => available
 			grit: { type: Number },
 			reflexes: { type: Number },
 			focus: { type: Number },
-			neuromancy: { type: Number },
+			cybermancy: { type: Number },
 			meat: { type: Number }
 		}
 

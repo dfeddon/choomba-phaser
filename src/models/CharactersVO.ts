@@ -20,6 +20,10 @@ class CharacterVO extends AbstractVO {
   public static readonly CHARACTER_ROLE_RIGGER: number = 6;
   public static readonly CHARACTER_ROLE_BOOSTER: number = 7;
   public static readonly CHARACTER_ROLE_TWEAKER: number = 8;
+
+  public static readonly CHARACTER_STATUS_AVAILABLE: number = 1;
+  public static readonly CHARACTER_STATUS_UNAVAILABLE: number = 2;
+  public static readonly CHARACTER_STATUS_DECEASED: number = 3;
   
   // privates
   // private _uid: number;
@@ -28,13 +32,14 @@ class CharacterVO extends AbstractVO {
   private _role: number;
   private _owner: number;
   private _position: number;
+  private _status: number;
   private _characterCombat: CharacterCombatVO;
 
   // private _attributes: AttributeVO;
   private _grit: number;
   private _reflexes: number;
   private _focus: number;
-  private _neuromancy: number;
+  private _cybermancy: number;
   private _meat: number;
   
   private _atlas: AtlasVO;
@@ -102,6 +107,9 @@ class CharacterVO extends AbstractVO {
     // set role
     this.role = role;
 
+    // status available
+    this.status = CharacterVO.CHARACTER_STATUS_AVAILABLE;
+
     // generate uid
     if (!this.id)
       this.id = NumberHelper.UIDGenerator();
@@ -111,7 +119,7 @@ class CharacterVO extends AbstractVO {
     this._reflexes = NumberHelper.randomRange(0, 50);
     this._focus = NumberHelper.randomRange(0, 50);
     this._meat = NumberHelper.randomRange(0, 50);
-    this._neuromancy = NumberHelper.randomRange(0, 50);
+    this._cybermancy = NumberHelper.randomRange(0, 50);
 
     // boost role-based attributes
     switch(this.role) {
@@ -131,21 +139,21 @@ class CharacterVO extends AbstractVO {
         this._focus = 50 + NumberHelper.randomRange(0, 50);
         this._meat = 50 + NumberHelper.randomRange(0, 50);
         break;
-      case CharacterVO.CHARACTER_ROLE_HACKER: // [DOTS] reflexes, neuromancy (midline)
+      case CharacterVO.CHARACTER_ROLE_HACKER: // [DOTS] reflexes, cybermancy (midline)
         this._reflexes = 50 + NumberHelper.randomRange(0, 50);
-        this._neuromancy = 50 + NumberHelper.randomRange(0, 50);
+        this._cybermancy = 50 + NumberHelper.randomRange(0, 50);
         break;
-      case CharacterVO.CHARACTER_ROLE_RIGGER: // [AOE] focus, neuromancy (midline)
+      case CharacterVO.CHARACTER_ROLE_RIGGER: // [AOE] focus, cybermancy (midline)
         this._focus = 50 + NumberHelper.randomRange(0, 50);
-        this._neuromancy = 50 + NumberHelper.randomRange(0, 50);
+        this._cybermancy = 50 + NumberHelper.randomRange(0, 50);
         break;
-      case CharacterVO.CHARACTER_ROLE_BOOSTER: // [BUFFS] grit, neuromancy (midline)
+      case CharacterVO.CHARACTER_ROLE_BOOSTER: // [BUFFS] grit, cybermancy (midline)
         this._grit = 50 + NumberHelper.randomRange(0, 50);
-        this._neuromancy = 50 + NumberHelper.randomRange(0, 50);
+        this._cybermancy = 50 + NumberHelper.randomRange(0, 50);
         break;
-      case CharacterVO.CHARACTER_ROLE_TWEAKER: // [DEBUFFS] meat, neuromancy (midline)
+      case CharacterVO.CHARACTER_ROLE_TWEAKER: // [DEBUFFS] meat, cybermancy (midline)
         this._meat = 50 + NumberHelper.randomRange(0, 50);
-        this._neuromancy = 50 + NumberHelper.randomRange(0, 50);
+        this._cybermancy = 50 + NumberHelper.randomRange(0, 50);
         break;
     }
     return this;
@@ -171,16 +179,16 @@ class CharacterVO extends AbstractVO {
       case CharacterVO.CHARACTER_ROLE_CLEANER: // [CLEANSER] focus, meat (backline)
         label = "Cleaner";
         break;
-      case CharacterVO.CHARACTER_ROLE_HACKER: // [DOTS] reflexes, neuromancy (midline)
+      case CharacterVO.CHARACTER_ROLE_HACKER: // [DOTS] reflexes, cybermancy (midline)
         label = "Hacker";
         break;
-      case CharacterVO.CHARACTER_ROLE_RIGGER: // [AOE] focus, neuromancy (midline)
+      case CharacterVO.CHARACTER_ROLE_RIGGER: // [AOE] focus, cybermancy (midline)
         label = "Rigger";
         break;
-      case CharacterVO.CHARACTER_ROLE_BOOSTER: // [BUFFS] grit, neuromancy (midline)
+      case CharacterVO.CHARACTER_ROLE_BOOSTER: // [BUFFS] grit, cybermancy (midline)
         label = "Booster";
         break;
-      case CharacterVO.CHARACTER_ROLE_TWEAKER: // [DEBUFFS] meat, neuromancy (midline)
+      case CharacterVO.CHARACTER_ROLE_TWEAKER: // [DEBUFFS] meat, cybermancy (midline)
         label = "Tweaker";
         break;
     }
@@ -195,8 +203,9 @@ class CharacterVO extends AbstractVO {
     obj.grit = this.grit;
     obj.reflexes = this.reflexes;
     obj.focus = this.focus;
-    obj.neuromancy = this.neuromancy;
+    obj.cybermancy = this.cybermancy;
     obj.meat = this.meat;
+    obj.status = this.status;
     return obj;
   }
   // getters/setters
@@ -343,12 +352,12 @@ class CharacterVO extends AbstractVO {
 		this._focus = value;
 	}
 
-	public get neuromancy(): number {
-		return this._neuromancy;
+	public get cybermancy(): number {
+		return this._cybermancy;
 	}
 
-	public set neuromancy(value: number) {
-		this._neuromancy = value;
+	public set cybermancy(value: number) {
+		this._cybermancy = value;
 	}
 
 	public get meat(): number {
@@ -365,6 +374,14 @@ class CharacterVO extends AbstractVO {
 
 	public set position(value: number) {
 		this._position = value;
+	}
+
+	public get status(): number {
+		return this._status;
+	}
+
+	public set status(value: number) {
+		this._status = value;
 	}
 
 }

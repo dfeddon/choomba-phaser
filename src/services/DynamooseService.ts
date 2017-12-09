@@ -200,7 +200,7 @@ class DynamooseService {
     var vo: CharacterVO;
     for (var i = 0; i < total; i++) {
       vo = new CharacterVO();
-      vo.createCharacter()
+      vo.createCharacter();
       // this.create(new CharactersSchema(), {class: role}, this.createCharacterHandler);
     }
     return vo;
