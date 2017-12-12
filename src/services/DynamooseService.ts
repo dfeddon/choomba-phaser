@@ -2,6 +2,8 @@ import { IncidentsSchema } from "./Schemas/IncidentsSchema";
 import { CharactersSchema } from "./Schemas/CharactersSchema";
 import { EntityVO } from "../models/EntitiesVO";
 import { CharacterVO } from "../models/CharactersVO";
+import { EntitiesSchema } from "./Schemas/EntitiesSchema";
+import { NumberHelper } from "../helpers/NumberHelper";
 
 // import AWS = require('aws-sdk');
 // import * as AWS from "aws-sdk";
@@ -75,12 +77,24 @@ class DynamooseService {
 	this.create(new IncidentsSchema(), obj, function(err: any, item: any) {
 		if (err) console.log(err);
 		else console.log(item);
-	});*/
+  });*/
+    /*
+    var obj = { id: NumberHelper.UIDGenerator(), name: "Sipher 3", characters: [151283850906113280] };
+    this.create(new EntitiesSchema(), obj, function (err: any, item: any) {
+      if (err) console.log(err);
+      else console.log(item);
+    });//*/
     // test update / schema: any, obj: any, type: number, updateObj: object, callback: any
-    /*this.update(new IncidentsSchema(), {id: 151092953629915800}, 1, {name: "So Far"}, function(err: any, item: any) {
+    /*
+    this.update(new IncidentsSchema(), { id: 151146715597812300}, 1, {name: "So Far"}, function(err: any, item: any) {
 		if (err) console.log(err);
 		else console.log(item);
-	});*/
+  });//*/
+    /*
+    this.update(new EntitiesSchema(), { id: 151294528270316640 }, DynamooseService.UPDATE_TYPE_PUT, { characters: [151283850906113280, 151283726975615900]}, function(err: any, item: any){
+      if (err) console.log(err);
+      else console.log(item);
+	  });//*/
     // test delete
     /*this.delete(new IncidentsSchema(), {id: 151092958913916260}, function(err: any) {
 		if (err) console.log(err);
@@ -144,7 +158,9 @@ class DynamooseService {
   // update #id
   ///////////////////////////////
   update(schema: any, obj: any, type: number, updateObj: object, callback: any) {
-	
+  console.log(obj);
+  console.log(type);
+  console.log(updateObj);
 	var typeObj = {};
 
     switch (type) {
@@ -156,11 +172,11 @@ class DynamooseService {
         break;
       case DynamooseService.UPDATE_TYPE_DELETE:
         typeObj = { $DELETE: updateObj };
-		break;
-		
-		default: typeObj = { $PUT: updateObj };
+		    break;
+      default: typeObj = { $PUT: updateObj };
+      break;
     }
-
+    console.log(JSON.stringify(obj), JSON.stringify(typeObj));
     schema.model.update(obj, typeObj, function(err: any) {
       if (err) return console.error(err);
       console.log("%c## save success", "color:lime");
@@ -179,17 +195,24 @@ class DynamooseService {
   ///////////////////////////////
   // get characters by array
   ///////////////////////////////
-  getCharactersByArray(chars: number[]) {
+  getCharactersByArray(chars: number[], callback: any): any {
     console.log("== getCharactersByArray ==", chars);
     // confirm global has characters array
     // if (!this.game.global) {
     //   this.game.global = {};
     //   this.game.global.characters = [];
     // }
+    let pool: CharacterVO[] = [];
     for (let char of chars) {
       console.log("+ char", char);
       this.findById(new CharactersSchema(), char, function(err: any, result: any) {
         console.log("* got char", result);
+        pool.push(new CharacterVO(result));
+        console.log(pool.length, chars.length);
+        if (pool.length === chars.length) {
+          console.log("* done!");
+          return callback(pool)
+        }
       });
     }
   };

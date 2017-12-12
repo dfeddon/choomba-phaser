@@ -7,7 +7,7 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 var BitBarWebpackProgressPlugin = require("bitbar-webpack-progress-plugin");
 
 module.exports = [{
-    devtool: "#inline-source-map",
+    devtool: "#cheap-module-eval-source-map",
     entry: {
         client: "./src/App.ts",
         // server: "./src/Server.ts"

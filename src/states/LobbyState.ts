@@ -8,6 +8,8 @@ import { SocketClusterService } from "../services/SocketClusterService";
 import { AWSService } from "../services/AWSService";
 import { IncidentsSchema } from "../services/Schemas/IncidentsSchema";
 import { NumberHelper } from "../helpers/NumberHelper";
+import { PlayerVO } from "../models/PlayersVO";
+import { Globals } from "../services/Globals";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
@@ -38,6 +40,18 @@ export default class LobbyState extends Phaser.State {
     console.log("***", NameGenerator);
     // this.sc = SocketClusterService.getInstance();
     // console.log("cluster", this.sc);
+
+    // populate character pool grid with freelancers (position === 0)
+    var player: PlayerVO = Globals.getInstance().player;
+    console.log("====== players", player.entity.characterPool.length);
+    let item: HTMLImageElement;
+    for (let i = 0; i < player.entity.characterPool.length; i++) {
+      item = document.getElementById('item-' + (i + 1).toString() +'-img') as HTMLImageElement;
+      item.src = 'images/portrait_3.png';
+      item.width = 75;
+      item.height = 100;
+    }
+    // console.log('img1', item1, item1.src);
   }
 
   shutdown() {

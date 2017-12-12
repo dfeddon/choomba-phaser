@@ -48,7 +48,12 @@ class CharacterVO extends AbstractVO {
   private _view: CharacterView;
 
   // constructor
-  constructor(key?: string, name?: string, vector?: VectorVO) {
+  constructor(vo?: CharacterVO) {
+    super();
+
+    if (vo) Object.assign(this, vo);
+  }
+  /*constructor(key?: string, name?: string, vector?: VectorVO) {
     super();
     console.log("* CharacterVO constructor");
     this.key = key;
@@ -92,7 +97,7 @@ class CharacterVO extends AbstractVO {
     // if (!this.id) {
     //   this.id = new Date().getTime().toString();
     // }
-  }
+  }*/
 
   createCharacter(role?: number): CharacterVO {
     console.log("* characterVO.createCharacter()", role);

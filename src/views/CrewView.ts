@@ -45,7 +45,7 @@ export default class CrewView extends Phaser.Sprite {
 
 		for (var i = 0; i < crewArray.length; i++) {
 			// create character view
-			characterView = new CharacterView(this.game, new CharacterVO(crewArray[i].key, crewArray[i].name, new VectorVO(lastVector.x, lastVector.y)));
+			characterView = new CharacterView(this.game, new CharacterVO());//crewArray[i].key, crewArray[i].name, new VectorVO(lastVector.x, lastVector.y)));
 			// add character to group
 			this.addChild(characterView);
 			// update last vector by width of character

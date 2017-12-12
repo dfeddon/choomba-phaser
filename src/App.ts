@@ -16,6 +16,9 @@ import { NumberHelper } from './helpers/NumberHelper';
 import { CharactersSchema } from './services/Schemas/CharactersSchema';
 import { DynamooseService } from './services/DynamooseService';
 // import { AWSIoTService } from './services/AWSIoTService';
+import { Globals } from './services/Globals';
+import { PlayerVO } from './models/PlayersVO';
+import { EntityVO } from './models/EntitiesVO';
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
@@ -64,6 +67,7 @@ export default class App extends Phaser.Game {
     // start AWS server (Singleton)
     let AWS = AWSService.getInstance();
     AWS.start();
+    // return;
 
     // init dynamoose
     // AWS.dynamoose.setGame(this);
@@ -91,17 +95,21 @@ export default class App extends Phaser.Game {
       if (err) return console.log(err);
       console.log("* player", player);
 
+      // store player globally
       if (player) {
+        Globals.getInstance().player = new PlayerVO(player);
+
         console.log("* getting owner from entity", player.entity);
         let characterPoolLength: number = 10;
         // get entity
         AWS.dynamoose.findById(new EntitiesSchema(), player.entity, function (err: any, entity: any) {
           if (err) return console.log(err);
-          console.log("* len", entity.freelancers);
+          console.log("* len", entity.characters);
+          Globals.getInstance().player.entity = new EntityVO(entity);
           // if character pool has empty slots, fill them
-          if (entity.freelancers.length < characterPoolLength) {
+          if (entity.characters.length < characterPoolLength) {
             var newCharacters: object[] = [];
-            let num: number = characterPoolLength - entity.freelancers.length;
+            let num: number = characterPoolLength - entity.characters.length;
             console.log("* need to generate", num, "new characters");
             if (num === characterPoolLength) {
               // new user, fill pool, ensuring entity has at least *one* role for each *position*
@@ -125,7 +133,7 @@ export default class App extends Phaser.Game {
             var characterIds: number[] = [];
             // save to db
             for (let schema of newCharacters) {
-              console.log("*****", typeof(schema), schema);
+              console.log("*****", typeof(schema), schema, typeof(characterIds));
               // add new character ids to array
               characterIds.push((schema as CharacterVO).id);
               // create new character
@@ -133,25 +141,35 @@ export default class App extends Phaser.Game {
                 if (err) console.log(err);
                 else {
                   console.log("%c## created: " + result, "color:lime");
+                  // add new char to global entity
+                  Globals.getInstance().player.entity.characterPool.push(result);
                   // append character id's to existing entity schema...
-                  entity.freelancers.push(result.id);
+                  entity.characters.push(result.id);
                 }
               });
             }
-            // append new character ids to existing entity.freelancers array
-            // let updatedCharacters: number[] = entity.freelancers.concat(characterIds);
-            console.log("* updating enitity freelancers array", characterIds);
-            AWS.dynamoose.update(new EntitiesSchema(), { id: player.entity }, DynamooseService.UPDATE_TYPE_ADD, { freelancers: characterIds }, function (err: any, item: any) {
+            // append new character ids to existing entity.characters array
+            let updatedCharacters: number[] = entity.characters.concat(characterIds);
+            console.log("* updating enitity characters array", typeof(updatedCharacters), updatedCharacters);
+            console.log("* entity id", player.entity, typeof(player.entity));
+            AWS.dynamoose.update(new EntitiesSchema(), { id: player.entity }, DynamooseService.UPDATE_TYPE_PUT, { characters: updatedCharacters }, function (err: any, item: any) {
               if (err) console.log(err);
               else console.log(item);
             });
             // get characters from db
           }
           else { // all slots filled, get characters
-            AWS.dynamoose.getCharactersByArray(entity.freelancers);
-            __this.state.start("BootState");
+            AWS.dynamoose.getCharactersByArray(entity.characters, function(result: CharacterVO[]) {
+              // console.log('**', result);
+              Globals.getInstance().player.entity.characterPool = result;
+              // test Globals
+              console.log("*g", Globals.getInstance().player);
+              __this.state.start("BootState");
+            });
+            // __this.state.start("BootState");
           }
         });
+        // console.log(Globals.getInstance().entity);
       }
       else console.log("!! no player found");
     });

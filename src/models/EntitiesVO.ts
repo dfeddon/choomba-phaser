@@ -16,10 +16,11 @@ class EntityVO extends AbstractVO {
   // private _members: EntityVO[];
   private _alliances: AllianceVO[];
   private _affiliates: AllianceVO[];
-  private _freelancers: CharacterVO[];
+  private _characterPool: CharacterVO[];
+  private _characters: number[];
   private _properties: StructureVO[];
   private _artifacts: ArtifactVO[];
-  private _crew: CrewVO;
+  // private _crew: CrewVO;
   private _biz: number;
   private _creds: number;
   private _fame: number;
@@ -68,22 +69,31 @@ class EntityVO extends AbstractVO {
     this._level = value;
   }
 
-  public get crew(): CrewVO {
-    return this._crew;
+  public get characters(): number[] {
+    return this._characters;
   }
 
-  public set crew(value: CrewVO) {
-    this._crew = value;
+  public set characters(value: number[]) {
+    this._characters = value;
   }
+
+	public get characterPool(): CharacterVO[] {
+		return this._characterPool;
+	}
+
+	public set characterPool(value: CharacterVO[]) {
+		this._characterPool = value;
+	}
+  
 
   /** entity constructor
    * @constructor
    * @param {EntityVO} data may optionally receive an EntityVO
    */
-  constructor() {
-    //data: EntityVO | {} = {}) {
+  constructor(vo: EntityVO | {} = {}) {
     super();
-    // Object.assign(this, data);
+
+    if (vo) Object.assign(this, vo);
   }
 }
 

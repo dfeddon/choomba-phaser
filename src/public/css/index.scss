@@ -1,39 +1,62 @@
-// Google Fonts
-@import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
-@import url(https://fonts.googleapis.com/css?family=Oxygen|Open+Sans:400italic,700italic,400,700);
-// Font Variables
-$roboto-slab: 'Roboto Slab',
-serif;
-$oxygen: 'Oxygen',
-sans-serif;
-$open-sans: 'Open Sans',
-sans-serif;
-$font-stack: Helvetica,
-sans-serif;
-// global vars
-$primary-color: #333;
-// mixins
-// text selection
-@mixin user-select($select) {
-    -webkit-user-select: $select;
-    -khtml-user-select: $select;
-    -moz-user-select: $select;
-    -ms-user-select: $select;
-    -o-user-select: $select;
-    user-select: $select;
-}
-
-// index body
-body {
-    font: 100% $font-stack;
-    // color: $primary-color;
-    background-color: $primary-color;
-    overflow: hidden; // hide scrollbars
-    padding: 0;
-    margin: 0;
-    height: 100%;
-}
-
-// lobby
-@import 'lobby';
-@import 'navigation';
+    // Google Fonts
+    @import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
+    @import url(https://fonts.googleapis.com/css?family=Oxygen|Open+Sans:400italic,700italic,400,700);
+    // Font Variables   
+    $roboto-slab: 'Roboto Slab',
+    serif;
+    $oxygen: 'Oxygen',
+    sans-serif;
+    $open-sans: 'Open Sans',
+    sans-serif;
+    $font-stack: Helvetica,
+    sans-serif;
+    // global vars
+    $primary-color: #333;
+    // mixins
+    // text selection
+    @mixin user-select($select) {
+        -webkit-user-select: $select;
+        -khtml-user-select: $select;
+        -moz-user-select: $select;
+        -ms-user-select: $select;
+        -o-user-select: $select;
+        user-select: $select;
+    }
+    
+    // scrollbar style
+    @mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, black, 25%)) {
+        // For Google Chrome
+         ::-webkit-scrollbar {
+            width: $size;
+            height: $size;
+        }
+         ::-webkit-scrollbar-thumb {
+            background: $foreground-color;
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        }
+         ::-webkit-scrollbar-track {
+            background: $background-color;
+        }
+        // For Internet Explorer
+        body {
+            scrollbar-face-color: $foreground-color;
+            scrollbar-track-color: $background-color;
+        }
+    }
+    
+    // index body
+    body {
+        font: 100% $font-stack;
+        // color: $primary-color;
+        background-color: $primary-color;
+        overflow: hidden; // hide scrollbars
+        padding: 0;
+        margin: 0;
+        height: 100%;
+    }
+    
+    // lobby
+    @import 'lobby';
+    @import 'navigation';
