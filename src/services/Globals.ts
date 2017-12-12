@@ -14,6 +14,7 @@ class Globals {
 		if (!Globals.instance) {
 			Globals.instance = new Globals();
 			// one-time init code here...
+			console.log("&& There can be only one!");
 		}
 
 		return Globals.instance;

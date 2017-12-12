@@ -12,7 +12,7 @@ class IncidentVO extends AbstractVO {
   // public static readonly INCIDENT_TYPE_ALLIANCE: number = 6;
 
   private _id: number;
-  private _name: string;
+  private _handle: string;
   private _description: string;
   private _type: number;
   private _structure: StructureVO;
@@ -30,12 +30,12 @@ class IncidentVO extends AbstractVO {
 		this._id = value;
 	}
 
-  public get name(): string {
-    return this._name;
+  public get handle(): string {
+    return this._handle;
   }
 
-  public set name(value: string) {
-    this._name = value;
+  public set handle(value: string) {
+    this._handle = value;
   }
 
   public get description(): string {

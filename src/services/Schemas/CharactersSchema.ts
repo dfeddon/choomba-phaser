@@ -9,7 +9,7 @@ class CharactersSchema extends dynamoose.Schema {
 
 		schema = {
 			id: { type: Number, hashKey: true },
-			name: { type: String },
+			handle: { type: String },
 			role: { type: Number },
 			position: { type: Number, default: 0 }, // 0 => not in crew
 			status: { type: Number, default: 1 }, // 1 => available

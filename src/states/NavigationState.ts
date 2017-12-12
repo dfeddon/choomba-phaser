@@ -39,13 +39,14 @@ export default class NavigationState extends Phaser.State {
 
   test: CharacterView;
 
-  constructor(incident: IncidentVO) {
+  constructor() {//incident: IncidentVO) {
     super();
 
-    if (incident)
-      this.incident = incident;
+    // if (incident)
+    //   this.incident = incident;
 
-    console.log("== NavigationState constuctor ==", incident);
+    console.log("== NavigationState constuctor ==");
+    // console.log("* incident", incident);
   }
 
 	public get inCombat(): boolean {
@@ -393,7 +394,7 @@ export default class NavigationState extends Phaser.State {
 
     // for (var i = 0; i < attackersArray.length; i++) {
     //   // create character view
-    //   attacker = new CharacterView(this.game, new CharacterVO(attackersArray[i].key, attackersArray[i].name, new VectorVO(lastVector.x, lastVector.y)));
+    //   attacker = new CharacterView(this.game, new CharacterVO(attackersArray[i].key, attackersArray[i].handle, new VectorVO(lastVector.x, lastVector.y)));
     //   // add character to group
     //   this.crewCombatAttack.add(attacker);
     //   // update last vector
@@ -443,7 +444,7 @@ export default class NavigationState extends Phaser.State {
   }
 
   characterClickHandler(vo: CharacterVO) {
-    console.log("* got character click signal", vo.name, vo.view.x, vo.view.y, vo.characterCombat);
+    console.log("* got character click signal", vo.handle, vo.view.x, vo.view.y, vo.characterCombat);
   }
 }
 // export { NavigationState };

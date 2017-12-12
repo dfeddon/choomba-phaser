@@ -42,14 +42,28 @@ export default class LobbyState extends Phaser.State {
     // console.log("cluster", this.sc);
 
     // populate character pool grid with freelancers (position === 0)
-    var player: PlayerVO = Globals.getInstance().player;
-    console.log("====== players", player.entity.characterPool.length);
+    console.log("====== players", Globals.getInstance().player);//, Globals.getInstance().player.entity.characterPool.length);
     let item: HTMLImageElement;
-    for (let i = 0; i < player.entity.characterPool.length; i++) {
-      item = document.getElementById('item-' + (i + 1).toString() +'-img') as HTMLImageElement;
-      item.src = 'images/portrait_3.png';
-      item.width = 75;
-      item.height = 100;
+    let name: HTMLElement;
+    let slot: number = 1;
+    for (let i = 0; i < Globals.getInstance().player.entity.characterPool.length; i++) {
+      console.log("* character type:", Globals.getInstance().player.entity.characterPool[i].role);
+      // populate character pool (position => 0)
+      if (Globals.getInstance().player.entity.characterPool[i].position === 0) {
+        item = document.getElementById('item-' + slot.toString() +'-img') as HTMLImageElement;
+        item.src = 'images/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
+        item.width = 75;
+        item.height = 100;
+        slot++;
+      }
+      else {
+        item = document.getElementById('crew-portrait-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLImageElement;
+        item.src = 'images/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
+        item.width = 75;
+        item.height = 100;
+        name = document.getElementById('crew-name-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLImageElement;
+        name.innerText = Globals.getInstance().player.entity.characterPool[i].handle;
+      }
     }
     // console.log('img1', item1, item1.src);
   }
@@ -162,14 +176,15 @@ export default class LobbyState extends Phaser.State {
 
       // store incident, then send with combatBegin fnc
       _this.selectedIncident = new IncidentVO(incident);
+      // TODO: Assign attack/defense characters to incident
       console.log("* assign", _this.selectedIncident);
 
       // join incident
       _this.sc.joinChannel(incident.channel);
     }
 
-    this.combatBegin = function(incident: IncidentVO) {
-      console.log("== LobbyState.combatBegin ==", incident, this.selectedIncident, _this.selectedIncident);
+    this.combatBegin = function() { //incident: IncidentVO) {
+      console.log("== LobbyState.combatBegin ==", this.selectedIncident);
       // hide lobby UI
       document.getElementById("lobbyState").style.display = "none";
       // show game canvas

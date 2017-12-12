@@ -15,7 +15,7 @@ $get-path-to-assets: "/images/";
     // width: 100%;
     // user-select: none; // disallow text selection
     cursor: default; // remove text edit caret
-    @include scrollbars(.25em, slategray, black);
+    @include scrollbars(.25em, slategray, #161616);
     @include user-select(none); // mixin to disable text selection
     // width: 100vw; // fullscreen width
     // height: 100vh; // fullscreen height

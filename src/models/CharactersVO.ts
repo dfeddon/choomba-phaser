@@ -28,11 +28,11 @@ class CharacterVO extends AbstractVO {
   // privates
   // private _uid: number;
   private _id: number;
-  private _name: string;
+  private _handle: string;
   private _role: number;
   private _owner: number;
-  private _position: number;
-  private _status: number;
+  private _position: number = 0;
+  private _status: number = CharacterVO.CHARACTER_STATUS_AVAILABLE;
   private _characterCombat: CharacterCombatVO;
 
   // private _attributes: AttributeVO;
@@ -52,15 +52,19 @@ class CharacterVO extends AbstractVO {
     super();
 
     if (vo) Object.assign(this, vo);
+
+    if (!this._handle)
+      this._handle = NameGenerator.species.human(false);
+
   }
-  /*constructor(key?: string, name?: string, vector?: VectorVO) {
+  /*constructor(key?: string, handle?: string, vector?: VectorVO) {
     super();
     console.log("* CharacterVO constructor");
     this.key = key;
-    if (name)
-      this.name = name;
-    else this.name = NameGenerator.species.human(false);
-    console.log("* character name:", this.name);
+    if (handle)
+      this.handle = handle;
+    else this.handle = NameGenerator.species.human(false);
+    console.log("* character handle:", this.handle);
     this.vector = vector;
 
     // combat
@@ -202,7 +206,7 @@ class CharacterVO extends AbstractVO {
   toObject(): object {
     var obj: any = {};
     obj.id = this.id;
-    obj.name = this.name;
+    obj.handle = this.handle;
     obj.role = this.role;
     obj.position = this.position;
     obj.grit = this.grit;
@@ -236,17 +240,17 @@ class CharacterVO extends AbstractVO {
   //   this._uid = value;
   // }
 
-  /** Character's name
+  /** Character's handle
    * @member
    * @private
    * @type {string}
    */
-  public get name(): string {
-    return this._name;
+  public get handle(): string {
+    return this._handle;
   }
 
-  public set name(value: string) {
-    this._name = value;
+  public set handle(value: string) {
+    this._handle = value;
   }
 
   /** Character's role
@@ -260,6 +264,32 @@ class CharacterVO extends AbstractVO {
 
   public set role(value: number) {
     this._role = value;
+    switch(value) {
+      case CharacterVO.CHARACTER_ROLE_ANARCHIST:
+        this._key = "steampunk02"
+      break;
+      case CharacterVO.CHARACTER_ROLE_BOOSTER:
+        this._key = "steampunk01";
+      break;
+      case CharacterVO.CHARACTER_ROLE_CHROMER:
+        this._key = "steampunk01";
+      break;
+      case CharacterVO.CHARACTER_ROLE_CLEANER:
+        this._key = "robot01";
+      break;
+      case CharacterVO.CHARACTER_ROLE_HACKER:
+        this._key = "steampunk01";
+      break;
+      case CharacterVO.CHARACTER_ROLE_MEDIC:
+        this._key = "robot01";
+      break;
+      case CharacterVO.CHARACTER_ROLE_RIGGER:
+        this._key = "steampunk02";
+      break;
+      case CharacterVO.CHARACTER_ROLE_TWEAKER:
+        this._key = "robot01";
+      break;
+    }
   }
 
   // /** Character's attributes.

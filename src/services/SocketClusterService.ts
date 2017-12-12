@@ -140,7 +140,7 @@ class SocketClusterService {
 
 		// store incident vo in db?
 		// send incident vo id on createIncident socket call
-		// create incident on server
+		// create incident on server ([f]rom: socket_it, [t]ype: incident type, [i]ncident: incident id, [o]wner: entity id )
 		this.socket.emit("createIncident", { f: this.socket.id, t:SocketClusterService.INCIDENT_TYPE_CREATED, i: id, o: owner });
 		// subscribe to new incident channel
 		this.localIncidentChannel = this.socket.subscribe(id);

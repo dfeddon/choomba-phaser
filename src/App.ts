@@ -27,6 +27,7 @@ export default class App extends Phaser.Game {
   // zomb1: Phaser.Sprite;
   // cat1: Phaser.Sprite;
   // cute1: Phaser.Sprite;
+  // Globals.getInstance().player: PlayerVO;
 
   constructor() {
     console.log("* Choomba");
@@ -63,6 +64,8 @@ export default class App extends Phaser.Game {
       //   render: this.render
       // }
     );
+
+    // let Globals.getInstance().player: PlayerVO = Globals.getInstance().player;
 
     // start AWS server (Singleton)
     let AWS = AWSService.getInstance();
@@ -105,6 +108,9 @@ export default class App extends Phaser.Game {
         AWS.dynamoose.findById(new EntitiesSchema(), player.entity, function (err: any, entity: any) {
           if (err) return console.log(err);
           console.log("* len", entity.characters);
+          // if no entity characters, set empty array
+          if (!entity.characters)
+            entity.characters = [];
           Globals.getInstance().player.entity = new EntityVO(entity);
           // if character pool has empty slots, fill them
           if (entity.characters.length < characterPoolLength) {
@@ -116,17 +122,18 @@ export default class App extends Phaser.Game {
               console.log("* new char!");
               // frontline (tank [1], gcannon [2]) backline (healer [3], cleanser [4]) midline (aoe [6], dot [5], buff [7], debuff [8])
               // 1 frontline
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(1, 2)));
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(1, 2)).toObject());
               // 1 backline
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(3, 4)));
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(3, 4)).toObject());
               // 2 mid
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(5, 6)));
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(7, 8)));
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(5, 6)).toObject());
+              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(7, 8)).toObject());
               // subtrack them
               num -= 4;
             }
             // generate new chars (random)
             for (var i = 0; i < num; i++) {
+              console.log('* newChar push');
               newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(1, 8)).toObject());
             }
             // array to store new character ids
@@ -140,10 +147,13 @@ export default class App extends Phaser.Game {
               AWS.dynamoose.create(new CharactersSchema(), schema, function(err: any, result: any) {
                 if (err) console.log(err);
                 else {
-                  console.log("%c## created: " + result, "color:lime");
+                  console.log("%c## created: " + JSON.stringify(result), "color:lime");
                   // add new char to global entity
+                  console.log("**pool");
+                  console.log("-", Globals.getInstance().player.entity);
                   Globals.getInstance().player.entity.characterPool.push(result);
                   // append character id's to existing entity schema...
+                  console.log("id", result.id);
                   entity.characters.push(result.id);
                 }
               });
@@ -174,7 +184,7 @@ export default class App extends Phaser.Game {
       else console.log("!! no player found");
     });
     var vo: CharacterVO = AWS.dynamoose.createCharacter();
-    console.log(vo.name);
+    console.log(vo.handle);
     console.log(vo.getLabelByRole());
     console.log("* grit", vo.grit);
     console.log("* reflexes", vo.reflexes);

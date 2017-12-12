@@ -79,7 +79,7 @@ class DynamooseService {
 		else console.log(item);
   });*/
     /*
-    var obj = { id: NumberHelper.UIDGenerator(), name: "Sipher 3", characters: [151283850906113280] };
+    var obj = { id: NumberHelper.UIDGenerator(), name: "Sipher 3", characters: [] };
     this.create(new EntitiesSchema(), obj, function (err: any, item: any) {
       if (err) console.log(err);
       else console.log(item);
@@ -131,7 +131,7 @@ class DynamooseService {
   create(schema: any, obj: any, callback: any): any {
     schema.model.create(obj, function(err: any, item: any) {
       if (err) return callback(err, null); //console.error(err);
-      console.log("%c## created", "color:lime");
+      console.log("%c## dynamoose created", "color:lime");
       return callback(null, item);
     });
   }
