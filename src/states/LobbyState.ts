@@ -51,17 +51,18 @@ export default class LobbyState extends Phaser.State {
       // populate character pool (position => 0)
       if (Globals.getInstance().player.entity.characterPool[i].position === 0) {
         item = document.getElementById('item-' + slot.toString() +'-img') as HTMLImageElement;
+        item.setAttribute('charid', Globals.getInstance().player.entity.characterPool[i].id.toString());
         item.src = 'images/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
         item.width = 75;
         item.height = 100;
         slot++;
       }
-      else {
+      else { // character in crew!
         item = document.getElementById('crew-portrait-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLImageElement;
         item.src = 'images/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
         item.width = 75;
         item.height = 100;
-        name = document.getElementById('crew-name-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLImageElement;
+        name = document.getElementById('crew-name-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLElement;
         name.innerText = Globals.getInstance().player.entity.characterPool[i].handle;
       }
     }
@@ -203,11 +204,23 @@ export default class LobbyState extends Phaser.State {
       _this.game.state.start("NavigationState", true, false, this.selectedIncident);
     }
   
-    // drag and drop
+    // drag...
     document.ondragstart = function(e) {
       console.log("ondragstart", e.target);
-      var i = e.target as any;
-      _this.charDragSource = i.id;
+      let img: HTMLImageElement = e.target as HTMLImageElement;
+      console.log(img);
+      // only allow dragging of extant slots
+      if (!img.getAttribute('charid')) {
+        console.log("* empty slot");
+        if (e.stopPropagation)
+          e.stopPropagation();
+        if (e.preventDefault)
+          e.preventDefault();
+      } else {
+        console.log("* valid image");
+      }
+      // var i = e.target as any;
+      _this.charDragSource = img;//.id;
       e.stopImmediatePropagation();
       // e.dataTransfer.setDragImage()
     };
@@ -215,18 +228,35 @@ export default class LobbyState extends Phaser.State {
       // console.log("ondragover", e);
       e.preventDefault();
     };
-    
+    // ... and drop
     document.ondrop = function(e) {
+      if (e.stopPropagation)
+        e.stopPropagation();
+      if (e.preventDefault)
+        e.preventDefault();
       var i = e.target as any;
-      _this.charDragTarget = i.id;
+      _this.charDragTarget = i;//.id;
       console.log("ondrop event", i.id);
-      console.log(
-        "* dropping",
-        _this.charDragSource,
-        "onto",
-        _this.charDragTarget
-      );
-      e.stopImmediatePropagation();
+      console.log("* dropping", _this.charDragSource, "onto", _this.charDragTarget);
+      // e.stopImmediatePropagation();
+
+      // first, ensure drag source class is *pool-item-img* and drop targ class is *crew-portraits*
+      console.log("*", _this.charDragSource.getAttribute('class'), _this.charDragTarget.getAttribute('class'));
+      if (_this.charDragSource.getAttribute('class') != "pool-item-img" || _this.charDragTarget.getAttribute('class') != "crew-portraits") {
+        return console.log("* invalid source/target!");
+      }
+
+      // if target is empty, add source and refresh pool
+      if (!_this.charDragTarget.src) {
+        console.log("* valid target has no image, set it!")
+        _this.charDragTarget.setAttribute('src', _this.charDragSource.getAttribute('src'));
+        _this.charDragTarget.setAttribute('charid', _this.charDragSource.getAttribute('charid'));
+        // change character position to slot num
+        // refresh pool
+      } else { // otherwise, switch target and source
+        console.log("* valid target has image, switch!");
+      }
+      
     };
 
     // touch events

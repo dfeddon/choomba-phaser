@@ -10,9 +10,12 @@ $get-path-to-assets: "/images/";
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     background-color: black;
-    // background-image: url(#{$get-path-to-assets}bg-punching.png); //url('assets/images/bg-punching.jpg');
+    // background-image: url(#{$get-path-to-assets}bg-lobby.png); //url('assets/images/bg-punching.jpg');
+    // background-size: cover;
+    // background-repeat: no-repeat;
     // background-repeat: repeat;
-    // width: 100%;
+    // width: 100vw;
+    height: 100vw;
     // user-select: none; // disallow text selection
     cursor: default; // remove text edit caret
     @include scrollbars(.25em, slategray, #161616);
