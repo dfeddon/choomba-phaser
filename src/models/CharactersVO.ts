@@ -9,6 +9,8 @@ import { AbstractVO } from "./AbstractVO";
 import CharacterView from "../views/CharacterViews";
 import * as NameGenerator from "fantastical";
 import { NumberHelper } from "../helpers/NumberHelper";
+import { CharactersSchema } from "../services/Schemas/CharactersSchema";
+import { AWSService } from "../services/AWSService";
 
 class CharacterVO extends AbstractVO {
 
@@ -50,8 +52,11 @@ class CharacterVO extends AbstractVO {
   // constructor
   constructor(vo?: CharacterVO) {
     super();
-
+    // console.log("-- init start", this._init);
     if (vo) Object.assign(this, vo);
+    this._initializing = false;
+    
+    console.log("-- init end");
 
     if (!this._handle)
       this._handle = NameGenerator.species.human(false);
@@ -114,14 +119,14 @@ class CharacterVO extends AbstractVO {
       console.log("* role", role);
     }
     // set role
-    this.role = role;
+    this._role = role;
 
     // status available
-    this.status = CharacterVO.CHARACTER_STATUS_AVAILABLE;
+    this._status = CharacterVO.CHARACTER_STATUS_AVAILABLE;
 
     // generate uid
     if (!this.id)
-      this.id = NumberHelper.UIDGenerator();
+      this._id = NumberHelper.UIDGenerator();
 
     // first, randomly assign values to all attributs (from 1 - 18/100?)
     this._grit = NumberHelper.randomRange(0, 50);
@@ -131,7 +136,7 @@ class CharacterVO extends AbstractVO {
     this._cybermancy = NumberHelper.randomRange(0, 50);
 
     // boost role-based attributes
-    switch(this.role) {
+    switch(this._role) {
       case CharacterVO.CHARACTER_ROLE_CHROMER: // [TANK] meat, grit (frontline)
         this._meat = 50 + NumberHelper.randomRange(0, 50);
         this._grit = 50 + NumberHelper.randomRange(0, 50);
@@ -172,10 +177,10 @@ class CharacterVO extends AbstractVO {
     // console.log("== getLabelByRole ==", this._role);
     var label: string = "none";
 
-    if (!this.role)
+    if (!this._role)
       return "Unnamed";
 
-    switch (this.role) {
+    switch (this._role) {
       case CharacterVO.CHARACTER_ROLE_CHROMER: // [TANK] meat, grit (frontline)
         label = "Chromer";
         break;
@@ -408,7 +413,11 @@ class CharacterVO extends AbstractVO {
 	}
 
 	public set position(value: number) {
-		this._position = value;
+    this._position = value;
+    
+    // update service
+    if (!this._initializing)
+      this.update(AWSService.getInstance().dynamoose, new CharactersSchema(), "position");
 	}
 
 	public get status(): number {

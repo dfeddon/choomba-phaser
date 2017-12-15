@@ -26,6 +26,30 @@ class EntityVO extends AbstractVO {
   private _fame: number;
 
 
+  /** entity constructor
+   * @constructor
+   * @param {EntityVO} data may optionally receive an EntityVO
+   */
+  constructor(vo: EntityVO | {} = {}) {
+    super();
+
+    if (vo) Object.assign(this, vo);
+  }
+
+  // helper functions
+  public getCharacterFromPoolById = function(id: number): CharacterVO {
+    // console.log("getCharacterFromPoolById", id, typeof(id));
+
+    for (let char of this._characterPool) {
+      // console.log(char.id, id);
+      if (char.id === id) {
+        return char;
+      }
+    }
+  }
+
+  // getters & setters
+
 	public get owner(): PlayerVO {
 		return this._owner;
 	}
@@ -84,17 +108,6 @@ class EntityVO extends AbstractVO {
 	public set characterPool(value: CharacterVO[]) {
 		this._characterPool = value;
 	}
-  
-
-  /** entity constructor
-   * @constructor
-   * @param {EntityVO} data may optionally receive an EntityVO
-   */
-  constructor(vo: EntityVO | {} = {}) {
-    super();
-
-    if (vo) Object.assign(this, vo);
-  }
 }
 
 export { EntityVO };

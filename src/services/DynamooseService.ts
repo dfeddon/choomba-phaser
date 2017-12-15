@@ -157,8 +157,8 @@ class DynamooseService {
   ///////////////////////////////
   // update #id
   ///////////////////////////////
-  update(schema: any, obj: any, type: number, updateObj: object, callback: any) {
-  console.log(obj);
+  update(schema: any, key: any, type: number, updateObj: object, callback: any) {
+  console.log(key);
   console.log(type);
   console.log(updateObj);
 	var typeObj = {};
@@ -176,8 +176,8 @@ class DynamooseService {
       default: typeObj = { $PUT: updateObj };
       break;
     }
-    console.log(JSON.stringify(obj), JSON.stringify(typeObj));
-    schema.model.update(obj, typeObj, function(err: any) {
+    console.log(JSON.stringify(key), JSON.stringify(typeObj));
+    schema.model.update(key, typeObj, function(err: any) {
       if (err) return console.error(err);
       console.log("%c## save success", "color:lime");
     });
