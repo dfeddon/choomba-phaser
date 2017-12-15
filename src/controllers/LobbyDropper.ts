@@ -40,8 +40,21 @@ class LobbyDropper {
 		if (targClass === LobbyDropper.CREW_CLASS_NAME && srcClass === LobbyDropper.CREW_CLASS_NAME) {
 			console.log("* switching positions...", srcPosition, targPosition);
 			
+			// switch character positions (auto-save)
 			srcVO.position = targPosition;
 			targVO.position = srcPosition;
+
+			// switch image slots
+			src.setAttribute('src', targSrc);
+			src.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, targId);
+			targ.setAttribute('src', srcSrc);
+			targ.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, srcId);
+
+			// switch handle labels
+			let srcLabel: HTMLElement = document.getElementById('crew-name-' + srcPosition.toString()) as HTMLElement;
+			srcLabel.innerText = targVO.handle;
+			let targLabel: HTMLElement = document.getElementById('crew-name-' + targPosition.toString()) as HTMLElement;
+			targLabel.innerText = srcVO.handle;
 
 			return;
 		}
@@ -53,6 +66,7 @@ class LobbyDropper {
 			targ.setAttribute('src', srcSrc);
 			targ.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, srcId);
 			// change char vo position attribute to slot num
+			srcVO.position = targPosition;
 			// var srcVO: CharacterVO = Globals.getInstance().player.entity.getCharacterFromPoolById(srcId);
 			console.log("* char source", srcVO);
 			console.log("* target position", targPosition);
