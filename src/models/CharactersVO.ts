@@ -1,9 +1,9 @@
-import { AttributeVO } from "./AttributesVO";
+// import { AttributeVO } from "./AttributesVO";
 import { AtlasVO } from "./AtlasVO";
 import { VectorVO } from "./VectorsVO";
-import { AtlasPrefixTypeVO } from "./AtlasPrefixTypesVO";
-import { AtlasFrameVO } from "./AtlasFramesVO";
-import * as jsonData from "../public/assets/atlas.json";
+// import { AtlasPrefixTypeVO } from "./AtlasPrefixTypesVO";
+// import { AtlasFrameVO } from "./AtlasFramesVO";
+// import * as jsonData from "../public/assets/atlas.json";
 import { CharacterCombatVO } from "./CharacterCombatVO";
 import { AbstractVO } from "./AbstractVO";
 import CharacterView from "../views/CharacterViews";

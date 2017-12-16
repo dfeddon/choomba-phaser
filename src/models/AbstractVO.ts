@@ -5,7 +5,7 @@
 class AbstractVO extends Object {
   // public static readonly SCHEMA_TYPE_CHARACTER:number = 1;
 
-  // protected AWS = AWSService;//.getInstance();
+  // protected AWSService = AWSService;//.getInstance();
   private _uid: number;
 
   protected _initializing: boolean = true;

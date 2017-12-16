@@ -36,6 +36,9 @@ class LobbyDropper {
 		if (targClass === LobbyDropper.POOL_CLASS_NAME && srcClass === LobbyDropper.POOL_CLASS_NAME) {
 			return console.log("* pool-to-pool movement not allowed...");
 		}
+		// no move made
+		if (targ === src)
+			return console.log("move self-canceled...");
 		// crew-to-crew
 		if (targClass === LobbyDropper.CREW_CLASS_NAME && srcClass === LobbyDropper.CREW_CLASS_NAME) {
 			console.log("* switching positions...", srcPosition, targPosition);
@@ -73,7 +76,38 @@ class LobbyDropper {
 			// refresh pool
 		} else { // otherwise, switch target and source
 			console.log("* target has image, switch!");
+			// first, let's determine which element is crew... (pool excludes label and position = 0)
+			if (targClass === LobbyDropper.CREW_CLASS_NAME) {
+				targ.setAttribute('src', srcSrc);
+				targ.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, srcId);
+				let targLabel: HTMLElement = document.getElementById('crew-name-' + targPosition.toString()) as HTMLElement;
+				targLabel.innerText = srcVO.handle;
+				// change char vo position attribute to slot num
+				srcVO.position = targPosition;
+
+				// src is pool
+				src.setAttribute('src', targSrc);
+				src.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, targId);
+				// change char vo position attribute to slot num
+				targVO.position = 0;//srcPosition;
+			}
+			else {
+				src.setAttribute('src', targSrc);
+				src.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, targId);
+				let srcLabel: HTMLElement = document.getElementById('crew-name-' + srcPosition.toString()) as HTMLElement;
+				srcLabel.innerText = targVO.handle;
+				// change char vo position attribute to slot num
+				targVO.position = srcPosition;
+
+				// targ is pool
+				targ.setAttribute('src', srcSrc);
+				targ.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, srcId);
+				// change char vo position attribute to slot num
+				srcVO.position = 0;//srcPosition;
+			}
 			// exchange chars vo position attributes
+			// update label on crew slot
+			// refresh/sort pool array
 		}
 	}
 }
