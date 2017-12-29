@@ -2,7 +2,7 @@ import { IncidentVO } from "../models/IncidentsVO";
 import { NameGenerator } from "fantastical";
 import { EntityVO } from "../models/EntitiesVO";
 import { CrewVO } from "../models/CrewsVO";
-import { CharacterDataVO } from "../models/CharacterDataVO";
+// import { CharacterDataVO } from "../models/CharacterDataVO";
 import * as data from "../helpers/stubJson.json";
 import { SocketClusterService } from "../services/SocketClusterService";
 import { AWSService } from "../services/AWSService";
@@ -67,6 +67,10 @@ export default class LobbyState extends Phaser.State {
         name = document.getElementById('crew-name-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLElement;
         name.innerText = Globals.getInstance().player.entity.characterPool[i].handle;
       }
+      item.addEventListener("click", function(e) {
+        console.log("* item clicked!", e);
+        console.log("* charid", (e.srcElement.attributes as any).charid.nodeValue);
+      });
     }
     // console.log('img1', item1, item1.src);
   }
@@ -104,7 +108,7 @@ export default class LobbyState extends Phaser.State {
       // create incidentVO
       var obj: object = { 
         id: NumberHelper.UIDGenerator(), 
-        name: "Cipher's Incident", 
+        handle: "Cipher's Incident", 
         description: "Tunnelling down into the grime of BAMA Sprawl..."
       };
       // save it to dynamoDB?
@@ -225,9 +229,15 @@ export default class LobbyState extends Phaser.State {
       e.stopImmediatePropagation();
     };
     document.ondragover = function(e) {
-      console.log("ondragover", e);
+      // console.log("ondragover", e);
       e.preventDefault();
     };
+    document.ondragenter = function(e) {
+      console.log("ondragenter");
+    }
+    document.ondragleave = function(e) {
+      console.log("ondragleave");
+    }
     // ... and drop
     document.ondrop = function(e) {
       console.log("* ondrop", e);
@@ -288,9 +298,9 @@ export default class LobbyState extends Phaser.State {
       // insert item
       pulse.insertAdjacentElement("afterbegin", wrapper);
       // update labels
-      var name: any = document.getElementById("pulse-item-label");  
+      var handle: any = document.getElementById("pulse-item-label");  
       var desc: any = document.getElementById("pulse-item-description");
-      name.innerText = item.name;
+      handle.innerText = item.handle;
       desc.innerText = item.description;
       // assign channel to vo
       item.channel = vo.i;

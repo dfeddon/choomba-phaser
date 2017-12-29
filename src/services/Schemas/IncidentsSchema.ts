@@ -9,7 +9,7 @@ class IncidentsSchema extends dynamoose.Schema {
 		
 		schema = {
 			id: 			{ type: Number, hashKey: true },
-			handle: 			{ type: String },
+			handle: 		{ type: String },
 			description: 	{ type: String },
 			type: 			{ type: Number },
 			structure: 		{ type: Number },

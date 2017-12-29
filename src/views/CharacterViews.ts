@@ -1,7 +1,9 @@
 import { CharacterVO } from "../models/CharactersVO";
+import { AtlasVO } from "../models/AtlasVO";
 import { AtlasFrameVO } from "../models/AtlasFramesVO";
 import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
 import NavigationState from "../states/NavigationState";
+import * as jsonData from "../public/assets/atlas.json";
 
 export default class CharacterView extends Phaser.Sprite {
 
@@ -12,6 +14,7 @@ export default class CharacterView extends Phaser.Sprite {
 	vo: CharacterVO;
 	imgScale: number;
 	currentState: number;
+	atlas: AtlasVO;
 	
 	constructor(game: Phaser.Game, vo:CharacterVO) {
 		console.log("== CharacterView.constructor ==", vo);
@@ -22,6 +25,37 @@ export default class CharacterView extends Phaser.Sprite {
 		this.imgScale = 0.50;
 		this.currentState = 0;
 
+		// get atlas data
+		if (!this.atlas) {
+			this.atlas = new AtlasVO();
+			// define animation keys
+			console.log("* data", jsonData);
+			var json: JSON = (<any>jsonData).characters;
+			console.log("* json", json);
+			for (var i in json[vo.key]) {
+				// console.log(i);
+				this.atlas.keys.push(i);
+			}
+			// define animations
+			var data, prefix, frame;
+			for (var j in this.atlas.keys) {
+				// set data
+				data = json[vo.key][this.atlas.keys[j]];
+				// instantiate prefix
+				prefix = new AtlasPrefixTypeVO(null, this.atlas.keys[j], data.prefix);
+				// instatiate frame
+				frame = new AtlasFrameVO(
+				prefix,
+				data.start,
+				data.stop,
+				data.suffix,
+				data.zeroPad
+				);
+				// add to animation frames
+				this.atlas.frames.push(frame);
+			}		
+		}
+
 		// console.log("* parent", this.parent);
 
 		// anchor, mid x, y bototm (feet)
@@ -29,7 +63,7 @@ export default class CharacterView extends Phaser.Sprite {
 		this.scale.setTo(this.imgScale, this.imgScale); // scale
 
 		// animations
-		for (let framevo of vo.atlas.frames) {
+		for (let framevo of this.atlas.frames) {
 			// console.log('frame', framevo);
 			this.animations.add(framevo.prefix.prefixKey, Phaser.Animation.generateFrameNames(framevo.prefix[framevo.prefix.prefixKey], framevo.start, framevo.stop, framevo.suffix, framevo.zeroPad), 10, true, false);
 		}

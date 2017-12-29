@@ -17,8 +17,15 @@ class IncidentVO extends AbstractVO {
   private _type: number;
   private _structure: StructureVO;
   private _entity: EntityVO;
-  public owner: string;
-  public channel: string;
+  private _owner: number; // attacker is dependant upon the type
+  private _channel: string;
+
+
+  constructor(vo: object | {} = {}) {
+    super();
+
+    if (vo) Object.assign(this, vo);
+  }
 
 	public get id(): number {
 		return this._id;
@@ -70,11 +77,23 @@ class IncidentVO extends AbstractVO {
     this._type = value;
   }
 
-  constructor(vo: object | {} = {}) {
-    super();
-
-    if (vo) Object.assign(this, vo);
+  public get owner(): number {
+    return this._owner;
   }
+
+  public set owner(value: number) {
+    this._owner = value;
+  }
+
+  public get channel(): string {
+    return this._channel;
+  }
+
+  public set channel(value: string) {
+    this._channel = value;
+  }
+
+
 }
 
 export { IncidentVO };

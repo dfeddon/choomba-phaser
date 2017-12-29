@@ -141,7 +141,7 @@ class SocketClusterService {
 		// store incident vo in db?
 		// send incident vo id on createIncident socket call
 		// create incident on server ([f]rom: socket_it, [t]ype: incident type, [i]ncident: incident id, [o]wner: entity id )
-		this.socket.emit("createIncident", { f: this.socket.id, t:SocketClusterService.INCIDENT_TYPE_CREATED, i: id, o: owner });
+		this.socket.emit("createIncident", { f: this.socket.id, t: SocketClusterService.INCIDENT_TYPE_CREATED, i: id, o: owner });
 		// subscribe to new incident channel
 		this.localIncidentChannel = this.socket.subscribe(id);
 		// sub fail
@@ -205,7 +205,7 @@ class SocketClusterService {
 					// var d = {p:null as any,c:null as any};
 					var chars: object[] = [{p4:1, p3:3, p2:1, p1:4},{p4:2, p3:3, p2:2, p1:3}];
 					// d.p = chars;
-					// d.c = data.c;
+					// d.c = data.c; incident id
 					this.socket.emit("combatBegin", {c:data.c, p:chars}, function(err: any, resp: any) {
 						if (err)
 							console.log("err", err);

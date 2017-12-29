@@ -1,7 +1,8 @@
-import { CharacterDataVO } from "../models/CharacterDataVO";
+// import { CharacterDataVO } from "../models/CharacterDataVO";
 import CharacterView from "./CharacterViews";
 import { CharacterVO } from "../models/CharactersVO";
 import { VectorVO } from "../models/VectorsVO";
+import * as _ from "lodash";
 
 export default class CrewView extends Phaser.Sprite {
 
@@ -32,20 +33,28 @@ export default class CrewView extends Phaser.Sprite {
 		console.log("== CrewView.created() ==");
 	}
 
-	addCrewMembers(crewArray: CharacterDataVO[], isLeft: boolean) {
+	addCrewMembers(crewArray: CharacterVO[], isLeft: boolean) {
 		console.log("== CrewView.addCrew ==", crewArray, isLeft);
 		var vectorX: number = 0;//15;
+		// sort crew by position
+		var sortedCrew: CharacterVO[] = _.orderBy(crewArray, 'position');
+		console.log("* sorted", sortedCrew);
 		if (!isLeft) {
 			// start x value
 			vectorX = 0;//400;
 			// this.scale.x = -1;
 		}
 		var characterView: CharacterView;
+		var vo: CharacterVO;
 		var lastVector: VectorVO = new VectorVO(vectorX, this.game.height / 3 * 2);
 
-		for (var i = 0; i < crewArray.length; i++) {
+		// for (var i = 0; i < sortedCrew.length; i++) {
+		for (var i = sortedCrew.length - 1; i >= 0; i--) {
+			// character vo
+			vo = sortedCrew[i];//new CharacterVO();
+			vo.vector = new VectorVO(lastVector.x, lastVector.y)
 			// create character view
-			characterView = new CharacterView(this.game, new CharacterVO());//crewArray[i].key, crewArray[i].name, new VectorVO(lastVector.x, lastVector.y)));
+			characterView = new CharacterView(this.game, vo);//new CharacterVO());//crewArray[i].key, crewArray[i].name, new VectorVO(lastVector.x, lastVector.y)));
 			// add character to group
 			this.addChild(characterView);
 			// update last vector by width of character

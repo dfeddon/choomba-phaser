@@ -1,12 +1,12 @@
 import CharacterView from "../views/CharacterViews";
 // import { CharacterVO } from "../models/CharactersVO";
-import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
-import { AtlasVO } from "../models/AtlasVO";
-import { AtlasFrameVO } from "../models/AtlasFramesVO";
+// import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
+// import { AtlasVO } from "../models/AtlasVO";
+// import { AtlasFrameVO } from "../models/AtlasFramesVO";
 
 // import * as data from "../public/assets/atlas.json";
 import { VectorVO } from "../models/VectorsVO";
-import { CharacterDataVO } from "../models/CharacterDataVO";
+// import { CharacterDataVO } from "../models/CharacterDataVO";
 import CombatUIView from "../views/CombatUIView";
 import CombatStageView from "../views/CombatStageView";
 import CrewView from "../views/CrewView";
@@ -16,6 +16,7 @@ import { NavigationController } from "../controllers/NavigationController";
 import { CharacterVO } from "../models/CharactersVO";
 import { IncidentVO } from "../models/IncidentsVO";
 import { CrewVO } from "../models/CrewsVO";
+import { Globals } from "../services/Globals";
 
 export default class NavigationState extends Phaser.State {
   private _inCombat: boolean;
@@ -343,7 +344,21 @@ export default class NavigationState extends Phaser.State {
     // Stretch to fill
     // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
 
+    // get crew
+    // console.log("* globals", Globals.getInstance().player.entity.characters);
+    let pool: CharacterVO[] = Globals.getInstance().player.entity.characterPool;
+    let crew: CharacterVO[] = [];
+    for (let character of pool) {
+      if (character.position > 0)
+        crew.push(character);
+    }
+    console.log("* crew", crew);
+    console.log("* incident", this.incident);
+
+    // determine attacker/defender
+
     // start combat
+    /*
     var attackers: CharacterDataVO[] = [
       new CharacterDataVO("steampunk02"),// "Cat 1"), 
       new CharacterDataVO("steampunk01"),//, "Man 1"),
@@ -356,10 +371,11 @@ export default class NavigationState extends Phaser.State {
       new CharacterDataVO("steampunk02"),//, "Steampunk 1"),
       new CharacterDataVO("robot01")//, "Robot 1")
     ];
+    */
     // var attackers: CrewVO = new CrewVO();
     // attackers.characters = [
     // ]
-    this.initIncident(attackers, []);//defenders);
+    this.initIncident(crew, []);//defenders);
 
     //  var text = "Hello World!";
     //  var style = { font: "65px Arial", fill: "#ff0000", align: "center" };
@@ -367,7 +383,7 @@ export default class NavigationState extends Phaser.State {
 
   }
 
-  initIncident(attackersArray: CharacterDataVO[], defendersArray: CharacterDataVO[]) {
+  initIncident(attackersArray: CharacterVO[], defendersArray: CharacterVO[]) {
     console.log("== NavigationState.initIncident() ==");
     this.crewCombatAttack = new CrewView(this.game, 0, 0, "", 0);
     this.crewCombatAttack.addCrewMembers(attackersArray, true);

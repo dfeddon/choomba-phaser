@@ -44,7 +44,7 @@ class CharacterVO extends AbstractVO {
   private _cybermancy: number;
   private _meat: number;
   
-  private _atlas: AtlasVO;
+  // private _atlas: AtlasVO;
   private _key: string;
   private _vector: VectorVO;
   private _view: CharacterView;
@@ -60,6 +60,37 @@ class CharacterVO extends AbstractVO {
 
     if (!this._handle)
       this._handle = NameGenerator.species.human(false);
+
+    // if (!this.atlas) {
+    //   this.atlas = new AtlasVO();
+    //   // define animation keys
+    //   console.log("* data", jsonData);
+    //   var json: JSON = (<any>jsonData).characters;
+    //   console.log("* json", json);
+    //   for (var i in json[this.key]) {
+    //     // console.log(i);
+    //     this.atlas.keys.push(i);
+    //   }
+    //   // define animations
+    //   var data, prefix, frame;
+    //   for (var j in this.atlas.keys) {
+    //     // set data
+    //     data = json[this.key][this.atlas.keys[j]];
+    //     // instantiate prefix
+    //     prefix = new AtlasPrefixTypeVO(null, this.atlas.keys[j], data.prefix);
+    //     // instatiate frame
+    //     frame = new AtlasFrameVO(
+    //       prefix,
+    //       data.start,
+    //       data.stop,
+    //       data.suffix,
+    //       data.zeroPad
+    //     );
+    //     // add to animation frames
+    //     this.atlas.frames.push(frame);
+    //   }
+    // 
+    // }
 
   }
   /*constructor(key?: string, handle?: string, vector?: VectorVO) {
@@ -310,18 +341,13 @@ class CharacterVO extends AbstractVO {
   //   this._attributes = value;
   // }
 
-  /** Character's atlas data.
-   * @member
-   * @private
-   * @type {AttributeVO}
-   */
-  public get atlas(): AtlasVO {
-    return this._atlas;
-  }
+  // public get atlas(): AtlasVO {
+  //   return this._atlas;
+  // }
 
-  public set atlas(value: AtlasVO) {
-    this._atlas = value;
-  }
+  // public set atlas(value: AtlasVO) {
+  //   this._atlas = value;
+  // }
 
   /** Character's atlas key.
    * @member

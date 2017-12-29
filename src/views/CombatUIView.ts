@@ -53,6 +53,8 @@ export default class CombatUIView extends Phaser.Group {
 		this.add(profileUI);
 
 		var characterProfile:Phaser.Sprite = this.game.add.sprite(0, 0, "profile_1");
+		characterProfile.width = 75;
+		characterProfile.height = 100;
 		// name & class
 		var textColor: string = "#ccc";
 		var temp: string = NameGenerator.species.human(false);
