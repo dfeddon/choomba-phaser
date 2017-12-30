@@ -69,6 +69,7 @@ export default class LobbyState extends Phaser.State {
         name.innerText = Globals.getInstance().player.entity.characterPool[i].handle;
       }
       item.addEventListener("click", function(e) {
+        // show character modal window
         console.log("* item clicked!", e);
         var selectedId: number = parseInt((e.srcElement.attributes as any).charid.nodeValue);
         console.log("* charid", (e.srcElement.attributes as any).charid.nodeValue);

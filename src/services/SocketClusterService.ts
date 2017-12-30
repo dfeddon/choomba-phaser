@@ -3,6 +3,8 @@ import LobbyState from "../states/LobbyState";
 import { IncidentVO } from "../models/IncidentsVO";
 import * as stub from "../helpers/stubJson.json";
 import * as _ from "lodash";
+import { CharacterVO } from "../models/CharactersVO";
+import { Globals } from "./Globals";
 
 // import * as AWS from "aws-sdk";
 // import * as S3 from "aws-sdk/clients/s3";
@@ -41,7 +43,7 @@ class SocketClusterService {
   	init(game: Phaser.Game) {
 		  var _this = this;
 		var options = { port: 8000 };
-		var socket = socketCluster.connect(options);
+		var socket = (socketCluster as any).connect(options);
 		this.socket = socket;
 		this.game = game;
 
@@ -180,9 +182,16 @@ class SocketClusterService {
 				console.log("*** JOINED, SO DISABLE THIS CHANNEL");
 			}
 			// dispatch "joined" event
-			_this.localIncidentChannel.publish({ c: data, type: SocketClusterService.INCIDENT_TYPE_JOINED, sid: _this.socket.id, id: "11223344" }, function(err: any) {
+			// send player role and speed data to owner
+			// var crew: CharacterVO[] = Globals.getInstance().player.entity.characterPool;
+			var sortedCrew: CharacterVO[] = Globals.getInstance().getCrew();
+			var crewIds: number[] = _.map(sortedCrew, 'id');
+			console.log("* sorted crew ids", crewIds);
+			// var odata: object = {o1:}
+			_this.localIncidentChannel.publish({ c: data, type: SocketClusterService.INCIDENT_TYPE_JOINED, sid: _this.socket.id, crew: crewIds }, function(err: any, data: any) {
 				if (err)
 					console.log("* publish err", err);
+				else console.log("* publish success!", data);
 			});
 		});
 		// watcher (non-owner)
@@ -198,15 +207,18 @@ class SocketClusterService {
 			case SocketClusterService.INCIDENT_TYPE_JOINED: // joined incident
 				if (isOwner) {
 					console.log("%c++ opponent has *joined* your channel", "color:yellow");
+					// console.log("data", data);
 					// opponent has joined
+					var challenger: number[] = data.crew;
+					var owner: number[] = _.map(Globals.getInstance().getCrew(), "id");
                  	// lock global channel (by id?) if user is *not* owner (limit of 2?)...
 					// get id and query db
 					// send *all* chars with alacrity for ordering to socket
 					// var d = {p:null as any,c:null as any};
-					var chars: object[] = [{p4:1, p3:3, p2:1, p1:4},{p4:2, p3:3, p2:2, p1:3}];
+					// var chars: object[] = [{owner: owner},{challenger: challenger}];
 					// d.p = chars;
 					// d.c = data.c; incident id
-					this.socket.emit("combatBegin", {c:data.c, p:chars}, function(err: any, resp: any) {
+					this.socket.emit("combatBegin", {c:data.c, owner:owner, challenger:challenger}, function(err: any, resp: any) {
 						if (err)
 							console.log("err", err);
 						else

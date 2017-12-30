@@ -1,5 +1,7 @@
 import { PlayerVO } from "../models/PlayersVO";
 import { EntityVO } from "../models/EntitiesVO";
+import { CharacterVO } from "../models/CharactersVO";
+import * as _ from "lodash";
 
 class Globals {
 	private static instance: Globals;
@@ -18,6 +20,16 @@ class Globals {
 		}
 
 		return Globals.instance;
+	}
+
+	public getCrew(): CharacterVO[] {
+		var pool: CharacterVO[] = [];
+		for (let char of this.player.entity.characterPool) {
+			if (char.position > 0)
+				pool.push(char);
+		}
+		var crew: CharacterVO[] = _.orderBy(pool, "position");
+		return crew;
 	}
 }
 
