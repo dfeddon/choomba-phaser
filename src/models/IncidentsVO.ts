@@ -15,7 +15,7 @@ class IncidentVO extends AbstractVO {
   private _handle: string;
   private _description: string;
   private _type: number;
-  private _structure: StructureVO;
+  private _property: StructureVO;
   private _entity: EntityVO;
   private _owner: number; // attacker is dependant upon the type
   private _channel: string;
@@ -53,12 +53,12 @@ class IncidentVO extends AbstractVO {
     this._description = value;
   }
 
-  public get structure(): StructureVO {
-    return this._structure;
+  public get property(): StructureVO {
+    return this._property;
   }
 
-  public set structure(value: StructureVO) {
-    this._structure = value;
+  public set property(value: StructureVO) {
+    this._property = value;
   }
 
   public get entity(): EntityVO {

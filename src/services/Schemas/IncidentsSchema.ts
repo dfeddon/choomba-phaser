@@ -12,7 +12,7 @@ class IncidentsSchema extends dynamoose.Schema {
 			handle: 		{ type: String },
 			description: 	{ type: String },
 			type: 			{ type: Number },
-			structure: 		{ type: Number },
+			property: 		{ type: Number },
 			entity: 		{ type: Number }
 		};
 

@@ -11,6 +11,7 @@ import { NumberHelper } from "../helpers/NumberHelper";
 import { PlayerVO } from "../models/PlayersVO";
 import { Globals } from "../services/Globals";
 import { LobbyDropper } from "../controllers/LobbyDropper";
+import { CharacterVO } from "../models/CharactersVO";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
@@ -69,7 +70,43 @@ export default class LobbyState extends Phaser.State {
       }
       item.addEventListener("click", function(e) {
         console.log("* item clicked!", e);
+        var selectedId: number = parseInt((e.srcElement.attributes as any).charid.nodeValue);
         console.log("* charid", (e.srcElement.attributes as any).charid.nodeValue);
+        var modal: HTMLDivElement = document.getElementById('charModal') as HTMLDivElement;
+        var span: HTMLSpanElement = document.getElementsByClassName("close")[0] as HTMLSpanElement;
+
+        // open modal
+        modal.style.display = "block";
+
+        // get character
+        var vo: CharacterVO;
+        var chars: CharacterVO[] = Globals.getInstance().player.entity.characterPool;
+        for (let char of chars) {
+          console.log("* char id", char.id, selectedId);
+          if (char.id === selectedId) {
+            console.log("* found char", char);
+            vo = char;
+            break;
+          }
+        }
+        // populate modal data
+        document.getElementById('cmodHandle').innerText = vo.handle.toUpperCase();
+        document.getElementById('cmodRole').innerText = vo.getLabelByRole();
+        var profile = document.getElementById('cmodProfile') as HTMLImageElement;
+        profile.src = 'images/portrait_' + vo.role.toString() + '.png';
+        profile.width = 75;
+        profile.height = 100;
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+          modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
       });
     }
     // console.log('img1', item1, item1.src);
@@ -106,10 +143,12 @@ export default class LobbyState extends Phaser.State {
 
       // TODO: send custom incident socket vo
       // create incidentVO
-      var obj: object = { 
-        id: NumberHelper.UIDGenerator(), 
-        handle: "Cipher's Incident", 
-        description: "Tunnelling down into the grime of BAMA Sprawl..."
+      var obj: object = {
+        id: NumberHelper.UIDGenerator(),
+        handle: "Cipher's Incident",
+        description: "Tunnelling down into the grime of BAMA Sprawl...",
+        entity: Globals.getInstance().player.entity.id,
+        property: 1
       };
       // save it to dynamoDB?
       AWSService.getInstance().dynamoose.create(new IncidentsSchema(), obj, function(err: any, item: any) {
