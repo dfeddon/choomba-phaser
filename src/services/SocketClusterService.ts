@@ -207,7 +207,7 @@ class SocketClusterService {
 			case SocketClusterService.INCIDENT_TYPE_JOINED: // joined incident
 				if (isOwner) {
 					console.log("%c++ opponent has *joined* your channel", "color:yellow");
-					// console.log("data", data);
+					console.log("data", data);
 					// opponent has joined
 					var challenger: number[] = data.crew;
 					var owner: number[] = _.map(Globals.getInstance().getCrew(), "id");
@@ -218,11 +218,11 @@ class SocketClusterService {
 					// var chars: object[] = [{owner: owner},{challenger: challenger}];
 					// d.p = chars;
 					// d.c = data.c; incident id
-					this.socket.emit("combatBegin", {c:data.c, owner:owner, challenger:challenger}, function(err: any, resp: any) {
+					
+					this.socket.emit("combatBegin", { c:data.c, owner:owner, challenger:challenger }, function(err: any, resp: any) {
 						if (err)
 							console.log("err", err);
-						else
-							console.log("resp", resp);
+						else console.log("resp", resp);
 					});
 				} else {
                  	console.log("%c++ you have *joined* a custom incident channel", "color:yellow");
@@ -240,8 +240,9 @@ class SocketClusterService {
 
 			case SocketClusterService.INCIDENT_TYPE_COMBAT_BEGIN:
 				console.log("%c++ you have begun COMBAT BEGIN", "color:yellow");
+				console.log("data", data);
 				var lobby: LobbyState = (this.game.state.getCurrentState() as LobbyState);
-				lobby.combatBegin({});
+				lobby.combatBegin(data);
 			break;
 		}
 	}

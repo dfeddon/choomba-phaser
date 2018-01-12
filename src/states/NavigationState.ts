@@ -17,10 +17,12 @@ import { CharacterVO } from "../models/CharactersVO";
 import { IncidentVO } from "../models/IncidentsVO";
 import { CrewVO } from "../models/CrewsVO";
 import { Globals } from "../services/Globals";
+import { AWSService } from "../services/AWSService";
 
 export default class NavigationState extends Phaser.State {
   private _inCombat: boolean;
   private _incident: IncidentVO;
+  private _opponent: number[];
   combatStageView: CombatStageView;
   combatUIView: CombatUIView;
   crewCombatAttack: CrewView;// Phaser.Group;
@@ -71,12 +73,21 @@ export default class NavigationState extends Phaser.State {
 	public set incident(value: IncidentVO) {
 		this._incident = value;
   }
+
+  public get opponent(): number[] {
+    return this._opponent;
+  }
   
-  init(args: IncidentVO) {
+  public set opponent(value: number[]) {
+    this._opponent = value;
+  }
+
+  init(args: any) {
     console.log("== NavigationState.init ==", args);
     
     // set incident selected from lobby
-    this.incident = args;
+    this.incident = args.i;
+    this.opponent = args.o;
   }
 
   preload() {
@@ -90,6 +101,7 @@ export default class NavigationState extends Phaser.State {
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.forceLandscape = true;
     this.load.onLoadComplete.add(this.loadComplete);
+    this.game.lockRender = true; // pause update until all characters are loaded
   }
 
   loadComplete() {
@@ -284,7 +296,7 @@ export default class NavigationState extends Phaser.State {
       else if (this.crewCombatAttack.currentState !== 0)
         this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_IDLE);
     }
-    else if (this.crewCombatAttack.currentState !== 0) {
+    else if (this.crewCombatAttack && this.crewCombatAttack.currentState !== 0) {
       this.crewCombatAttack.setState(0);
     }
       
@@ -319,6 +331,7 @@ export default class NavigationState extends Phaser.State {
   }
 
   doRun() {
+    var __this = this;
     console.log("== NavigationState.doRun ==", this.incident);
     // var _this = this;
 
@@ -375,7 +388,13 @@ export default class NavigationState extends Phaser.State {
     // var attackers: CrewVO = new CrewVO();
     // attackers.characters = [
     // ]
-    this.initIncident(crew, []);//defenders);
+    // get opponent characterVO's
+    // var o: CharacterVO[];
+    AWSService.getInstance().dynamoose.getCharactersByArray(this.opponent, function (result: CharacterVO[]) {
+      // o = result;
+      __this.initIncident(crew, result);//[]);//defenders);
+    });
+    // this.initIncident(crew, this.opponent);//[]);//defenders);
 
     //  var text = "Hello World!";
     //  var style = { font: "65px Arial", fill: "#ff0000", align: "center" };
@@ -403,6 +422,8 @@ export default class NavigationState extends Phaser.State {
     // enable mobility
     this.crewCombatAttack.isMobile = true;
 
+    // restart update
+    this.game.lockRender = false;
     // this.game.debug.spriteInfo(this.combatStageView.crewAttack, 32, 32);
     // add attacking characters to group, from back to front
     // var attacker: CharacterView;

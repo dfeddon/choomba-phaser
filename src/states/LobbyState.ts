@@ -230,8 +230,13 @@ export default class LobbyState extends Phaser.State {
       _this.sc.joinChannel(incident.channel);
     }
 
-    this.combatBegin = function() { //incident: IncidentVO) {
-      console.log("== LobbyState.combatBegin ==", this.selectedIncident);
+    this.combatBegin = function(combatBeginData: any) { //incident: IncidentVO) {
+      console.log("== LobbyState.combatBegin ==", combatBeginData, this.selectedIncident);
+      console.log("* is instigator?", this.selectedIncident.entity, Globals.getInstance().player.entity.id);
+      var opponent: number[];
+      if (this.selectedIncident.entity === Globals.getInstance().player.entity.id) {
+        opponent = combatBeginData.challenger;
+      } else opponent = combatBeginData.owner;
       // hide lobby UI
       document.getElementById("lobbyState").style.display = "none";
       // show game canvas
@@ -247,7 +252,7 @@ export default class LobbyState extends Phaser.State {
       // defending crew (if combat)
 
       // now, start state (key, clearWorld, clearCache, param)
-      _this.game.state.start("NavigationState", true, false, this.selectedIncident);
+      _this.game.state.start("NavigationState", true, false, { i: this.selectedIncident, o: opponent });
     }
   
     // drag...
