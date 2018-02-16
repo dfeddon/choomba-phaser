@@ -54,7 +54,7 @@ export default class LobbyState extends Phaser.State {
       if (Globals.getInstance().player.entity.characterPool[i].position === 0) {
         item = document.getElementById('item-' + slot.toString() +'-img') as HTMLImageElement;
         item.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, Globals.getInstance().player.entity.characterPool[i].id.toString());
-        item.src = 'images/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
+        item.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
         item.width = 75;
         item.height = 100;
         slot++;
@@ -62,7 +62,7 @@ export default class LobbyState extends Phaser.State {
       else { // character in crew!
         item = document.getElementById('crew-portrait-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLImageElement;
         item.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, Globals.getInstance().player.entity.characterPool[i].id.toString());
-        item.src = 'images/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
+        item.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
         item.width = 75;
         item.height = 100;
         name = document.getElementById('crew-name-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLElement;
@@ -94,7 +94,7 @@ export default class LobbyState extends Phaser.State {
         document.getElementById('cmodHandle').innerText = vo.handle.toUpperCase();
         document.getElementById('cmodRole').innerText = vo.getLabelByRole();
         var profile = document.getElementById('cmodProfile') as HTMLImageElement;
-        profile.src = 'images/portrait_' + vo.role.toString() + '.png';
+        profile.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + vo.role.toString() + '.png';
         profile.width = 75;
         profile.height = 100;
         // When the user clicks on <span> (x), close the modal

@@ -27,6 +27,9 @@ module.exports = [{
         tls: "empty"
     },
     watch: true,
+    watchOptions: {
+        poll: true
+    },
     // node: { /* This hack resolves fs issue in fantasy-names modules */
     //     fs: "empty"
     // },

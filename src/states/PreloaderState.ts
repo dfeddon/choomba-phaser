@@ -31,14 +31,14 @@ export default class PreloaderState extends Phaser.State {
 		this.game.load.image("particle_yellow", "../images/glow_yellow.png");
 
 		// abilities
-		this.game.load.image("ability_1", "../images/22_1.png");
-		this.game.load.image("ability_2", "../images/77_1.png");
-		this.game.load.image("ability_3", "../images/55_1.png");
-		this.game.load.image("ability_4", "../images/68_1.png");
-		this.game.load.image("ability_5", "../images/74_1.png");
+		this.game.load.image("ability_1", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/22_1.png");
+		this.game.load.image("ability_2", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/77_1.png");
+		this.game.load.image("ability_3", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/55_1.png");
+		this.game.load.image("ability_4", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/68_1.png");
+		this.game.load.image("ability_5", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/74_1.png");
 
 		// profiles
-		this.game.load.image("profile_1", "../images/portrait_1.png");
+		// this.game.load.image("profile_1", "../images/portrait_1.png");
 
 		// splash image
 		this.game.load.image("splash1", "../images/splash1.jpg");
