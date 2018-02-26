@@ -6,29 +6,29 @@ export default class PreloaderState extends Phaser.State {
 		this.game.load.crossOrigin = true;
 		// this.load.image('preloadBar', 'assets/loader.png');
 		//   this.game.load.atlasJSONHash("char01", "../images/spritesheets/char01.png", "../images/spritesheets/char01.json");
-		this.game.load.atlasJSONHash("steampunk01", "../images/spritesheets/steampunk01.png", "../images/spritesheets/steampunk01.json");
-		this.game.load.atlasJSONHash("steampunk02", "../images/spritesheets/steampunk02.png", "../images/spritesheets/steampunk02.json");
-		this.game.load.atlasJSONHash("robot01", "../images/spritesheets/robot01.png", "../images/spritesheets/robot01.json");
+		this.game.load.atlasJSONHash("steampunk01", "http://s3.amazonaws.com/com.dfeddon.choomba/client/spritesheets/steampunk01.png", "http://s3.amazonaws.com/com.dfeddon.choomba/client/spritesheets/steampunk01.json");
+		this.game.load.atlasJSONHash("steampunk02", "http://s3.amazonaws.com/com.dfeddon.choomba/client/spritesheets/steampunk02.png", "http://s3.amazonaws.com/com.dfeddon.choomba/client/spritesheets/steampunk02.json");
+		this.game.load.atlasJSONHash("robot01", "http://s3.amazonaws.com/com.dfeddon.choomba/client/spritesheets/robot01.png", "http://s3.amazonaws.com/com.dfeddon.choomba/client/spritesheets/robot01.json");
 		//   this.game.load.atlasJSONHash("zombie01", "../images/spritesheets/zombie01.png", "../images/spritesheets/zombie01.json");
 		//   this.game.load.atlasJSONHash("catlvl01", "../images/spritesheets/catlvl01.png", "../images/spritesheets/catlvl01.json");
 
 		// load filters
-		this.game.load.script("filter_blurX", "https://cdn.rawgit.com/photonstorm/phaser/master/v2/filters/BlurX.js");
-		this.game.load.script("filter_blurY", "https://cdn.rawgit.com/photonstorm/phaser/master/v2/filters/BlurY.js");
+		this.game.load.script("filter_blurX", "../filters/BlurX.js");
+		this.game.load.script("filter_blurY", "../filters/BlurY.js");
 
 		// load tiles & tilemaps
-		this.game.load.tilemap('tilemap1', "../images/tilemaps/maps/tilemap1.json", null, Phaser.Tilemap.TILED_JSON);
-		this.game.load.image("tiles1", "../images/tilemaps/tiles/tileset-punks.png");
+		this.game.load.tilemap('tilemap1', "http://s3.amazonaws.com/com.dfeddon.choomba/client/tilemaps/tilemap1.json", null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.image("tiles1", "http://s3.amazonaws.com/com.dfeddon.choomba/client/tilemaps/tileset-punks.png");
 
 		// minimap player
-		this.game.load.image("player", "../images/player_minimap.png");
+		this.game.load.image("player", "http://s3.amazonaws.com/com.dfeddon.choomba/client/tilemaps/player_minimap.png");
 
 		// map items
-		this.game.load.image("item_canister", "../images/trashcan.gif");
-		this.game.load.image("item_door_1", "../images/bg_item_door1.png");
+		this.game.load.image("item_canister", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/environment/items/trashcan.gif");
+		this.game.load.image("item_door_1", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/environment/items/bg_item_door1.png");
 
 		// particle
-		this.game.load.image("particle_yellow", "../images/glow_yellow.png");
+		this.game.load.image("particle_yellow", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/glow_yellow.png");
 
 		// abilities
 		this.game.load.image("ability_1", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/22_1.png");
@@ -38,10 +38,10 @@ export default class PreloaderState extends Phaser.State {
 		this.game.load.image("ability_5", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/74_1.png");
 
 		// profiles
-		// this.game.load.image("profile_1", "../images/portrait_1.png");
+		this.game.load.image("profile_1", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_1.png");
 
 		// splash image
-		this.game.load.image("splash1", "../images/splash1.jpg");
+		this.game.load.image("splash1", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/splash1.jpg");
 
 	}
 

@@ -94,9 +94,9 @@ export default class NavigationState extends Phaser.State {
     console.log("== NavigationState.preload ==");
     this.game.load.crossOrigin = true;
     // load bg image
-    this.load.image("bg", "/images/cyberpunk-street1.png");
+    this.load.image("bg", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/environment/cyberpunk-street1.png");
     // load ui bg
-    this.game.load.image("uibg", "/images/bg-mesh.png");
+    this.game.load.image("uibg", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/ui/bg-mesh.png");
     // orientation
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.forceLandscape = true;

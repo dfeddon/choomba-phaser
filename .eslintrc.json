@@ -9,11 +9,9 @@
         "sourceType": "module"
     },
     "plugins": [
-        // "babel"
     ],
     "rules": {
         "arrow-parns": ["error", "always"],
-        // "babel/arrow-parens": 2,
         "linebreak-style": [
             "error",
             "unix"
