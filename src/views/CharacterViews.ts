@@ -76,9 +76,13 @@ export default class CharacterView extends Phaser.Sprite {
 
 		// mouse/touch event handlers
 		this.inputEnabled = true;
-		this.events.onInputDown.add(this.clickHandler, this);
-		this.events.onInputOver.add(this.overHandler, this);
-		this.events.onInputOut.add(this.outHandler, this);
+		if (Globals.getInstance().isMobile) {
+			game.input.onTap.add(this.tapHandler, this);
+		} else {
+			this.events.onInputDown.add(this.clickHandler, this);
+			this.events.onInputOver.add(this.overHandler, this);
+			this.events.onInputOut.add(this.outHandler, this);
+		}
 	}
 
 	clickHandler() {
@@ -86,6 +90,10 @@ export default class CharacterView extends Phaser.Sprite {
 		var state: NavigationState = this.game.state.getCurrentState() as NavigationState;
 		signal.addOnce(state.characterClickHandler, this, 1, this.vo);
 		signal.dispatch();
+	}
+
+	tapHandler() {
+		this.tint = 0xffffff;
 	}
 
 	overHandler() {

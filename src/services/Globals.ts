@@ -6,7 +6,15 @@ import * as _ from "lodash";
 class Globals {
 	private static instance: Globals;
 	// public dynamoose: DynamooseService;
+	
 	public player: PlayerVO;
+	public isMobile: boolean = false;
+	public isIos: boolean = false;
+	public isDroid: boolean = false;
+	public isTablet: boolean = false;
+	public isIphone: boolean = false;
+	public isApp: boolean = false;
+
 	// public entity: EntityVO;
 
 

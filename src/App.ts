@@ -52,7 +52,7 @@ export default class App extends Phaser.Game {
     // let gen: any = NameGenerator.generator('diablo', 'demons', 10, 0);
     // console.log(gen);//('diablo', 'demons', 10, 0));
     // this.game = new Phaser.Game(
-      super(
+    super(
       window.innerWidth * window.devicePixelRatio,// - 15,
       window.innerHeight * window.devicePixelRatio,// / 1.6,
       Phaser.AUTO,
@@ -64,6 +64,24 @@ export default class App extends Phaser.Game {
       //   render: this.render
       // }
     );
+
+    // device type
+    if (this.device.initialized) {
+      if (this.device.touch) {
+        Globals.getInstance().isMobile = true;
+        Globals.getInstance().isApp = this.device.webApp;
+        if (this.device.iOS) {
+          Globals.getInstance().isIos = true;
+          if (this.device.iPad) Globals.getInstance().isTablet = true;
+          else if (this.device.iPhone) Globals.getInstance().isIphone = true;
+        }
+        else if (this.device.android) Globals.getInstance().isDroid = true;
+      }
+      // var width = window.innerWidth * window.devicePixelRatio; 
+      // var height = window.innerHeight * window.devicePixelRatio;
+  }
+
+    console.log("* device", this.device);//this.device.iOS, this.device.iPad, this.device.linux);
 
     // let Globals.getInstance().player: PlayerVO = Globals.getInstance().player;
 
