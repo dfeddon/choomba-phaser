@@ -20,6 +20,13 @@ import { Globals } from "../services/Globals";
 import { AWSService } from "../services/AWSService";
 
 export default class NavigationState extends Phaser.State {
+
+  public static readonly WORLD_SCALE_MAX_VALUE: number = 1.5;
+  public static readonly WORLD_SCALE_ZOOM_IN_VALUE = 0.25;
+  public static readonly WORLD_SCALE_ZOOM_OUT_VALUE = 0.025;
+
+  public static readonly CHARACTER_MOVEMENT_SPEED = 2.5;
+
   private _inCombat: boolean;
   private _incident: IncidentVO;
   private _opponent: number[];
@@ -222,7 +229,7 @@ export default class NavigationState extends Phaser.State {
         var blurY: any = this.game.add.filter("BlurY");
         blurX.blur = 7;
         blurY.blur = 7;
-        this.combatStageView.bg.filters = [blurX, blurY];
+        // this.combatStageView.bg.filters = [blurX, blurY];
         
         // blur all characters
         var a: CharacterView;
@@ -237,13 +244,14 @@ export default class NavigationState extends Phaser.State {
         }
 
         // scale view
-        this.combatStageView.scale.set(1.15, 1.15);
+        // this.combatStageView.scale.set(1.15, 1.15);
+        this.game.add.tween(this.combatStageView.scale).to( { x: 1.15, y: 1.15 }, 250, Phaser.Easing.Exponential.Out, true);
       }
     }
     else if (this.game.input.keyboard.isDown(Phaser.Keyboard.W)) {
       // this.worldScale += 0.5;//0.05;
       console.log(this.worldScale);
-      if (this.worldScale >= 1.5) {
+      if (this.worldScale >= NavigationState.WORLD_SCALE_MAX_VALUE) {
         this.scaleDown = true;
 
         // unblur bg
@@ -251,7 +259,7 @@ export default class NavigationState extends Phaser.State {
         var blurY: any = this.game.add.filter("BlurY");
         blurX.blur = 0;
         blurY.blur = 0;
-        this.combatStageView.bg.filters = [blurX, blurY];
+        // this.combatStageView.bg.filters = [blurX, blurY];
 
         // unblur all characters
         var a: CharacterView;
@@ -264,7 +272,8 @@ export default class NavigationState extends Phaser.State {
         }
 
         // un-scale view
-        this.combatStageView.scale.set(1, 1);
+        // this.combatStageView.scale.set(1, 1);
+        this.game.add.tween(this.combatStageView.scale).to( { x: 1, y: 1 }, 250, Phaser.Easing.Exponential.Out, true);
       }
     }
 		else if ((this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || this.walkForward) && this.crewCombatAttack.isMobile) {
@@ -279,7 +288,7 @@ export default class NavigationState extends Phaser.State {
       // console.log('bg.x', this.combatStageView.bg.x, this.combatStageView.bg.width);
       if (this.combatStageView.bg.x <= 0 && this.combatStageView.bg.x > 0 - this.combatStageView.bg.totalWidth) {
         this.combatUIView.playerMove(CrewView.PLAYER_MOVING_FORWARD);
-        this.combatStageView.bg.x -= 2.5;
+        this.combatStageView.bg.x -= NavigationState.CHARACTER_MOVEMENT_SPEED;
       }
       else if (this.crewCombatAttack.currentState !== 0)
         this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_IDLE);
@@ -291,7 +300,7 @@ export default class NavigationState extends Phaser.State {
         this.combatUIView.player.vo.dir = CrewView.PLAYER_MOVING_BACKWARD;
         this.combatUIView.playerMove(CrewView.PLAYER_MOVING_BACKWARD);//this.combatUIView.player.vo.forwardDir);
         this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_WALK_BACKWARD);
-        this.combatStageView.bg.x += 2.5;
+        this.combatStageView.bg.x += NavigationState.CHARACTER_MOVEMENT_SPEED;
       }
       else if (this.crewCombatAttack.currentState !== 0)
         this.crewCombatAttack.setState(CharacterView.CHARACTER_STATE_IDLE);
@@ -306,22 +315,22 @@ export default class NavigationState extends Phaser.State {
         this.worldScale = 1;
         this.scaleDown = false;
       }
-      else this.worldScale -= 0.025;
+      else this.worldScale -= NavigationState.WORLD_SCALE_ZOOM_OUT_VALUE;
     }
 
     // scale up
     if (this.scaleUp) {
-      if (this.worldScale >= 1.5) {
-        this.worldScale = 1.5;
+      if (this.worldScale >= NavigationState.WORLD_SCALE_MAX_VALUE) {
+        this.worldScale = NavigationState.WORLD_SCALE_MAX_VALUE;
         this.scaleUp = false;
       }
-      else this.worldScale += 0.25;
+      else this.worldScale += NavigationState.WORLD_SCALE_ZOOM_IN_VALUE;
     }
     
-    // if (this.worldScale > 1 && this.worldScale < 1.5) {
-      // this.game.world.scale.set(Phaser.Math.clamp(this.worldScale, 1, 1.5));
+    // if (this.worldScale > 1 && this.worldScale < WORLD_SCALE_MAX_VALUE) {
+      // this.game.world.scale.set(Phaser.Math.clamp(this.worldScale, 1, WORLD_SCALE_MAX_VALUE));
       // this.combatStageView.pivot.set(0.5 * this.combatStageView.width, 0.5 * this.combatStageView.height);
-      // this.combatStageView.scale.set(Phaser.Math.clamp(this.worldScale, 1, 1.5));
+      // this.combatStageView.scale.set(Phaser.Math.clamp(this.worldScale, 1, WORLD_SCALE_MAX_VALUE));
     // }
   }
 
@@ -418,9 +427,7 @@ export default class NavigationState extends Phaser.State {
     this.combatStageView.crewAttack = this.crewCombatAttack;
     if (this.crewCombatDefend)
       this.combatStageView.crewDefend = this.crewCombatDefend;
-
-    // enable mobility
-    this.crewCombatAttack.isMobile = true;
+    else this.crewCombatAttack.isMobile = true;
 
     // restart update
     this.game.lockRender = false;

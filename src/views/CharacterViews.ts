@@ -4,6 +4,7 @@ import { AtlasFrameVO } from "../models/AtlasFramesVO";
 import { AtlasPrefixTypeVO } from "../models/AtlasPrefixTypesVO";
 import NavigationState from "../states/NavigationState";
 import * as jsonData from "../public/assets/atlas.json";
+import { Globals } from "../services/Globals";
 
 export default class CharacterView extends Phaser.Sprite {
 
@@ -58,7 +59,7 @@ export default class CharacterView extends Phaser.Sprite {
 
 		// console.log("* parent", this.parent);
 
-		// anchor, mid x, y bototm (feet)
+		// anchor, mid x, y bottom (feet)
 		this.anchor.setTo(0, 1); // forward-facing (start right), vertical bottom (on feet)
 		this.scale.setTo(this.imgScale, this.imgScale); // scale
 
@@ -73,9 +74,11 @@ export default class CharacterView extends Phaser.Sprite {
 		// game.physics.arcade.enable(this);
 		// game.add.existing(this);
 
-		// click handler
+		// mouse/touch event handlers
 		this.inputEnabled = true;
 		this.events.onInputDown.add(this.clickHandler, this);
+		this.events.onInputOver.add(this.overHandler, this);
+		this.events.onInputOut.add(this.outHandler, this);
 	}
 
 	clickHandler() {
@@ -83,6 +86,14 @@ export default class CharacterView extends Phaser.Sprite {
 		var state: NavigationState = this.game.state.getCurrentState() as NavigationState;
 		signal.addOnce(state.characterClickHandler, this, 1, this.vo);
 		signal.dispatch();
+	}
+
+	overHandler() {
+		this.tint = 0xff00ff;
+	}
+
+	outHandler() {
+		this.tint = 0xffffff;
 	}
 
 	setState(state: number) {
@@ -163,7 +174,8 @@ export default class CharacterView extends Phaser.Sprite {
 		this.alpha = 1.0;
 
 		// scale
-		// this.scale.set(1.25, 1.25);
+		// var ratio = Globals.getInstance().getCombatScaleRatio();
+		// this.scale.set(ratio, ratio);
 	}
 
 	toForeground() {
@@ -176,5 +188,8 @@ export default class CharacterView extends Phaser.Sprite {
 
 		// restore alpha
 		this.alpha = 1.0;
+
+		// unscale
+		// this.scale.set(0.75, 0.75);
 	}
 }

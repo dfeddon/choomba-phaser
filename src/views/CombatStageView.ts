@@ -27,6 +27,7 @@ export default class CombatStageView extends Phaser.Group {
 		console.log("* bg setter", value);
 
 		this._bg = value;
+		this._bg.anchor.setTo(0, 1);
 
 		this.add(value);
 	}
@@ -79,8 +80,11 @@ export default class CombatStageView extends Phaser.Group {
 		this.add(value);
 		this._crewDefend = value;
 		this._crewDefend.scale.x = -1;
+		// this._crewDefend.scale.y = 1;
 		this._crewDefend.x = 1200;
 		// this._crewDefend.pivot.set(0, 0);//-this.height);
+		// add crewDefend to game world (for scrolling?)
+		this.game.world.add(value);
 		console.log("* CREW *", this.width, value.width);
 	}
 

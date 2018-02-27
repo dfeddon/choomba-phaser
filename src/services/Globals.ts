@@ -9,6 +9,7 @@ class Globals {
 	public player: PlayerVO;
 	// public entity: EntityVO;
 
+
 	private constructor() {
 	}
 
@@ -30,6 +31,10 @@ class Globals {
 		}
 		var crew: CharacterVO[] = _.orderBy(pool, "position");
 		return crew;
+	}
+
+	public getCombatScaleRatio() {
+		return 1.10;
 	}
 }
 

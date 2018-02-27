@@ -9,10 +9,11 @@ export default class CrewView extends Phaser.Sprite {
 	static readonly PLAYER_MOVING_FORWARD: number = 1;
 	static readonly PLAYER_MOVING_BACKWARD: number = 2;
 
-	attackGroup: Phaser.Group;
-	defendGroup: Phaser.Group;
 	private _bg: Phaser.TileSprite;
 	private _ratio: number;
+	
+	attackGroup: Phaser.Group;
+	defendGroup: Phaser.Group;
 	worldscale: number;
 	currentState: number;
 	isMobile: boolean;
