@@ -42,14 +42,6 @@ $get-path-to-assets: "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/
     // height: 90vh; // fullscreen height
 }
 
-#stats-crew-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
 // #stats-wrapper {
 //     width: 100%;
 //     height: 100%;
@@ -103,6 +95,14 @@ $get-path-to-assets: "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/
     font-family: $roboto-slab;
     font-size: 13px;
     color: gray;
+}
+
+#stats-crew-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 // squad
@@ -163,8 +163,88 @@ $get-path-to-assets: "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/
     border: 1px solid #F5A623;
 }
 
+///////////////////////////////////////////////
+// tabs
+///////////////////////////////////////////////
+// #tab1:checked~.remove-check {
+//   display: none;
+// }
+// #tab5:checked ~ .remove-check {
+//     display: none;
+// }
+
+// #tab1:checked ~ #section-pulse {
+//     display: grid
+// }
+
+#section-pulse {
+    // display: none;
+}
+#section-territory {
+    display: none;
+}
+#section-biz {
+    display: none;
+}
+#section-directives {
+    display: none;
+}
+// hide the tabs radio button
+input {
+    display: none;
+}
+.labelTab {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 15px 25px;
+  font-family: $roboto-slab;
+  font-size: 1.3em;
+  font-weight: 600;
+  text-align: center;
+  color: #bbb;
+  border: 1px solid transparent;
+}
+
+.labelTab:before {
+//   font-family: fontawesome;
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+// .labelTab[for*='1']:before { content: url("http://s3.amazonaws.com/com.dfeddon.choomba/client/images/ui/bg-mesh.png"); }
+// .labelTab[for*='2']:before { content: url("http://s3.amazonaws.com/com.dfeddon.choomba/client/images/ui/bg-mesh.png"); }
+// .labelTab[for*='3']:before { content: url("http://s3.amazonaws.com/com.dfeddon.choomba/client/images/ui/bg-mesh.png"); }
+// .labelTab[for*='4']:before { content: url("http://s3.amazonaws.com/com.dfeddon.choomba/client/images/ui/bg-mesh.png"); }
+// .labelTab[for*='5']:before { content: url("http://s3.amazonaws.com/com.dfeddon.choomba/client/images/ui/bg-mesh.png"); }
+
+.labelTab:hover {
+  color: #888;
+  cursor: pointer;
+}
+
+input:checked + .labelTab {
+  color: #fff;
+  border: 1px solid #ddd;
+  border-top: 2px solid orange;
+  border-bottom: 1px solid #fff;
+  background-color: rgb(255, 8, 0);
+}
+
+// input:checked ~ .sd {
+//     display: grid;
+// }
+// input:checked ~ #section-pulse,
+// input:checked ~ #section-crew,
+// input:checked ~ #section-territory,
+// input:checked ~ #section-biz,
+// #tab5:checked ~ #section-directives {
+//   display: grid;
+//   border-color: yellow;
+// }
+
 // crew pool
-.crew-pool-section {
+#section-crew {
+    display: none;
     // display: flex;
     // flex: 1 1 auto;
     // padding-top: 25px;

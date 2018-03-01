@@ -43,6 +43,48 @@ export default class LobbyState extends Phaser.State {
     // this.sc = SocketClusterService.getInstance();
     // console.log("cluster", this.sc);
 
+    // handle tabs
+    let pulseTab: HTMLElement = document.getElementById("tabPulse");
+    let crewTab: HTMLElement = document.getElementById("tabCrew");
+    let territoryTab: HTMLElement = document.getElementById("tabTerritory");
+    let bizTab: HTMLElement = document.getElementById("tabBiz");
+    let directivesTab: HTMLElement = document.getElementById("tabDirectives");
+    let currentView: HTMLElement = document.getElementById("section-pulse");
+    let tabHandler = function(e: Event) {
+      console.log("tab clicked", e.srcElement.id);
+      // if (currentView)
+      currentView.style.display = "none";
+      let view: HTMLElement;
+      switch(e.srcElement.id) {
+        case "tabPulse":
+          view = document.getElementById("section-pulse");
+          break;
+        case "tabCrew":
+          view = document.getElementById("section-crew");
+          break;
+        case "tabTerritory":
+          view = document.getElementById("section-territory");
+          break;
+        case "tabBiz":
+          view = document.getElementById("section-biz");
+          break;
+        case "tabDirectives":
+          view = document.getElementById("section-directives");
+          break;
+        default: console.log("! Invalid case");
+      }
+      if (view) {
+        view.style.display = "grid";
+        // currentView.style.display = "none";
+        currentView = view;
+      }
+    };
+    pulseTab.addEventListener("click", tabHandler);
+    crewTab.addEventListener("click", tabHandler);
+    territoryTab.addEventListener("click", tabHandler);
+    bizTab.addEventListener("click", tabHandler);
+    directivesTab.addEventListener("click", tabHandler);
+
     // populate character pool grid with freelancers (position === 0)
     console.log("====== players", Globals.getInstance().player);//, Globals.getInstance().player.entity.characterPool.length);
     let item: HTMLImageElement;

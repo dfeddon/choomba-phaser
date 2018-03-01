@@ -173,8 +173,32 @@
                 </div>
             </div>
 
+            <!-- tabs -->
+            <div class="tab-bar">
+                <input id="tab1" type="radio" name="tabs" checked>
+                <label id="tabPulse" for="tab1" class="labelTab">Latest</label>
+
+                <input id="tab2" type="radio" name="tabs">
+                <label id="tabCrew"for="tab2" class="labelTab">Crew</label>
+
+                <input id="tab3" type="radio" name="tabs">
+                <label id="tabTerritory"for="tab3" class="labelTab">Territory</label>
+
+                <input id="tab4" type="radio" name="tabs">
+                <label id="tabBiz"for="tab4" class="labelTab">Biz</label>
+
+                <input id="tab5" type="radio" name="tabs">
+                <label id="tabDirectives"for="tab5" class="labelTab">Directives</label>            
+            </div>
+
+            <!-- pulse -->
+            <section id="section-pulse" for="tab1" class="sd">
+                <div for="tab2">
+                    PULSE
+                </div>
+            </section>
             <!-- crew pool -->
-            <section class="crew-pool-section">
+            <section id="section-crew" for="tab2">
                 <div class="crew-pool-wrapper">
                     <div class="crew-pool-grid">
                         <div id="pool-item-1" class="crew-pool-item" draggable="true">
@@ -256,6 +280,18 @@
                     </div>
                 </div>
             </section>
+            <!-- territory -->
+            <section id="section-territory">
+                TERRITORY
+            </section>
+            <!-- biz -->
+            <section id="section-biz">
+                BIZ
+            </section>
+            <!-- directives -->
+            <section id="section-directives" class="checked remove-check">
+                DIRECTIVES
+            </section>
 
         </div>
 
@@ -265,7 +301,7 @@
         </div> -->
 
         <div id="pulse-column" class="column-wrapper">
-            <center><label>PUNK NET</label></center>
+            <center><label>punkNET</label></center>
             <button id="pulseClicker">CLICK</button>
             <ul id="pulse-grid"></ul>
         </div>
