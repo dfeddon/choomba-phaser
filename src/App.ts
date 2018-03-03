@@ -113,7 +113,7 @@ export default class App extends Phaser.Game {
     
     // get player
     AWS.dynamoose.findById(new PlayersSchema(), playerStubId, function (err: any, player: any) {
-      if (err) return console.log(err);
+      if (err) return console.log(JSON.stringify(err));
       console.log("* player", player);
 
       // store player globally

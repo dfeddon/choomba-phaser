@@ -19,7 +19,7 @@ module.exports = [{
     },
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
-        extensions: [".ts", ".tsx", ".js", ".ejs", ".json"], // note if using webpack 1 you'd also need a '' in the array as well
+        extensions: [".ts", ".tsx", ".js", ".ejs", ".html", ".json"], // note if using webpack 1 you'd also need a '' in the array as well
         modules: ["node_modules"]
     },
     node: {
@@ -70,6 +70,26 @@ module.exports = [{
         new HtmlWebpackPlugin({
             title: "Choomba.io",
             template: "src/public/index.ejs"
+        }),
+        new HtmlWebpackPlugin({
+            filename: "section-pulse.html",
+            template: "src/public/html/section-pulse.html"
+        }),
+        new HtmlWebpackPlugin({
+            filename: "section-crew.html",
+            template: "src/public/html/section-crew.html"
+        }),
+        new HtmlWebpackPlugin({
+            filename: "section-territory.html",
+            template: "src/public/html/section-territory.html"
+        }),
+        new HtmlWebpackPlugin({
+            filename: "section-biz.html",
+            template: "src/public/html/section-biz.html"
+        }),
+        new HtmlWebpackPlugin({
+            filename: "section-directives.html",
+            template: "src/public/html/section-directives.html"
         }),
         new UglifyJSPlugin({
             // parallel: {

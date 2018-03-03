@@ -2,6 +2,7 @@ import { PlayerVO } from "../models/PlayersVO";
 import { EntityVO } from "../models/EntitiesVO";
 import { CharacterVO } from "../models/CharactersVO";
 import * as _ from "lodash";
+import { CrewContentController } from "../controllers/CrewContentController";
 
 class Globals {
 	private static instance: Globals;
@@ -14,6 +15,7 @@ class Globals {
 	public isTablet: boolean = false;
 	public isIphone: boolean = false;
 	public isApp: boolean = false;
+	public crewController: CrewContentController;
 
 	// public entity: EntityVO;
 

@@ -12,6 +12,8 @@ import { PlayerVO } from "../models/PlayersVO";
 import { Globals } from "../services/Globals";
 import { LobbyDropper } from "../controllers/LobbyDropper";
 import { CharacterVO } from "../models/CharactersVO";
+import { LobbyContentController } from "../controllers/LobbyContentController";
+import { CrewContentController } from "../controllers/CrewContentController";
 
 export default class LobbyState extends Phaser.State {
   charDragSource: any;
@@ -24,60 +26,44 @@ export default class LobbyState extends Phaser.State {
   // player id stub
   player: string;
   selectedIncident: IncidentVO;
+  lobbyContentController: LobbyContentController = new LobbyContentController();
+  globals: Globals = Globals.getInstance();
 
   // fnc
   combatBegin: any;
 
   preload() {
     console.log("== LobbyState.preload ==");
+
+    this.globals.crewController = new CrewContentController();
   }
 
   create() {
     console.log("== LobbyState.create ==");
+
+    var __this = this;
     // this.game.state.start("NavigationState", true, false);
     // this.sc = SocketClusterService.getInstance();
     this.player = this.game.rnd.integerInRange(1000, 9000).toString();
-    console.log("* player id", this.player);
+    // console.log("* player id", this.player);
     this.doRun();
-    console.log("***", NameGenerator);
+    // console.log("***", NameGenerator);
     // this.sc = SocketClusterService.getInstance();
     // console.log("cluster", this.sc);
 
-    // handle tabs
+    //////////////////////////////////////////////
+    // tab content manager
+    //////////////////////////////////////////////
     let pulseTab: HTMLElement = document.getElementById("tabPulse");
     let crewTab: HTMLElement = document.getElementById("tabCrew");
     let territoryTab: HTMLElement = document.getElementById("tabTerritory");
     let bizTab: HTMLElement = document.getElementById("tabBiz");
     let directivesTab: HTMLElement = document.getElementById("tabDirectives");
     let currentView: HTMLElement = document.getElementById("section-pulse");
+
     let tabHandler = function(e: Event) {
-      console.log("tab clicked", e.srcElement.id);
-      // if (currentView)
-      currentView.style.display = "none";
-      let view: HTMLElement;
-      switch(e.srcElement.id) {
-        case "tabPulse":
-          view = document.getElementById("section-pulse");
-          break;
-        case "tabCrew":
-          view = document.getElementById("section-crew");
-          break;
-        case "tabTerritory":
-          view = document.getElementById("section-territory");
-          break;
-        case "tabBiz":
-          view = document.getElementById("section-biz");
-          break;
-        case "tabDirectives":
-          view = document.getElementById("section-directives");
-          break;
-        default: console.log("! Invalid case");
-      }
-      if (view) {
-        view.style.display = "grid";
-        // currentView.style.display = "none";
-        currentView = view;
-      }
+      // console.log("tab clicked", e.srcElement.id);
+      __this.lobbyContentController.addContent(e.srcElement.id);
     };
     pulseTab.addEventListener("click", tabHandler);
     crewTab.addEventListener("click", tabHandler);
@@ -85,23 +71,28 @@ export default class LobbyState extends Phaser.State {
     bizTab.addEventListener("click", tabHandler);
     directivesTab.addEventListener("click", tabHandler);
 
+    //////////////////////////////////////////////
+    // import html handlers
+    //////////////////////////////////////////////
+    function handleLoad(e: any) {
+      console.log('Loaded import: ' + e.target.href);
+    }
+    function handleError(e: any) {
+      console.log('Error loading import: ' + e.target.href);
+    }
+
+    //////////////////////////////////////////////
     // populate character pool grid with freelancers (position === 0)
+    //////////////////////////////////////////////
     console.log("====== players", Globals.getInstance().player);//, Globals.getInstance().player.entity.characterPool.length);
     let item: HTMLImageElement;
     let name: HTMLElement;
     let slot: number = 1;
+  
     for (let i = 0; i < Globals.getInstance().player.entity.characterPool.length; i++) {
       console.log("* character type:", Globals.getInstance().player.entity.characterPool[i].role);
-      // populate character pool (position => 0)
-      if (Globals.getInstance().player.entity.characterPool[i].position === 0) {
-        item = document.getElementById('item-' + slot.toString() +'-img') as HTMLImageElement;
-        item.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, Globals.getInstance().player.entity.characterPool[i].id.toString());
-        item.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
-        item.width = 75;
-        item.height = 100;
-        slot++;
-      }
-      else { // character in crew!
+      // only list characters in crew
+      if (Globals.getInstance().player.entity.characterPool[i].position !== 0) {
         item = document.getElementById('crew-portrait-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLImageElement;
         item.setAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE, Globals.getInstance().player.entity.characterPool[i].id.toString());
         item.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + Globals.getInstance().player.entity.characterPool[i].role.toString() + '.png';
@@ -109,50 +100,12 @@ export default class LobbyState extends Phaser.State {
         item.height = 100;
         name = document.getElementById('crew-name-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLElement;
         name.innerText = Globals.getInstance().player.entity.characterPool[i].handle;
-      }
-      item.addEventListener("click", function(e) {
-        // show character modal window
-        console.log("* item clicked!", e);
-        var selectedId: number = parseInt((e.srcElement.attributes as any).charid.nodeValue);
-        console.log("* charid", (e.srcElement.attributes as any).charid.nodeValue);
-        var modal: HTMLDivElement = document.getElementById('charModal') as HTMLDivElement;
-        var span: HTMLSpanElement = document.getElementsByClassName("close")[0] as HTMLSpanElement;
 
-        // open modal
-        modal.style.display = "block";
-
-        // get character
-        var vo: CharacterVO;
-        var chars: CharacterVO[] = Globals.getInstance().player.entity.characterPool;
-        for (let char of chars) {
-          console.log("* char id", char.id, selectedId);
-          if (char.id === selectedId) {
-            console.log("* found char", char);
-            vo = char;
-            break;
-          }
-        }
-        // populate modal data
-        document.getElementById('cmodHandle').innerText = vo.handle.toUpperCase();
-        document.getElementById('cmodRole').innerText = vo.getLabelByRole();
-        var profile = document.getElementById('cmodProfile') as HTMLImageElement;
-        profile.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + vo.role.toString() + '.png';
-        profile.width = 75;
-        profile.height = 100;
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-          modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        }
-      });
+        item.addEventListener("click", function(e) {
+          Globals.getInstance().crewController.clickHandler(e);
+        });
+      } // end for loop */
     }
-    // console.log('img1', item1, item1.src);
   }
 
   shutdown() {
@@ -167,19 +120,27 @@ export default class LobbyState extends Phaser.State {
     console.log("== LobbyState.doRun ==");
     var _this = this;
 
+    //////////////////////////////////////////////
     // open global incidents channel
+    //////////////////////////////////////////////
     this.sc.startGlobalChannels();
 
     // pause render loop
     // this.game.paused = true;//lockRender = true;
 
+    //////////////////////////////////////////////
     // hide game view
+    //////////////////////////////////////////////
     document.getElementById("gameView").style.display = "none";
 
+    //////////////////////////////////////////////
     // show lobby UI
+    //////////////////////////////////////////////
     document.getElementById("lobbyState").style.display = "grid";
 
+    //////////////////////////////////////////////
     // listen for pulse click event (stub)
+    //////////////////////////////////////////////
     this.doc.getElementById('pulseClicker').onclick = function(e: MouseEvent) {
       console.log("* onclick", e.target);
       console.log("* player", _this.player);
@@ -198,65 +159,10 @@ export default class LobbyState extends Phaser.State {
         if (err) return console.log(err);
         else return _this.incidentCreatedHandler(item);// console.log(item);
       });
-      /*
-      var i = (data as any).incidents[0];
-      var incidentVO = new IncidentVO(i);
-      console.log("* derek", incidentVO);
-      // console.log("* net", new Phaser.Net(_this.game).getQueryString("player"));
-      // save it to dynamoDB?
-      // send it below (or just incident id, text, and owner)
-      // perhaps channel name is same as incident id?
-      _this.sc.createChannel("1122334455", _this.player);
-      */
-      // return;
-      // var i = e.target as any;
-      // console.log(i.id);
-
-      // // stub: incident participants
-      // console.log("* vo data", data);
-      // // var paticipants: CrewVO[];
-      // // var localCrew = new CrewVO();
-      // // var remoteCrew = new CrewVO();
-      
-      // // var attackers: CharacterDataVO[] = [
-      // //   new CharacterDataVO("steampunk02", "Cat 1"), 
-      // //   new CharacterDataVO("steampunk01", "Man 1"),
-      // //   new CharacterDataVO("steampunk01", "Steampunk 1"),
-      // //   new CharacterDataVO("`robot01`", "Robot 1")
-      // // ];
-      // // var defenders: CharacterDataVO[] = [
-      // //   new CharacterDataVO("steampunk02", "Cat 1"), 
-      // //   new CharacterDataVO("steampunk01", "Man 1"),
-      // //   new CharacterDataVO("steampunk02", "Steampunk 1"),
-      // //   new CharacterDataVO("robot01", "Robot 1")
-      // // ];
-
-      // switch(i.id) {
-      //   case "pulseClicker":
-      //     console.log("add pulse item");
-      //     _this.glob++;
-      //     // create incident vo
-      //     var incident: IncidentVO = new IncidentVO();
-      //     if (_this.glob === 1) {
-      //       incident.name = "Infiltration " + _this.glob;
-      //       incident.description = "Hacking into facility...";
-      //       incident.type = IncidentVO.INCIDENT_TYPE_SPAWN;
-      //       incident.entity = new EntityVO();
-      //     }
-      //     else if (_this.glob === 2) {
-      //       incident.name = "Turf War " + _this.glob;
-      //       incident.description = "Sensors alerted near Sinjun Corps red tower just outside Frisco Sprawl. Too-tall Redline Hackers suspected.";
-      //       incident.type = IncidentVO.INCIDENT_TYPE_DEFEND;
-      //       incident.entity = new EntityVO();
-      //     }
-      //     // incident.entity.crew
-
-      //     // incident.structure = 0;
-      //     _this.addIncident(incident);
-      //   break;
-      // }
     }
     
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
     this.doc.pulseItemHandler = function(e: any) {
       // user elected to JOIN an extant incident (if successful, global event by id should be disabled)
       console.log("pulseItemHandler", e.getAttribute('data-uid'));
@@ -272,6 +178,8 @@ export default class LobbyState extends Phaser.State {
       _this.sc.joinChannel(incident.channel);
     }
 
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
     this.combatBegin = function(combatBeginData: any) { //incident: IncidentVO) {
       console.log("== LobbyState.combatBegin ==", combatBeginData, this.selectedIncident);
       console.log("* is instigator?", this.selectedIncident.entity, Globals.getInstance().player.entity.id);
@@ -297,7 +205,9 @@ export default class LobbyState extends Phaser.State {
       _this.game.state.start("NavigationState", true, false, { i: this.selectedIncident, o: opponent });
     }
   
-    // drag...
+    //////////////////////////////////////////////
+    // drag and drop crew members
+    //////////////////////////////////////////////
     document.ondragstart = function(e) {
       console.log("ondragstart", e.target);
       let img: HTMLImageElement = e.target as HTMLImageElement;
@@ -339,7 +249,9 @@ export default class LobbyState extends Phaser.State {
       LobbyDropper.dropped(src, targ);      
     };
 
+    //////////////////////////////////////////////
     // touch events
+    //////////////////////////////////////////////
     document.ontouchstart = function(e) {
       var i = e.target as any;
       console.log("ontouchstart", i.id);
@@ -363,6 +275,9 @@ export default class LobbyState extends Phaser.State {
 
 	// }
 
+  //////////////////////////////////////////////
+  // add incident
+  //////////////////////////////////////////////
 	addIncident(vo: any) {
     console.log("* adding pulse item", vo);
     // vo: { [f]: , [t]ype: , [i]d: , [o]wner: }
@@ -396,6 +311,9 @@ export default class LobbyState extends Phaser.State {
     });
   }
   
+  //////////////////////////////////////////////
+  // incident created
+  //////////////////////////////////////////////
   incidentCreatedHandler(i: IncidentVO) {
     console.log("* incident created handler", i);
     // var i: IncidentVO = (data as any).incidents[0];

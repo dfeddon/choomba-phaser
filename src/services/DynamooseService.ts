@@ -148,7 +148,7 @@ class DynamooseService {
   findById(schema: any, key: number, callback: any, options?: any): any {
     console.log("%c## findById " + key, "color:lime");
     schema.model.get({ id: key }, function(err: any, item: any) {
-      console.log(item, err);
+      // console.log(item, err);
       if (err) return callback(err, null);
       console.log("%c## found " + JSON.stringify(item), "color:lime");
       return callback(null, item);

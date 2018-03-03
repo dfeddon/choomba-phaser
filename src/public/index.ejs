@@ -175,129 +175,37 @@
 
             <!-- tabs -->
             <div class="tab-bar">
-                <input id="tab1" type="radio" name="tabs" checked>
-                <label id="tabPulse" for="tab1" class="labelTab">Latest</label>
+                <input id="tab1" type="radio" name="tabs">
+                <label id="tabPulse" class="labelTab">Pulse</label>
 
                 <input id="tab2" type="radio" name="tabs">
-                <label id="tabCrew"for="tab2" class="labelTab">Crew</label>
+                <label id="tabCrew" class="labelTab">Crew</label>
 
                 <input id="tab3" type="radio" name="tabs">
-                <label id="tabTerritory"for="tab3" class="labelTab">Territory</label>
+                <label id="tabTerritory" class="labelTab">Territory</label>
 
                 <input id="tab4" type="radio" name="tabs">
-                <label id="tabBiz"for="tab4" class="labelTab">Biz</label>
+                <label id="tabBiz" class="labelTab">Biz</label>
 
                 <input id="tab5" type="radio" name="tabs">
-                <label id="tabDirectives"for="tab5" class="labelTab">Directives</label>            
+                <label id="tabDirectives" class="labelTab">Directives</label>            
             </div>
 
             <!-- pulse -->
-            <section id="section-pulse" for="tab1" class="sd">
-                <div for="tab2">
-                    PULSE
-                </div>
-            </section>
+            <link id="section-pulse" rel="import" href="section-pulse.html" onload="handleLoad(event)" onerror="handleError(event)">
             <!-- crew pool -->
-            <section id="section-crew" for="tab2">
-                <div class="crew-pool-wrapper">
-                    <div class="crew-pool-grid">
-                        <div id="pool-item-1" class="crew-pool-item" draggable="true">
-                            <img id="item-1-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                            <label id="item-1-label">Unnamed</label>
-                        </div>
-                        <div id="pool-item-2" class="crew-pool-item" draggable="true">
-                            <img id="item-2-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-3" class="crew-pool-item" draggable="true">
-                            <img id="item-3-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-4" class="crew-pool-item" draggable="true">
-                            <img id="item-4-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-5" class="crew-pool-item" draggable="true">
-                            <img id="item-5-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-6" class="crew-pool-item" draggable="true">
-                            <img id="item-6-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-7" class="crew-pool-item" draggable="true">
-                            <img id="item-7-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-8" class="crew-pool-item" draggable="true">
-                            <img id="item-8-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-9" class="crew-pool-item" draggable="true">
-                            <img id="item-9-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-10" class="crew-pool-item" draggable="true">
-                            <img id="item-10-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-11" class="crew-pool-item" draggable="true">
-                            <img id="item-11-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-12" class="crew-pool-item" draggable="true">
-                            <img id="item-12-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-13" class="crew-pool-item" draggable="true">
-                            <img id="item-13-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-14" class="crew-pool-item" draggable="true">
-                            <img id="item-14-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-15" class="crew-pool-item" draggable="true">
-                            <img id="item-15-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-16" class="crew-pool-item" draggable="true">
-                            <img id="item-16-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-17" class="crew-pool-item" draggable="true">
-                            <img id="item-17-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-18" class="crew-pool-item" draggable="true">
-                            <img id="item-18-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-19" class="crew-pool-item" draggable="true">
-                            <img id="item-19-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-20" class="crew-pool-item" draggable="true">
-                            <img id="item-20-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-21" class="crew-pool-item" draggable="true">
-                            <img id="item-21-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-22" class="crew-pool-item" draggable="true">
-                            <img id="item-22-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-23" class="crew-pool-item" draggable="true">
-                            <img id="item-23-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-24" class="crew-pool-item" draggable="true">
-                            <img id="item-24-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                        <div id="pool-item-25" lass="crew-pool-item" draggable="true">
-                            <img id="item-25-img" class="pool-item-img" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/lobby/character-lock.png" />
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <link id="section-crew" rel="import" href="section-crew.html" onload="handleLoad(event)" onerror="handleError(event)">
             <!-- territory -->
-            <section id="section-territory">
-                TERRITORY
-            </section>
+            <link id="section-territory" rel="import" href="section-territory.html" onload="handleLoad(event)" onerror="handleError(event)">
             <!-- biz -->
-            <section id="section-biz">
-                BIZ
-            </section>
+            <link id="section-biz" rel="import" href="section-biz.html" onload="handleLoad(event)" onerror="handleError(event)">
             <!-- directives -->
-            <section id="section-directives" class="checked remove-check">
-                DIRECTIVES
-            </section>
+            <link id="section-directives" rel="import" href="section-directives.html" onload="handleLoad(event)" onerror="handleError(event)">
 
         </div>
 
 
         <!-- <div id="vitals-column" class="column-wrapper">
-            <!-- <center><label>VITALS</label></center>
         </div> -->
 
         <div id="pulse-column" class="column-wrapper">
