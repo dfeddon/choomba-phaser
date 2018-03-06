@@ -31,7 +31,12 @@ export default class App extends Phaser.Game {
 
   constructor() {
     console.log("* Choomba");
-    console.log("* default entity name:", NameGenerator.parties.guild());
+    for (var i = 0; i < 10; i++) {
+      console.log("* default entity name (guild):", NameGenerator.parties.guild());
+      console.log("* default entity name (mystic order):", NameGenerator.parties.mysticOrder());
+      console.log("* default entity name (military unit):", NameGenerator.parties.militaryUnit());
+      console.log("* location (tavern)", NameGenerator.places.tavern());
+    }
 
     // var apiGateway: string = "https://9l3uls9g3k.execute-api.us-east-1.amazonaws.com";
     // var url: string = apiGateway + "/dev/iot/keys";

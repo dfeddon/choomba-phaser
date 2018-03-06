@@ -6,6 +6,7 @@
 import { Globals } from "../services/Globals";
 import { LobbyDropper } from "../controllers/LobbyDropper";
 import { CharacterVO } from "../models/CharactersVO";
+import { FlexGrid } from "phaser-ce";
 // import { ICrewContentController } from "../interfaces/ICrewContentController";
 
 class CrewContentController {
@@ -16,54 +17,13 @@ class CrewContentController {
 	__this = this;
 
 	clickHandler(e: any): void {
+		// this => element clicked
 		console.log('== CrewContentController ==', e);
 		switch(e.target.className) {
 			case 'pool-item-img':
 			case 'crew-portraits':
 				Globals.getInstance().crewController.crewInfoModal(e);
 			break;
-		}
-	}
-
-	crewInfoModal(e: any): void {
-		// show character modal window
-		console.log("* item clicked!", e);
-		var selectedId: number = parseInt((e.srcElement.attributes as any).charid.nodeValue);
-		console.log("* charid", (e.srcElement.attributes as any).charid.nodeValue);
-		var modal: HTMLDivElement = document.getElementById('charModal') as HTMLDivElement;
-		var span: HTMLSpanElement = document.getElementsByClassName("close")[0] as HTMLSpanElement;
-
-		// open modal
-		modal.style.display = "block";
-
-		// get character
-		var vo: CharacterVO;
-		var chars: CharacterVO[] = Globals.getInstance().player.entity.characterPool;
-		for (let char of chars) {
-			console.log("* char id", char.id, selectedId);
-			if (char.id === selectedId) {
-				console.log("* found char", char);
-				vo = char;
-				break;
-			}
-		}
-		// populate modal data
-		document.getElementById('cmodHandle').innerText = vo.handle.toUpperCase();
-		document.getElementById('cmodRole').innerText = vo.getLabelByRole();
-		var profile = document.getElementById('cmodProfile') as HTMLImageElement;
-		profile.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + vo.role.toString() + '.png';
-		profile.width = 75;
-		profile.height = 100;
-		// When the user clicks on <span> (x), close the modal
-		span.onclick = function () {
-			modal.style.display = "none";
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function (event) {
-			if (event.target == modal) {
-				modal.style.display = "none";
-			}
 		}
 	}
 
@@ -93,7 +53,7 @@ class CrewContentController {
 						console.log("* item clicked!", e);
 						var selectedId: number = parseInt((e.srcElement.attributes as any).charid.nodeValue);
 						console.log("* charid", (e.srcElement.attributes as any).charid.nodeValue);
-						var modal: HTMLDivElement = doc.querySelector('#charModal') as HTMLDivElement;
+						var modal: HTMLDivElement = doc.querySelector('#character-view-modal') as HTMLDivElement;
 						var span: HTMLSpanElement = doc.querySelector(".close")[0] as HTMLSpanElement;
 
 						// open modal
@@ -111,9 +71,9 @@ class CrewContentController {
 							}
 						}
 						// populate modal data
-						doc.querySelector('#cmodHandle').innerText = vo.handle.toUpperCase();
-						doc.querySelector('#cmodRole').innerText = vo.getLabelByRole();
-						var profile = doc.querySelector('#cmodProfile') as HTMLImageElement;
+						doc.querySelector('#character-view-profile-handle').innerText = vo.handle.toUpperCase();
+						doc.querySelector('#character-view-profile-role').innerText = vo.getLabelByRole();
+						var profile = doc.querySelector('#character-view-profile-portrait') as HTMLImageElement;
 						profile.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + vo.role.toString() + '.png';
 						profile.width = 75;
 						profile.height = 100;
@@ -134,6 +94,90 @@ class CrewContentController {
 		} // end for
 		return this;
 	} // end create fnc
+
+	crewInfoModal(e: any): void {
+		// show character modal window
+		console.log("* item clicked!", e);
+
+		// empty?
+		if (!e.srcElement.getAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE)) {
+			console.log("empty!");
+			this.lockedSlotHandler(e);
+			return;
+		}
+		var selectedId: number = parseInt((e.srcElement.attributes as any).charid.nodeValue);
+		console.log("* charid", (e.srcElement.attributes as any).charid.nodeValue);
+		var modal: HTMLDivElement = document.getElementById('character-view-modal') as HTMLDivElement;
+		var span: HTMLSpanElement = document.getElementsByClassName("close")[0] as HTMLSpanElement;
+		var content: HTMLDivElement = document.getElementById("character-view-content") as HTMLDivElement;
+
+		// open modal
+		modal.style.display = "block";
+		content.style.display = "flex";
+
+		// get character
+		var vo: CharacterVO;
+		var chars: CharacterVO[] = Globals.getInstance().player.entity.characterPool;
+		for (let char of chars) {
+			// console.log("* char id", char.id, selectedId);
+			if (char.id === selectedId) {
+				console.log("* found char", char);
+				vo = char;
+				break;
+			}
+		}
+		// populate modal data
+		document.getElementById('character-view-profile-handle').innerText = vo.handle.toUpperCase();
+		document.getElementById('character-view-profile-role').innerText = vo.getLabelByRole().toLowerCase();
+		var profile = document.getElementById('character-view-profile-portrait') as HTMLImageElement;
+		profile.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + vo.role.toString() + '.png';
+		profile.width = 75;
+		profile.height = 100;
+		// When the user clicks on <span> (x), close the modal
+		span.onclick = function () {
+			modal.style.display = "none";
+			content.style.display = "none";
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		// window.onclick = function (event) {
+		// 	if (event.target == modal) {
+		// 		modal.style.display = "none";
+		// 		content.style.display = "none";
+		// 	}
+		// }
+	}
+
+	lockedSlotHandler(e: MouseEvent) {
+		console.log("* lockedSlotHandler", e);
+
+		var modal: HTMLDivElement = document.getElementById('character-view-modal') as HTMLDivElement;
+		var span: HTMLSpanElement = document.getElementsByClassName("close")[0] as HTMLSpanElement;
+		var content = document.getElementById("locked-character-slot");
+
+		// open modal
+		modal.style.display = "block";
+		content.style.display = "block";
+		
+		// When the user clicks on <span> (x), close the modal
+		span.onclick = function () {
+			console.log("* span onclick");
+			
+			modal.style.display = "none";
+			content.style.display = "none";
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		// window.onclick = function (event) {
+		// 	console.log("* window onclick", event.target);
+			
+		// 	if (event.target == modal) {
+		// 		modal.style.display = "none";
+		// 		content.style.display = "none";
+		// 	}
+		// }		
+	}
+
 } // end class
 
 export { CrewContentController }

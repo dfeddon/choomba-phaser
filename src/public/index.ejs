@@ -42,27 +42,207 @@
         <!-- </div> -->
     </section>
 
+    <!--
+    ################################ 
+    Section: Lobby 
+    ################################
+    -->
     <section id="lobbyState">
-        <!-- The Modal -->
-        <div id="charModal" class="modal">
+
+        <!--
+        ################################ 
+        Modal
+        ################################
+        -->
+        <div id="character-view-modal" class="modal">
 
             <div class="modal-content">
-                <span class="close">&times;</span>
+                <a href="#close" title="Close" class="close">X</a>
+                <!-- <span class="close">&times;</span> -->
 
-                <div id="cmodCol1" class="cmodCol">
-                    <label id="cmodHandle"></label>
-                    <label id="cmodRole"></label>
-                    <img id="cmodProfile" />
+                <!--
+                ################################ 
+                Character View
+                ###############################
+                -->
+                <div id="character-view-content">
+                    <!-- Character Profile -->
+                    <div id="char-row-1" class="char-row-class">
+
+                        <!-- Character Portrait -->
+                        <div id="character-view-profile-column-1" class="character-view-profile-columns">
+                            <img id="character-view-profile-portrait" />
+                        </div>
+                        <!-- Character Stats -->
+                        <div id="character-view-profile-column-2" class="character-view-profile-columns">
+                            <label id="character-view-profile-handle"></label>
+                            <label id="character-view-profile-role"></label>
+
+                            <hr/>
+
+                            <div class="character-view-horizontal-container">
+
+                                <div class="character-view-vertical-container">
+
+                                    <div class="header-value-row">
+                                        <label class="character-view-profile-header1">Runs:</label>
+                                        <label id="character-view-profile-runs" class="character-view-profile-value1">34</label>
+                                    </div>
+
+                                    <div class="header-value-row">
+                                        <label class="character-view-profile-header1">Defends:</label>
+                                        <label id="character-view-profile-defends" class="character-view-profile-value1">56</label>
+                                    </div>
+
+                                </div>
+
+                                <div class="character-view-vertical-container">
+                                    <div class="header-value-row">
+                                        <label class="character-view-profile-header1">Leadership:</label>
+                                        <label id="character-view-profile-leadership" class="character-view-profile-value1">62</label>
+                                    </div>
+
+                                    <div class="header-value-row">
+                                        <label class="character-view-profile-header1">Loyalty:</label>
+                                        <label id="character-view-profile-loyalty" class="character-view-profile-value1">37</label>
+                                    </div>
+
+                                    <!-- <div class="header-value-row">
+                                        <label class="character-view-profile-header1">Street Smarts:</label>
+                                        <label id="character-view-profile-intuition" class="character-view-profile-value1">55</label>
+                                    </div> -->
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- Character Manager -->
+                        <div id="character-view-profile-column-3" class="character-view-profile-columns">
+                            <label class="border-header">Managing</label>
+                        </div>
+                    </div>
+
+                    <!--
+                    ################################ 
+                    Character Other
+                    ###############################
+                    -->
+                    <div id="char-row-2" class="char-row-class">
+
+                        <!-- Character Attributes -->
+                        <div id="character-view-other-column-1" class="character-view-profile-columns">
+                            <label class="border-header">Attributes</label>
+                            
+                            <label class="character-view-profile-header1">Cybermancy</label>
+                            <div class="character-view-horizontal-container">
+                                <label class="character-attribute-value">63</label>
+                                <label>+8</label>
+                            </div>
+                            
+                            <label class="character-view-profile-header1">Focus</label>
+                            <div class="character-view-horizontal-container">
+                                <label class="character-attribute-value">63</label>
+                                <label>+8</label>
+                            </div>
+
+                            <label class="character-view-profile-header1">Grit</label>
+                            <div class="character-view-horizontal-container">
+                                <label class="character-attribute-value">63</label>
+                                <label>+8</label>
+                            </div>
+
+                            <label class="character-view-profile-header1">Meat</label>
+                            <div class="character-view-horizontal-container">
+                                <label class="character-attribute-value">63</label>
+                                <label>+8</label>
+                            </div>
+
+                            <label class="character-view-profile-header1">Reflexes</label>
+                            <div class="character-view-horizontal-container">
+                                <label class="character-attribute-value">63</label>
+                                <label>+8</label>
+                            </div>
+                            
+                        </div>
+
+                        <div class="character-view-vertical-container">
+
+                            <div id="character-view-other-column-2" class="character-view-profile-columns">
+
+                                <!-- Character Skills -->
+                                <label id="character-view-skills-header" class="border-header">Skills</label>
+                                <div class="character-view-horizontal-container">
+                                    <span class="circle gray">4</span>
+                                    <span class="circle green">3</span>
+                                    <span class="circle green">2</span>
+                                    <span class="circle gray">1</span>
+                                    <span class="circle black"></span>
+                                    <span class="circle red">1</span>
+                                    <span class="circle red">2</span>
+                                    <span class="circle gray">3</span>
+                                    <span class="circle gray">4</span>
+                                </div>
+                                <div id="player-view-ability-container" class="character-view-horizontal-container">
+                                    <img class="character-view-ability" src="https://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/22.png"/>
+                                    <img class="character-view-ability" src="https://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/31.png" />
+                                    <img class="character-view-ability" src="https://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/55.png" />
+                                    <img class="character-view-ability" src="https://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/68.png" />
+                                    <img class="character-view-ability" src="" />
+                                </div>
+                            </div>
+
+                            <div id="character-view-other-horizontal-container" class="character-view-horizontal-container">
+
+                                <!-- Character Gear -->
+                                <div id="character-view-other-gear">
+                                    <label class="border-header">Gear</label>
+                                    <div class="character-view-horizontal-container">
+                                        <label>row1</label>
+                                        <label>row2</label>
+                                        <label>row3</label>
+                                    </div>
+                                </div>
+
+                                <!-- Character Synths -->
+                                <div id="character-view-other-synths">
+                                    <label class="border-header">Sythns</label>
+                                    <div class="character-view-vertical-container">
+                                        <label>data1</label>
+                                        <label>data2</label>
+                                        <label>data3</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        
+                        </div>
+
+                    </div>
+
                 </div>
-                <div id="cmodCol2" class="cmodCol">
-                    <label id="cmodHandle"></label>
-                    <label id="cmodRole"></label>
+
+                <!--
+                ################################ 
+                Locked Character Slot
+                ###############################
+                -->
+                <div id="locked-character-slot">                
+                    <div id="miscCol1" class="miscCol">
+                        <label id="character-view-profile-handle">Unlock Character Slot?</label>
+                        <label id="character-view-profile-role">YES</label>
+                        <img id="character-view-profile-portrait" />
+                    </div>
+                    <div id="miscCol2" class="miscCol">
+                        <label id="miscHandle">dfadf</label>
+                        <label id="miscRole">dfasdf</label>
+                    </div>
                 </div>
+
             </div>
 
         </div>
 
-        <div id="crew-column" class="column-wrapper">
+        <div id="content-wrapper" class="column-wrapper">
 
             <div id="stats-crew-container">
 

@@ -26,7 +26,8 @@
         "fantastical": "^1.0.2",
         "lodash": "^4.17.4",
         "phaser-ce": "^2.9.2",
-        "socketcluster-client": "^9.0.0"
+        "socketcluster-client": "^9.0.0",
+        "tslint": "^5.9.1"
     },
     "devDependencies": {
         "@types/node": "^8.0.51",
