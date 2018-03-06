@@ -133,6 +133,14 @@ class CrewContentController {
 		profile.src = 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_' + vo.role.toString() + '.png';
 		profile.width = 75;
 		profile.height = 100;
+
+		// attributes
+		document.getElementById('character-view-attribute-cybermancy').innerText = vo.cybermancy.toString();
+		document.getElementById('character-view-attribute-focus').innerText = vo.focus.toString();
+		document.getElementById('character-view-attribute-grit').innerText = vo.grit.toString();
+		document.getElementById('character-view-attribute-meat').innerText = vo.meat.toString();
+		document.getElementById('character-view-attribute-reflexes').innerText = vo.reflexes.toString();
+
 		// When the user clicks on <span> (x), close the modal
 		span.onclick = function () {
 			modal.style.display = "none";

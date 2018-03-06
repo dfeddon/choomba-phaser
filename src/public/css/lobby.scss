@@ -479,6 +479,7 @@ input:checked + .labelTab {
 // character view
 hr { 
     display: block;
+    align: left;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     width: 100%;
@@ -488,10 +489,27 @@ hr {
     border-width: 1px;
 }
 
-.border-header {
+.highlight-bordered-header-container {
+    display: inline-block;
+    clear: both;
+    background: #0c0b0b;
+}
+.highlight-bordered-header {
+    // display: inline-block;
+    float: left;
+    text-align: center;
     font-family: $roboto-slab;
     font-size: 1.1em;
     color: orange;
+    margin-top: -25px;
+    background: #0c0b0b;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.highlight-bordered-border {
+    padding: 10px 10px 10px 10px;
+    border: 2px solid #494949;
 }
 
 // .circleGray:before {
@@ -526,7 +544,9 @@ hr {
 }
 
 .gray {
-    background-color: gray;// #8e8e8e;  
+    background-color: rgb(32, 32, 32);// #8e8e8e;
+    color: rgb(51, 51, 51);
+    opacity: 0.75; 
 }
 .green {
     background-color: #16a085;
@@ -558,14 +578,14 @@ hr {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-evenly;
+    justify-content:flex-start;
 }
 
 .character-view-vertical-container {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .character-view-ability {
@@ -575,25 +595,19 @@ hr {
 }
 
 .character-view-profile-header1 {
-    font-family: $roboto-slab;
+    font-family: $teko;
     font-size: 1.3em;
     color: #50E3C2;
     white-space: nowrap; // suppress word wrap
-    padding-right: 10px;
+    padding-left: 15px;
 }
-
-// .character-view-profile-header2 {
-//     font-family: $roboto-slab;
-//     font-size: 1.3em;
-//     color: #50E3C2;
-//     white-space: nowrap; // suppress word wrap
-//     padding-right: 10px;
-// }
 
 .character-view-profile-value1 {
     font-family: $roboto-slab;
     font-size: 1.3em;
     color: #fff;
+    justify-content: flex-end;
+    padding-left: 10px;
 }
 
 .header-value-row {
@@ -601,6 +615,8 @@ hr {
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
+    // align-items: center;
+    // margin: auto;
 }
 
 #character-view-content {
@@ -648,19 +664,38 @@ hr {
     display: flex;
     order: 3;
     flex-grow: 1;
-    padding: 10px 10px 10px 10px;
-    border: 2px solid lightgrey
+    // padding: 10px 10px 10px 10px;
+    // border: 2px solid lightgrey
 }
 
-#character-view-other-column-2 {
-    padding-left: 50px;
-    // padding-top: 15px;
+#character-view-skills-container {
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 15px;
 }
 // attributes
+.character-view-attribute-header1 {
+    font-family: $teko;
+    font-style: bold;
+    font-size: 1.5em;
+    color: #50E3C2;
+}
 .character-attribute-value {
     font-family: $roboto-slab;
     font-style: bold;
     font-size: 2em;
+    margin-top: -10px;
+}
+.character-attribute-modifier {
+    font-family: $roboto-slab;
+    font-style: italic;
+    font-size: 0.8em;
+    color: lime;
+}
+// attributes/skills divider
+#character-view-other-divider {
+    padding-left: 20px;
 }
 // skills
 #character-view-skills-header {
@@ -668,5 +703,25 @@ hr {
 }
 // abilities
 #player-view-ability-container {
-    // top: 10px;
+    margin-top: -25px; /* adjustment */
+}
+// gear
+#character-view-gear-synths-horizontal-container {
+    padding-top: 15px;
+}
+#character-view-gear-figure {
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+// synths
+#character-view-synths-wrapper {
+    padding-left: 15px;
+}
+.character-view-synthetic-item {
+    font-family: $teko;
+    font-size: 1.2em;
+    color: #fff;
+    // white-space: nowrap; // suppress word wrap
 }

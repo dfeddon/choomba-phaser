@@ -97,9 +97,10 @@
                                 </div>
 
                                 <div class="character-view-vertical-container">
+
                                     <div class="header-value-row">
-                                        <label class="character-view-profile-header1">Leadership:</label>
-                                        <label id="character-view-profile-leadership" class="character-view-profile-value1">62</label>
+                                        <label class="character-view-profile-header1">Reputation:</label>
+                                        <label id="character-view-profile-reputation" class="character-view-profile-value1">62</label>
                                     </div>
 
                                     <div class="header-value-row">
@@ -111,14 +112,17 @@
                                         <label class="character-view-profile-header1">Street Smarts:</label>
                                         <label id="character-view-profile-intuition" class="character-view-profile-value1">55</label>
                                     </div> -->
+
                                 </div>
 
                             </div>
 
                         </div>
                         <!-- Character Manager -->
-                        <div id="character-view-profile-column-3" class="character-view-profile-columns">
-                            <label class="border-header">Managing</label>
+                        <div id="character-view-profile-column-3" class="character-view-profile-columns highlight-bordered-border">
+                                <div class="highlight-bordered-header-container">
+                                    <label id="character-view-skills-header" class="highlight-bordered-header">Managing</label>
+                                </div>
                         </div>
                     </div>
 
@@ -130,47 +134,51 @@
                     <div id="char-row-2" class="char-row-class">
 
                         <!-- Character Attributes -->
-                        <div id="character-view-other-column-1" class="character-view-profile-columns">
-                            <label class="border-header">Attributes</label>
+                        <div id="character-view-other-column-1" class="character-view-profile-columns highlight-bordered-border">
+                                <div class="highlight-bordered-header-container">
+                                    <label id="character-view-skills-header" class="highlight-bordered-header">Attributes</label>
+                                </div>
                             
-                            <label class="character-view-profile-header1">Cybermancy</label>
+                            <label class="character-view-attribute-header1">Cybermancy</label>
                             <div class="character-view-horizontal-container">
-                                <label class="character-attribute-value">63</label>
-                                <label>+8</label>
+                                <label id="character-view-attribute-cybermancy" class="character-attribute-value">63</label>
+                                <label id="character-view-cybermancy-modifier" class="character-attribute-modifier">+8</label>
                             </div>
                             
-                            <label class="character-view-profile-header1">Focus</label>
+                            <label class="character-view-attribute-header1">Focus</label>
                             <div class="character-view-horizontal-container">
-                                <label class="character-attribute-value">63</label>
-                                <label>+8</label>
+                                <label id="character-view-attribute-focus" class="character-attribute-value">63</label>
+                                <label id="character-view-focus-modifier" class="character-attribute-modifier"></label>
                             </div>
 
-                            <label class="character-view-profile-header1">Grit</label>
+                            <label class="character-view-attribute-header1">Grit</label>
                             <div class="character-view-horizontal-container">
-                                <label class="character-attribute-value">63</label>
-                                <label>+8</label>
+                                <label id="character-view-attribute-grit" class="character-attribute-value">63</label>
+                                <label id="character-view-grit-modifier" class="character-attribute-modifier">+2</label>
                             </div>
 
-                            <label class="character-view-profile-header1">Meat</label>
+                            <label class="character-view-attribute-header1">Meat</label>
                             <div class="character-view-horizontal-container">
-                                <label class="character-attribute-value">63</label>
-                                <label>+8</label>
+                                <label id="character-view-attribute-meat" class="character-attribute-value">63</label>
+                                <label id="character-view-meat-modifier" class="character-attribute-modifier">+5</label>
                             </div>
 
-                            <label class="character-view-profile-header1">Reflexes</label>
+                            <label class="character-view-attribute-header1">Reflexes</label>
                             <div class="character-view-horizontal-container">
-                                <label class="character-attribute-value">63</label>
-                                <label>+8</label>
+                                <label id="character-view-attribute-reflexes" class="character-attribute-value">63</label>
+                                <label id="character-view-reflexes-modifier" class="character-attribute-modifier"></label>
                             </div>
                             
                         </div>
 
-                        <div class="character-view-vertical-container">
+                        <div id="character-view-other-divider" class="character-view-vertical-container">
 
-                            <div id="character-view-other-column-2" class="character-view-profile-columns">
+                            <div id="character-view-skills-container" class="character-view-profile-columns highlight-bordered-border">
 
                                 <!-- Character Skills -->
-                                <label id="character-view-skills-header" class="border-header">Skills</label>
+                                <div class="highlight-bordered-header-container">
+                                    <label id="character-view-skills-header" class="highlight-bordered-header">Skills</label>
+                                </div>
                                 <div class="character-view-horizontal-container">
                                     <span class="circle gray">4</span>
                                     <span class="circle green">3</span>
@@ -183,33 +191,47 @@
                                     <span class="circle gray">4</span>
                                 </div>
                                 <div id="player-view-ability-container" class="character-view-horizontal-container">
-                                    <img class="character-view-ability" src="https://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/22.png"/>
-                                    <img class="character-view-ability" src="https://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/31.png" />
-                                    <img class="character-view-ability" src="https://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/55.png" />
-                                    <img class="character-view-ability" src="https://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/68.png" />
-                                    <img class="character-view-ability" src="" />
+                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/22.png"/>
+                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/31.png" />
+                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/55.png" />
+                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/68.png" />
+                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/ability-locked.png" />
                                 </div>
                             </div>
 
-                            <div id="character-view-other-horizontal-container" class="character-view-horizontal-container">
+                            <div id="character-view-gear-synths-horizontal-container" class="character-view-horizontal-container">
 
                                 <!-- Character Gear -->
-                                <div id="character-view-other-gear">
-                                    <label class="border-header">Gear</label>
+                                <div id="character-view-other-gear" class="highlight-bordered-border">
+                                    <div class="highlight-bordered-header-container">
+                                        <label id="character-view-skills-header" class="highlight-bordered-header">Gear</label>
+                                    </div>
                                     <div class="character-view-horizontal-container">
-                                        <label>row1</label>
-                                        <label>row2</label>
-                                        <label>row3</label>
+                                        <div class="character-view-vertical-container">
+                                            <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/helmet-1.png" />
+                                            <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/boots-1.png" />
+                                        </div>
+                                        <img id="character-view-gear-figure" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/gear-figure.png"/>
+                                        <div class="character-view-vertical-container">
+                                            <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/cybernetic-arm-1.png" />
+                                            <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/cybernetic-leg-1.png" />
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Character Synths -->
-                                <div id="character-view-other-synths">
-                                    <label class="border-header">Sythns</label>
-                                    <div class="character-view-vertical-container">
-                                        <label>data1</label>
-                                        <label>data2</label>
-                                        <label>data3</label>
+                                <div id="character-view-synths-wrapper">
+                                    <div class="highlight-bordered-border">
+                                        <div class="highlight-bordered-header-container">
+                                            <label id="character-view-skills-header" class="highlight-bordered-header">Synths</label>
+                                        </div>
+                                        <div class="character-view-vertical-container">
+                                            <label class="character-view-synthetic-item">Brawling</label>
+                                            <label class="character-view-synthetic-item">Pick Pocket</label>
+                                            <label class="character-view-synthetic-item">Security Tech</label>
+                                            <label class="character-view-synthetic-item">Cyberdeck Design</label>
+                                            <label class="character-view-synthetic-item">Dodge & Escape</label>
+                                        </div>
                                     </div>
                                 </div>
 
