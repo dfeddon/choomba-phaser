@@ -30,17 +30,18 @@
 
 <body>
 
-    <section id="gameView" style="display:none;">
-        <div id="navigation-ui-container">
+    <section id="gameView">
+        <div id="navigation-ui-container" style="display:none;">
             <label>Navigation UI</label>
             <button id="exitNav">Exit</button>
         </div>
-        <div id="content"></div>
+        <div id="content" class="gameContent">
+
+        <!-- </div>
         <div id="navigation-controls-container">
             <label>Controls</label>
         </div>
-        <!-- </div> -->
-    </section>
+    </section> -->
 
     <!--
     ################################ 
@@ -57,7 +58,7 @@
         <div id="character-view-modal" class="modal">
 
             <div class="modal-content">
-                <a href="#close" title="Close" class="close">X</a>
+                <a title="Close" class="close">X</a>
                 <!-- <span class="close">&times;</span> -->
 
                 <!--
@@ -426,6 +427,13 @@
             <label id="pulse-item-description" class="pulse-desc">Incident Description</label>
         </div>
     </section>
+
+
+            </div>
+            <div id="navigation-controls-container">
+                <label>Controls</label>
+            </div>
+            </section>
 
 </body>
 

@@ -50,11 +50,19 @@
     body {
         font: 100% $font-stack;
         // color: $primary-color;
-        background-color: $primary-color;
+        background-color: transparent;// $primary-color;
         overflow: hidden; // hide scrollbars
         padding: 0;
         margin: 0;
         height: 100%;
+    }
+
+    #gameView {
+        display: none;
+        position: relative; // allow html overlay
+    }
+    .gameContent {
+        position: relative; // allow html overlay
     }
     
     // lobby

@@ -131,7 +131,7 @@ export default class NavigationState extends Phaser.State {
     this.scaleDown = false;
 
     // set bg color
-    this.game.stage.setBackgroundColor("#708090");
+    this.game.stage.setBackgroundColor("#000000");
     // size game canvas
     this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
     // set game bounds
