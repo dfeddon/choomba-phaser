@@ -29,7 +29,7 @@ export default class LobbyState extends Phaser.State {
   selectedIncident: IncidentVO;
   lobbyContentController: LobbyContentController = new LobbyContentController();
   globals: Globals = Globals.getInstance();
-  sectorGroup: Phaser.Group;
+  sectorView: Phaser.Sprite;
 
   // fnc
   combatBegin: any;
@@ -38,8 +38,13 @@ export default class LobbyState extends Phaser.State {
     console.log("== LobbyState.preload ==");
 
     this.globals.crewController = new CrewContentController();
-    this.sectorGroup = new SectorView(this.game, this.game.stage, "sectorGroup", true);
+    //this.sectorGroup = new SectorView(this.game, this.game.stage, "sectorGroup", true);
+    this.sectorView = new SectorView(this.game, 0, 0);//, "sectorView");
   }
+
+  // sddd() {
+  //   console.log("HIIHJPOIJ:LKJ");
+  // }
 
   create() {
     console.log("== LobbyState.create ==");
@@ -56,83 +61,13 @@ export default class LobbyState extends Phaser.State {
     // start arcade physics
     // this.game.physics.startSystem(Phaser.Physics.ARCADE);
     
-    this.game.add.group(this.sectorGroup);//this.sectorGroup = new SectorView.addBlocks();
-
-    // let graphics: Phaser.Graphics = this.game.add.graphics(0, 0);
-    // let size: number = 50;
-    // let padding: number = 5;
-    // let maxWidth: number = Math.floor(this.game.width / size);
-    // let total: number = 2500;//Math.floor(this.game.height / 100) * Math.floor(this.game.width / 100);
-    // let row: number = 0;
-    // let posX: number = 0;
-    // let posY: number = 0;
-
-    // // add sector
-    // // this.game.add(sector);
-    // // create block sprite
-    // let blockRec: Phaser.Graphics = this.game.add.graphics(0, 0);
-    // blockRec.lineStyle(1, 0x121f1f, 0);
-    // // blockRec.beginFill(0x121f1f, 1);
-    // blockRec.drawRect(0, 0, size, size);
-    // // blockRec.endFill();
-    // let blockSprite: Phaser.Sprite = this.game.add.sprite(0, 0, blockRec.generateTexture());
-    // blockRec.destroy();
-
-    // // create building 1
-    // let b1Rec: Phaser.Graphics = this.game.add.graphics(0, 0);
-    // b1Rec.lineStyle(1, 0x121f1f, 1);
-    // b1Rec.beginFill(0x121f1f, 1);
-    // b1Rec.drawRect(0, 0, 5, 10);
-    // b1Rec.endFill();
-    // let b1Sprite: Phaser.Sprite = this.game.add.sprite(0, 0, b1Rec.generateTexture());
-    // b1Rec.destroy();
-    // // create building 1
-    // let blockCircle: Phaser.Graphics = this.game.add.graphics(0, 0);
-    // blockCircle.lineStyle(1, 0x121f1f, 1);
-    // blockCircle.beginFill(0x121f1f, 1);
-    // blockCircle.drawCircle(0, 0, 10);
-    // blockCircle.endFill();
-    // let circleSprite: Phaser.Sprite = this.game.add.sprite(0, 0, blockCircle.generateTexture());
-    // blockCircle.destroy();
-
-    // // block style
-    // // graphics.lineStyle(2, 0x121f1f, 1);
-    // for (let i = 0; i < 2500; i++) {
-    //   if (i !== 0 && i % 50 === 0) {
-    //     posY += size + padding;
-    //     row = 0;
-    //   }
-    //   else row++;
-
-    //   posX = row * size + (padding * row);
-      
-    //   // draw block
-    //   // graphics.drawRect(posX, posY, size, size);
-    //   this.game.add.sprite(posX, posY, blockSprite.key);
-
-    //   // add building
-    //   this.game.add.sprite(posX + 5, posY + 5, b1Sprite.key);
-    //   this.game.add.sprite(posX + 15, posY + 5, b1Sprite.key);
-    //   this.game.add.sprite(posX + 25, posY + 5, circleSprite.key);
-    //   this.game.add.sprite(posX + 40, posY + 5, b1Sprite.key);
-
-    //   this.game.add.sprite(posX + 5, posY + 35, b1Sprite.key);
-    //   this.game.add.sprite(posX + 15, posY + 35, b1Sprite.key);
-    //   this.game.add.sprite(posX + 25, posY + 35, circleSprite.key);
-    //   this.game.add.sprite(posX + 40, posY + 35, b1Sprite.key);
-
-    //   // this.game.add.sprite(posX + 5, posY + 45, b1Sprite.key);
-    //   // this.game.add.sprite(posX + 15, posY + 45, b1Sprite.key);
-    //   // this.game.add.sprite(posX + 25, posY + 45, circleSprite.key);
-    //   // this.game.add.sprite(posX + 40, posY + 45, b1Sprite.key);
-
-    //   // add buildings
-    //   // graphics.lineStyle(0);
-    //   // graphics.beginFill(0xFFFF0B, 0.5);
-    //   // graphics.drawCircle(posX + 25, posY + 25, 20);
-    //   // graphics.drawRect(posX + 5, posY + 5, 20, 20);
-    //   // graphics.endFill();
-    // }
+    // add sector
+    // var sector: Phaser.Sprite = this.game.add.sprite(0, 0, this.sectorView.key);//this.sectorGroup = new SectorView.addBlocks();
+    // this.sectorView.created();
+    // spr.inputEnabled = true;
+    // spr.events.onInputDown.add(function() {console.log("HIIHIHIH")}, this);
+    // this.sectorGroup.inputEnabled = true;
+    // this.sectorGroup.events.onInputDown.add(this.scdd, this);
 
     // this.game.state.start("NavigationState", true, false);
     // this.sc = SocketClusterService.getInstance();
@@ -232,7 +167,14 @@ export default class LobbyState extends Phaser.State {
     //////////////////////////////////////////////
     // show lobby UI
     //////////////////////////////////////////////
-    document.getElementById("lobbyState").style.display = "grid";
+    var lobbyStateHtml = document.getElementById("lobbyState");
+    lobbyStateHtml.style.display = "grid";
+    lobbyStateHtml.addEventListener("click", function(e) {
+      console.log("* lobbyStateHTML clicked *", e.clientY, lobbyStateHtml.clientHeight);
+      if (e.clientY > 1000)//lobbyStateHtml.clientHeight > 1000)
+        lobbyStateHtml.style.height = "50%";
+      else lobbyStateHtml.style.height = "100%";
+    });
 
     //////////////////////////////////////////////
     // listen for pulse click event (stub)

@@ -4,7 +4,7 @@ import { CharacterVO } from "../models/CharactersVO";
 import { VectorVO } from "../models/VectorsVO";
 import * as _ from "lodash";
 
-class SectorView extends Phaser.Group {
+class SectorView extends Phaser.Sprite {
 
 	// static readonly PLAYER_MOVING_FORWARD: number = 1;
 	// static readonly PLAYER_MOVING_BACKWARD: number = 2;
@@ -17,25 +17,38 @@ class SectorView extends Phaser.Group {
 	// worldscale: number;
 	// currentState: number;
 	// isMobile: boolean;
+	gridGroup: Phaser.Group;
 
-	constructor(game: Phaser.Game, parent?: PIXI.DisplayObjectContainer, name?: string, addToStage?: boolean, enableBody?: boolean, physicsBodyType?: number) {
-		console.log("== SectorView.constructor ==");
+	// constructor(game: Phaser.Game, parent?: PIXI.DisplayObjectContainer, name?: string, addToStage?: boolean, enableBody?: boolean, physicsBodyType?: number) {
+	constructor(game: Phaser.Game, x: number, y: number, key?: string) {
+		console.log("== SectorView.constructor ==", x, y, key);
 
-		super(game, parent, name, addToStage, enableBody, physicsBodyType);
+		super(game, x, y, key);//game, parent, name, addToStage, enableBody, physicsBodyType);
 		// this.currentState = 0;
 		// this.isMobile = false;
 		// game.physics.enable(this);
 		// game.add.existing(this);
 		this.created();
-		return this;
+		// return this;
 	}
 
 	created() {
-		console.log("== SectorView.created() ==");
-		let graphics: Phaser.Graphics = this.game.add.graphics(0, 0);
+		console.log("== SectorView.created() ==", this);
+
+		this.gridGroup = this.game.make.group();
+		this.gridGroup.inputEnableChildren = true;
+		this.gridGroup.ignoreChildInput = false;
+		this.gridGroup.onChildInputDown.add(this.clickHandler, this);
+
+		// this.inputEnabled = false;
+		// this.width = 300;
+		// this.height = 300;
+		// this.events.onInputDown.add(this.clickHandler, this);
+
+		// let graphics: Phaser.Graphics = this.game.add.graphics(0, 0);
 		let size: number = 50;
 		let padding: number = 5;
-		let maxWidth: number = Math.floor(this.game.width / size);
+		// let maxWidth: number = Math.floor(this.game.width / size);
 		let total: number = 2500;//Math.floor(this.game.height / 100) * Math.floor(this.game.width / 100);
 		let row: number = 0;
 		let posX: number = 0;
@@ -50,6 +63,7 @@ class SectorView extends Phaser.Group {
 		blockRec.drawRect(0, 0, size, size);
 		// blockRec.endFill();
 		let blockSprite: Phaser.Sprite = this.game.add.sprite(0, 0, blockRec.generateTexture());
+		blockSprite.inputEnabled = false;
 		blockRec.destroy();
 
 		// create building 1
@@ -59,15 +73,29 @@ class SectorView extends Phaser.Group {
 		b1Rec.drawRect(0, 0, 5, 10);
 		b1Rec.endFill();
 		let b1Sprite: Phaser.Sprite = this.game.add.sprite(0, 0, b1Rec.generateTexture());
+		b1Sprite.inputEnabled = false;
 		b1Rec.destroy();
 		// create building 1
 		let blockCircle: Phaser.Graphics = this.game.add.graphics(0, 0);
 		blockCircle.lineStyle(1, 0x121f1f, 1);
 		blockCircle.beginFill(0x121f1f, 1);
-		blockCircle.drawCircle(0, 0, 10);
+		blockCircle.drawCircle(0, 0, 30);
 		blockCircle.endFill();
 		let circleSprite: Phaser.Sprite = this.game.add.sprite(0, 0, blockCircle.generateTexture());
+		circleSprite.inputEnabled = false;
 		blockCircle.destroy();
+		// create car (vert)
+		let blockCarVert: Phaser.Graphics = this.game.add.graphics(0, 0);
+		blockCarVert.lineStyle(2, 0x121f1f, 0.5);
+		blockCarVert.drawRect(0, 0, 10, 1);
+		let carSpriteH: Phaser.Sprite = this.game.add.sprite(0, 0, blockCarVert.generateTexture());
+		carSpriteH.inputEnabled = false;
+		// create car (horiz)
+		let blockCarHor: Phaser.Graphics = this.game.add.graphics(0, 0);
+		blockCarHor.lineStyle(2, 0x121f1f, 0.5);
+		blockCarHor.drawRect(0, 0, 1, 10);
+		let carSpriteV: Phaser.Sprite = this.game.add.sprite(0, 0, blockCarHor.generateTexture());
+		carSpriteV.inputEnabled = false;
 
 		// block style
 		// graphics.lineStyle(2, 0x121f1f, 1);
@@ -84,7 +112,8 @@ class SectorView extends Phaser.Group {
 			// graphics.drawRect(posX, posY, size, size);
 			// this.game.add.sprite(posX, posY, blockSprite.key);
 			if (posX < window.innerWidth && posY < window.innerHeight)
-				this.create(posX, posY, blockSprite.key);
+				this.gridGroup.create(posX, posY, blockSprite.key);
+			// else console.log("skipping...");
 
 			// add building
 			/*this.game.add.sprite(posX + 5, posY + 5, b1Sprite.key);
@@ -109,6 +138,61 @@ class SectorView extends Phaser.Group {
 			// graphics.drawRect(posX + 5, posY + 5, 20, 20);
 			// graphics.endFill();
 		}
+
+		// cars
+		var emitter;
+		var ex: number = 53;
+		var speed: number;
+		var freq: number;
+		var cols: number = Math.ceil(window.innerWidth / 53);
+		var rows: number = Math.ceil(window.innerHeight / 53);
+		for (var j = 1; j < cols; j++) {
+			speed = this.game.rnd.integerInRange(350, 550);
+			emitter = this.game.add.emitter(j * 53 + (j - 1) + j, 0, 300);
+
+			emitter.makeParticles(carSpriteV.key);
+			emitter.width = 1;//window.innerWidth;
+
+			emitter.minParticleScale = 1;
+			emitter.maxParticleScale = 1;
+			
+			var sp
+			emitter.setYSpeed(speed, speed); // 150 - 550
+			emitter.setXSpeed(0, 0);
+
+			emitter.minRotation = 0;
+			emitter.maxRotation = 0;
+			
+			freq = this.game.rnd.integerInRange(250, 100);
+			emitter.start(false, 8000, freq, 0);
+		}
+		for (var j = 1; j < rows; j++) {
+			speed = this.game.rnd.integerInRange(350, 550);
+			emitter = this.game.add.emitter(0, j * 53 + (j - 1) + j, 300);
+
+			emitter.makeParticles(carSpriteH.key);
+			emitter.width = 1;//window.innerWidth;
+
+			emitter.minParticleScale = 1;
+			emitter.maxParticleScale = 1;
+
+			emitter.gravity.x = 0;
+			emitter.gravity.y = 0;
+			emitter.setXSpeed(speed, speed); // 150 - 550
+			emitter.setYSpeed(0, 0);
+
+			emitter.minRotation = 0;
+			emitter.maxRotation = 0;
+
+			freq = this.game.rnd.integerInRange(250, 100);
+			emitter.start(false, 8000, freq, 0);
+		}
+		// this.gridGroup.onChildInputDown.add(this.clickHandler, this);
+
+	}
+
+	clickHandler(e: SectorView, p: Phaser.Point) {
+		console.log("* sector click handler", e, p);
 	}
 
 	// setState(state: number) {
