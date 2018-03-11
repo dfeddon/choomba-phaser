@@ -29,7 +29,7 @@ export default class LobbyState extends Phaser.State {
   selectedIncident: IncidentVO;
   lobbyContentController: LobbyContentController = new LobbyContentController();
   globals: Globals = Globals.getInstance();
-  sectorView: Phaser.Sprite;
+  sectorView: SectorView;
 
   // fnc
   combatBegin: any;
@@ -39,7 +39,9 @@ export default class LobbyState extends Phaser.State {
 
     this.globals.crewController = new CrewContentController();
     //this.sectorGroup = new SectorView(this.game, this.game.stage, "sectorGroup", true);
-    this.sectorView = new SectorView(this.game, 0, 0);//, "sectorView");
+    let totalBlocksX: number = 50;
+    let totalBlocksY: number = 50;
+    this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
   }
 
   // sddd() {
@@ -56,7 +58,11 @@ export default class LobbyState extends Phaser.State {
     // size game canvas
     this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
     // set game bounds
-    // this.game.world.setBounds(0, 0, 2000, window.innerHeight);
+    let offset: number = (this.sectorView.totalBlocksX * this.sectorView.totalBlocksY) / 4; // TODO: Make the 2500 a relative value
+    // this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
+    this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset*2), this.sectorView.gridGroup.height + (offset*2));
+    // camera (focus on player hq)
+    this.game.camera.focusOnXY(this.sectorView.gridGroup.width / 2, this.sectorView.gridGroup.height / 2);
     // console.log('*****', this.game.world);
     // start arcade physics
     // this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -137,6 +143,10 @@ export default class LobbyState extends Phaser.State {
 
   update() {
     // console.log("* update");
+  }
+
+  render() {
+    this.game.debug.cameraInfo(this.game.camera, window.innerWidth - 350, window.innerHeight - 150);
   }
 
   shutdown() {

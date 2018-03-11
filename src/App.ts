@@ -57,9 +57,11 @@ export default class App extends Phaser.Game {
     // let gen: any = NameGenerator.generator('diablo', 'demons', 10, 0);
     // console.log(gen);//('diablo', 'demons', 10, 0));
     // this.game = new Phaser.Game(
+    let w: number = window.innerWidth * window.devicePixelRatio;
+    let h: number = window.innerHeight * window.devicePixelRatio;
     super(
-      window.innerWidth * window.devicePixelRatio,// - 15,
-      window.innerHeight * window.devicePixelRatio,// / 1.6,
+      w,//window.innerWidth * window.devicePixelRatio,
+      h,//window.innerHeight * window.devicePixelRatio,
       Phaser.AUTO,
       "content", null
       // {
