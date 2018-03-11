@@ -292,27 +292,19 @@ class SectorView extends Phaser.Sprite {
 		let stepper: number = 250;
 		switch(dir) {
 			case 1: // up
-				// this.game.add.tween(this.gridGroup).to({ y: this.gridGroup.y + stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
-				// this.game.camera.y -= stepper;
-				this.player.y -= stepper;
+				this.game.add.tween(this.player).to({ y: this.player.y - stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
 			break;
 
 			case 2: // down
-				// this.game.add.tween(this.gridGroup).to({ y: this.gridGroup.y - stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
-				// this.game.camera.y += stepper;
-				this.player.y += stepper;
+				this.game.add.tween(this.player).to({ y: this.player.y + stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
 			break;
 
 			case 3: // left
-				// this.game.add.tween(this.gridGroup).to({ x: this.gridGroup.x + stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
-				// this.game.camera.x -= stepper;
-				this.player.x -= stepper;
+				this.game.add.tween(this.player).to({ x: this.player.x - stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
 			break;
 
 			case 4: // right
-				// this.game.add.tween(this.gridGroup).to({ x: this.gridGroup.x - stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
-				// this.game.camera.x += stepper;
-				this.player.x += stepper;
+				this.game.add.tween(this.player).to({ x: this.player.x + stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
 			break;
 		}
 		console.log("* player", this.player.x, this.player.y);

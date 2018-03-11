@@ -58,7 +58,7 @@ export default class LobbyState extends Phaser.State {
     // size game canvas
     this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
     // set game bounds
-    let offset: number = (this.sectorView.totalBlocksX * this.sectorView.totalBlocksY) / 4; // TODO: Make the 2500 a relative value
+    let offset: number = (this.sectorView.totalBlocksX * this.sectorView.totalBlocksY) / 4;
     // this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
     this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset*2), this.sectorView.gridGroup.height + (offset*2));
     // camera (focus on player hq)
