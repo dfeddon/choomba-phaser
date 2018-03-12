@@ -37,10 +37,13 @@ export default class LobbyState extends Phaser.State {
   preload() {
     console.log("== LobbyState.preload ==");
 
+    //  Advanced profiling, including the fps rate, fps min/max, suggestedFps and msMin/msMax are updated
+    this.game.time.advancedTiming = true;
+
     this.globals.crewController = new CrewContentController();
     //this.sectorGroup = new SectorView(this.game, this.game.stage, "sectorGroup", true);
-    let totalBlocksX: number = 50;
-    let totalBlocksY: number = 50;
+    let totalBlocksX: number = 64;
+    let totalBlocksY: number = 64;
     this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
   }
 
@@ -61,8 +64,8 @@ export default class LobbyState extends Phaser.State {
     let offset: number = (this.sectorView.totalBlocksX * this.sectorView.totalBlocksY) / 4;
     // this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
     this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset*2), this.sectorView.gridGroup.height + (offset*2));
-    // camera (focus on player hq)
-    this.game.camera.focusOnXY(this.sectorView.gridGroup.width / 2, this.sectorView.gridGroup.height / 2);
+    // this.game.world.setBounds(0, 0, this.sectorView.gridGroup.width, this.sectorView.gridGroup.height);
+    // this.game.camera.focusOnXY(this.sectorView.gridGroup.width / 2, this.sectorView.gridGroup.height / 2);
     // console.log('*****', this.game.world);
     // start arcade physics
     // this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -147,6 +150,7 @@ export default class LobbyState extends Phaser.State {
 
   render() {
     this.game.debug.cameraInfo(this.game.camera, window.innerWidth - 350, window.innerHeight - 150);
+    this.game.debug.text('FPS: ' + this.game.time.fps || 'FPS: --', 40, 40, "#00ff00");
   }
 
   shutdown() {
@@ -182,8 +186,8 @@ export default class LobbyState extends Phaser.State {
     lobbyStateHtml.addEventListener("click", function(e) {
       console.log("* lobbyStateHTML clicked *", e.clientY, lobbyStateHtml.clientHeight);
       if (e.clientY > 1000)//lobbyStateHtml.clientHeight > 1000)
-        lobbyStateHtml.style.height = "50%";
-      else lobbyStateHtml.style.height = "100%";
+        lobbyStateHtml.style.height = "10%";
+      else lobbyStateHtml.style.height = "10%";//"100%";
     });
 
     //////////////////////////////////////////////

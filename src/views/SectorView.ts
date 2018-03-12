@@ -2,6 +2,7 @@
 import CharacterView from "./CharacterViews";
 import { CharacterVO } from "../models/CharactersVO";
 import { VectorVO } from "../models/VectorsVO";
+import { BuildingFactoryView } from "../views/BuildingFactoryView";
 import * as _ from "lodash";
 
 class SectorView extends Phaser.Sprite {
@@ -18,9 +19,11 @@ class SectorView extends Phaser.Sprite {
 	// currentState: number;
 	// isMobile: boolean;
 	gridGroup: Phaser.Group;
+	emitterGroup: Phaser.Group;
 	uiGroup: Phaser.Group;
-	player: Phaser.Sprite;
+	fov: Phaser.Sprite;
 	b1Sprite: Phaser.Sprite;
+	compass: Phaser.Graphics;
 	totalBlocksX: number;
 	totalBlocksY: number;
 
@@ -48,16 +51,32 @@ class SectorView extends Phaser.Sprite {
 		this.gridGroup.ignoreChildInput = false;
 		this.gridGroup.onChildInputDown.add(this.clickHandler, this);
 
-		// player fov
-		let player: Phaser.Graphics = this.game.add.graphics(0, 0);
-		player.drawCircle(0, 0, 10);
-		this.player = this.game.add.sprite(0, 0, player.generateTexture());
-		this.player.anchor.setTo(0.5, 0.5);
-		// this.game.add.sprite(0, 0, this.player.key);//(0, 0, this.player.key);
-		// this.game.physics.p2.enable(this.player);
-		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
-		this.game.camera.follow(this.player);
+		// emitter group
+		this.emitterGroup = this.game.add.group();
+		this.emitterGroup.fixedToCamera = true;
+		this.emitterGroup.cameraOffset.x = 17.5; // <- wtf?
+		this.emitterGroup.cameraOffset.y = -7;
+		this.emitterGroup.inputEnableChildren = false;
+		this.emitterGroup.ignoreChildInput = true;
+		// set camera offset to the diff between screen and camera (64)
+		// console.log("* dif", window.innerWidth, this.game.camera.width, this.game.width);
+		let dif = Math.ceil(window.innerWidth / 64) * 64 - window.innerWidth;
+		// console.log("* dif final", dif);
+
+		// fov fov
+		let fov: Phaser.Graphics = this.game.make.graphics(0, 0);
+		// fov.beginFill(0xffffff, 1);
+		fov.lineStyle(1, 0x9dd7e7, 1);
+		// blockRec.beginFill(0x121f1f, 1);
+		fov.drawRect(0, 0, 64, 64);
+		fov.endFill();
+		this.fov = this.game.add.sprite(32, 32, fov.generateTexture());
+		this.fov.anchor.setTo(0.5, 0.5);
+		// this.game.add.sprite(0, 0, this.fov.key);//(0, 0, this.fov.key);
+		// this.game.physics.p2.enable(this.fov);
+		// this.game.physics.startSystem(Phaser.Physics.ARCADE);
+		// this.game.physics.enable(this.fov, Phaser.Physics.ARCADE);
+		this.game.camera.follow(this.fov);
 		
 		// UI group
 		this.uiGroup = this.game.make.group();
@@ -67,19 +86,19 @@ class SectorView extends Phaser.Sprite {
 		// this.uiGroup.onChildInputDown.add(this.clickHandler, this);		
 
 		// add nav
-		let compass: Phaser.Graphics = this.game.make.graphics(0, 0);
+		this.compass = this.game.make.graphics(0, 0);
 		let compassSize: number = 100;
 		let compassPadding: number = 50;
-		compass.lineStyle(1, 0x121f1f, 1);
-		compass.beginFill(0x121f1f, 1);
-		compass.drawCircle(0, 0, compassSize);
-		compass.endFill();
-		compass.x = compassSize;// + compassPadding;
-		compass.y = window.innerHeight - compassSize;// - compassPadding;
+		this.compass.lineStyle(1, 0x121f1f, 1);
+		this.compass.beginFill(0x121f1f, 1);
+		this.compass.drawCircle(0, 0, compassSize);
+		this.compass.endFill();
+		this.compass.x = compassSize;// + compassPadding;
+		this.compass.y = window.innerHeight - compassSize;// - compassPadding;
 
-		compass.inputEnabled = true;
-		compass.input.useHandCursor = true;
-		compass.events.onInputDown.add(this.compassClickHandler, this);
+		this.compass.inputEnabled = true;
+		this.compass.input.useHandCursor = true;
+		this.compass.events.onInputDown.add(this.compassClickHandler, this);
 
 		// add scale
 		let zoom: Phaser.Graphics = this.game.make.graphics(0, 0);
@@ -102,7 +121,7 @@ class SectorView extends Phaser.Sprite {
 		// this.events.onInputDown.add(this.clickHandler, this);
 
 		// let graphics: Phaser.Graphics = this.game.add.graphics(0, 0);
-		let size: number = 50;
+		let size: number = 64;
 		let padding: number = 5;
 		// let maxWidth: number = Math.floor(this.game.width / size);
 		// let total: number = 2500;//Math.floor(this.game.height / 100) * Math.floor(this.game.width / 100);
@@ -113,6 +132,7 @@ class SectorView extends Phaser.Sprite {
 		// add sector
 		// this.game.add(sector);
 		// create block sprite
+		//*
 		let blockRec: Phaser.Graphics = this.game.make.graphics(0, 0);
 		blockRec.lineStyle(1, 0x121f1f, 1);
 		// blockRec.beginFill(0x121f1f, 1);
@@ -120,42 +140,54 @@ class SectorView extends Phaser.Sprite {
 		// blockRec.endFill();
 		let blockSprite: Phaser.Sprite = this.game.make.sprite(0, 0, blockRec.generateTexture());
 		blockSprite.inputEnabled = false;
-		blockRec.destroy();
+		// blockSprite.autoCull = true; // optimize
+		// blockSprite.checkWorldBounds = true; // optimize
+		blockSprite.body = null; // optimize
+		blockRec.destroy();//*/
 
+		// random building pool
+		let rndBuilding: Phaser.Sprite[] = [];
+		// empty block
+		let bdgEmpty: Phaser.Sprite = new BuildingFactoryView(this.game, 0, 0).getBuilding(BuildingFactoryView.BUILDING_TYPE_EMPTY);
+		rndBuilding.push(bdgEmpty);
 		// create building 1
-		let b1Rec: Phaser.Graphics = this.game.make.graphics(0, 0);
-		b1Rec.lineStyle(1, 0x121f1f, 1);
-		b1Rec.beginFill(0x121f1f, 1);
-		b1Rec.drawRect(0, 0, 5, 10);
-		b1Rec.endFill();
-		this.b1Sprite = this.game.make.sprite(0, 0, b1Rec.generateTexture());
-		this.b1Sprite.inputEnabled = false;
-		b1Rec.destroy();
+		let bdgStandard: Phaser.Sprite = new BuildingFactoryView(this.game, 0, 0).getBuilding(BuildingFactoryView.BUILDING_TYPE_STANDARD);
+		rndBuilding.push(bdgStandard);
+
+		// b1Sprite.inputEnabled = false;
+		// b1Rec.destroy();
 		// create building 1
-		let blockCircle: Phaser.Graphics = this.game.make.graphics(0, 0);
-		blockCircle.lineStyle(1, 0x121f1f, 1);
-		blockCircle.beginFill(0x121f1f, 1);
-		blockCircle.drawCircle(0, 0, 10);
-		blockCircle.endFill();
-		let circleSprite: Phaser.Sprite = this.game.make.sprite(0, 0, blockCircle.generateTexture());
-		circleSprite.inputEnabled = false;
-		blockCircle.destroy();
+		// let blockCircle: Phaser.Graphics = this.game.make.graphics(0, 0);
+		// blockCircle.lineStyle(1, 0x121f1f, 1);
+		// blockCircle.beginFill(0x121f1f, 1);
+		// blockCircle.drawCircle(0, 0, 10);
+		// blockCircle.endFill();
+		// let circleSprite: Phaser.Sprite = this.game.make.sprite(0, 0, blockCircle.generateTexture());
+		// circleSprite.inputEnabled = false;
+		// blockCircle.destroy();
+
 		// create car (vert)
+		let carColor:number = 0x384b4b;
 		let blockCarVert: Phaser.Graphics = this.game.make.graphics(0, 0);
-		blockCarVert.lineStyle(2, 0x121f1f, 0.5);
+		blockCarVert.lineStyle(2, carColor, 0.75);
 		blockCarVert.drawRect(0, 0, 10, 1);
 		let carSpriteH: Phaser.Sprite = this.game.make.sprite(0, 0, blockCarVert.generateTexture());
 		carSpriteH.inputEnabled = false;
+		blockCarVert.destroy();
 		// create car (horiz)
 		let blockCarHor: Phaser.Graphics = this.game.make.graphics(0, 0);
-		blockCarHor.lineStyle(2, 0x121f1f, 0.5);
+		blockCarHor.lineStyle(2, carColor, 0.75);
 		blockCarHor.drawRect(0, 0, 1, 10);
 		let carSpriteV: Phaser.Sprite = this.game.make.sprite(0, 0, blockCarHor.generateTexture());
 		carSpriteV.inputEnabled = false;
+		blockCarHor.destroy();
 
 		// block style
-		let totalGrids = this.totalBlocksX * this.totalBlocksY; // 50 x 50
+		let totalGrids = this.totalBlocksX * this.totalBlocksY; // 64 x 64
+		totalGrids = totalGrids / 4;
 		let r = Math.sqrt(totalGrids) - 1;
+
+		// this.gridGroup.rotation = 0.25;
 
 		for (let i = 0; i < totalGrids; i++) {
 			// console.log("* row", row);
@@ -168,7 +200,9 @@ class SectorView extends Phaser.Sprite {
 			posX = row * size + (padding * row);
 
 			// draw block
-			this.gridGroup.create(posX, posY, blockSprite.key);
+			// console.log(rndBuilding.length - 1);
+			this.gridGroup.create(posX, posY, rndBuilding[this.game.rnd.integerInRange(0, rndBuilding.length - 1)].key);
+			// this.gridGroup.create(posX, posY, bdgEmpty.key);
 
 			// add building
 			/*
@@ -197,15 +231,22 @@ class SectorView extends Phaser.Sprite {
 		}
 
 		// cars
-		var emitter;
-		var ex: number = 53;
-		var speed: number;
-		var freq: number;
-		var cols: number = Math.ceil(window.innerWidth / 53);
-		var rows: number = Math.ceil(window.innerHeight / 53);
-		for (var j = 1; j < cols; j++) {
+		let emitter: Phaser.Particles.Arcade.Emitter;
+		let exy: number = 67; // emitter x/y val
+		let speed: number;
+		let freq: number;
+		let duration: number;
+		let cols: number = this.totalBlocksY;
+		let rows: number = this.totalBlocksX;
+
+		let longest: number = (window.innerWidth > window.innerHeight) ? window.innerWidth : window.innerHeight;
+		let totalCarEmitters: number = Math.ceil(longest / 64);
+		// console.log("* longest", longest, totalCarEmitters, rows, cols);
+		for (var j = 1; j < totalCarEmitters; j++) {
 			speed = this.game.rnd.integerInRange(350, 550);
-			emitter = this.gridGroup.add(this.game.add.emitter(j * 53 + (j - 1) + j, 0, 300));
+			emitter = this.emitterGroup.add(this.game.add.emitter(j * exy + (j - 3) + j + this.game.camera.x, this.game.camera.y, 1));//300));
+			console.log("* emitX", emitter.x, emitter.y);
+			// emitter.fixedToCamera = true;
 
 			emitter.makeParticles(carSpriteV.key);
 			emitter.width = 1;//window.innerWidth;
@@ -213,19 +254,21 @@ class SectorView extends Phaser.Sprite {
 			emitter.minParticleScale = 1;
 			emitter.maxParticleScale = 1;
 			
-			var sp
-			emitter.setYSpeed(speed, speed); // 150 - 550
+			emitter.setYSpeed(speed, speed); // 350 - 550
 			emitter.setXSpeed(0, 0);
 
 			emitter.minRotation = 0;
 			emitter.maxRotation = 0;
 			
-			freq = this.game.rnd.integerInRange(250, 100);
-			emitter.start(false, 8000, freq, 0);
+			duration = (this.totalBlocksX * 64) / speed * 1000;
+			freq = this.game.rnd.integerInRange(2500, 10000);
+			emitter.start(false, duration, freq, 0, false);
 		}
-		for (var j = 1; j < rows; j++) {
+		for (var j = 1; j < totalCarEmitters; j++) {
 			speed = this.game.rnd.integerInRange(350, 550);
-			emitter = this.gridGroup.add(this.game.add.emitter(0, j * 53 + (j - 1) + j, 300));
+			emitter = this.emitterGroup.add(this.game.add.emitter(this.game.camera.x, j * exy + (j - 1) + j + this.game.camera.y, 1));//300));
+			console.log("* emitY", emitter.x, emitter.y);
+			// emitter.fixedToCamera = true;
 
 			emitter.makeParticles(carSpriteH.key);
 			emitter.width = 1;//window.innerWidth;
@@ -241,21 +284,27 @@ class SectorView extends Phaser.Sprite {
 			emitter.minRotation = 0;
 			emitter.maxRotation = 0;
 
-			freq = this.game.rnd.integerInRange(250, 100);
-			emitter.start(false, 8000, freq, 0);
+			duration = (this.totalBlocksX * 64) / speed * 1000;
+			freq = this.game.rnd.integerInRange(2500, 10000);
+			emitter.start(false, duration, freq, 0, false); // TODO: replace 800 with accurate width / speed * 1000
 		}
 		// this.gridGroup.onChildInputDown.add(this.clickHandler, this);
-		this.gridGroup.rotation = 0.25;
+		// this.gridGroup.rotation = 0.25;
+
+		// adjust emitter group x/y
+		// console.log("===================", this.x, this.gridGroup.x, this.emitterGroup.x, this.game.camera);
 
 		// add UI over grid items
-		this.uiGroup.add(compass);
+		// this.uiGroup.add(this.compass);
 		this.uiGroup.add(zoom);
-		console.log("* sprite w/h", this.gridGroup.width, this.gridGroup.height);
+		// console.log("* sprite w/h", this.gridGroup.width, this.gridGroup.height);
 
 	}
 
 	compassClickHandler(e: any, p: Phaser.Point) {
-		console.log("* compass clicked", e, p);
+		// console.log("* compass clicked", e, p);
+
+		/*this.compass.inputEnabled = false;
 		let hitX = e.position.x - e.input.downPoint.x;
 		let hitY = e.position.y - e.input.downPoint.y;
 		let dir: number = 4; // 1 up, 2 down, 3 left, 4 right
@@ -290,36 +339,110 @@ class SectorView extends Phaser.Sprite {
 
 		// console.log("* dir", dir);
 		let stepper: number = 250;
+		let t: Phaser.Tween;
 		switch(dir) {
 			case 1: // up
-				this.game.add.tween(this.player).to({ y: this.player.y - stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
+				t = this.game.add.tween(this.fov).to({ y: this.fov.y - stepper }, 250, Phaser.Easing.Quadratic.InOut, true);
 			break;
 
 			case 2: // down
-				this.game.add.tween(this.player).to({ y: this.player.y + stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
+				t = this.game.add.tween(this.fov).to({ y: this.fov.y + stepper }, 250, Phaser.Easing.Quadratic.InOut, true);
 			break;
 
 			case 3: // left
-				this.game.add.tween(this.player).to({ x: this.player.x - stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
+				t = this.game.add.tween(this.fov).to({ x: this.fov.x - stepper }, 250, Phaser.Easing.Quadratic.InOut, true);
 			break;
 
 			case 4: // right
-				this.game.add.tween(this.player).to({ x: this.player.x + stepper }, 500, Phaser.Easing.Quadratic.InOut, true);
+				t = this.game.add.tween(this.fov).to({ x: this.fov.x + stepper }, 250, Phaser.Easing.Quadratic.InOut, true);
 			break;
 		}
-		console.log("* player", this.player.x, this.player.y);
+		t.onComplete.add(this.fovCompleteHandler, this);*/
+	}
+
+	fovCompleteHandler(a: any, b: any) {
+		// console.log("**", a, b);
+		this.compass.inputEnabled = true;
 	}
 
 	zoomClickHandler(e: Phaser.Graphics, p: Phaser.Point) {
 		console.log("* sector click handler", e, p);
+		// let scaleTo: number = 1;
 		if (this.gridGroup.scale.x === 1)
 			this.gridGroup.scale.set(2, 2);
 		else this.gridGroup.scale.set(1, 1);
+		/*
+		let zoomAmount = 1;
+		this.game.camera.scale.x += zoomAmount;
+		this.game.camera.scale.y += zoomAmount;
+		*/
+		this.game.camera.bounds.x = 0;//window.innerWidth.x * this.game.camera.scale.x;
+		this.game.camera.bounds.y = 0;//window.innerHeight.y * this.game.camera.scale.y;
+		this.game.camera.bounds.width = (this.totalBlocksX * 64) * this.gridGroup.scale.x + ((this.totalBlocksX * 64) / 4);
+		this.game.camera.bounds.height = (this.totalBlocksY * 64) * this.gridGroup.scale.y + ((this.totalBlocksY * 64) / 4);
+		//*/
+	}
+
+	pointFromAngle(px: number, py: number): object {
+		console.log("* was", px, py);
+		// let a = this.gridGroup.rotation * Math.PI / 180;
+		let a = this.gridGroup.rotation;// + 180;
+		// var length = this.gridGroup.width;// 150;
+		var realAngle = (this.gridGroup.parent as Phaser.Sprite).angle + 180;
+		console.log("* angle", a, realAngle);
+		var radians = realAngle * Math.PI / 180;
+		console.log("* radians", radians);
+		var x = px + (Math.cos(radians) * (px + 64));
+		var y = py + (Math.sin(radians) * 64);
+		console.log("* is", x, y, ': diff', px - x, py - y);		
+		return { x: x, y: y};
 	}
 
 	clickHandler(e: SectorView, p: Phaser.Point) {
 		console.log("* sector click handler", e, p);
-		e.loadTexture(this.b1Sprite.key);
+		console.log("* bounds offset", this.game.world.bounds.x, this.game.world.bounds.y);
+		this.fov.alpha = 0;
+		this.emitterGroup.visible = false;
+		// let offsetX: number = 0;//64 / 2;
+		// let offsetY: number = 0;//64 / 2;
+		// console.log("* rot", this.gridGroup.rotation);
+		// var coord: any = this.pointFromAngle(e.centerX, e.centerY);
+		// offsetY = Math.cos(this.gridGroup.rotation) * e.position.y;
+		// e.loadTexture(this.b1Sprite.key);
+		// this.game.camera.focusOnXY(p.x, p.y);
+		// this.game.camera.lerp = new Phaser.Point(0.1, 0.1);
+		// this.game.camera.view.centerOn(e.position.x, e.position.y);
+		// console.log("* rot", offsetY);//e.position.x * this.gridGroup.rotation, e.position.y * this.gridGroup.rotation);
+		this.game.add.tween(this.fov).to({ x: e.centerX, y: e.centerY }, 500, Phaser.Easing.Quadratic.InOut, true);
+		let t: Phaser.Tween = this.game.add.tween(this.fov).to({ alpha: 1 }, 650, "Linear", true);
+		t.onComplete.add(this.mapMoveCompleteHandler, this)
+	}
+
+	mapMoveCompleteHandler(e: Phaser.Sprite, p: Phaser.Point) {
+		console.log("* mapMoveComplete", e, p);
+		console.log("len", this.gridGroup.length);
+		// console.log("rem", this.emitterGroup.getChildAt(0).x)
+		// TODO: adjust emitters to fit grid gaps
+		console.log(this.emitterGroup.width, window.innerWidth);
+		for (let emitter in this.emitterGroup.children) {
+			console.log("emit", emitter);
+		}
+		this.emitterGroup.visible = true;
+		var grid: Phaser.Sprite;
+		for (let g = 0; g < this.gridGroup.length; g++) {
+			grid = this.gridGroup.getChildAt(g) as Phaser.Sprite;
+			console.log('grid', grid.inCamera);
+			// if (grid.inCamera === true) {
+			// 	console.log("x", grid.x, this.game.camera.x);
+			// 	console.log('pre', this.emitterGroup.cameraOffset.x);
+			// 	// if (grid.x < this.game.camera.x)
+			// 	// 	this.emitterGroup.cameraOffset.x = this.game.camera.x - grid.x;
+			// 	// else this.emitterGroup.cameraOffset.x = grid.x - this.game.camera.x;
+			// 	// this.emitterGroup.x += Math.abs(grid.x - this.game.camera.x);
+			// 	// console.log('post', this.emitterGroup.cameraOffset.x);
+			// 	break;
+			// }
+		}
 	}
 
 	// setState(state: number) {
