@@ -37,31 +37,42 @@ export default class LobbyState extends Phaser.State {
   preload() {
     console.log("== LobbyState.preload ==");
 
+    this.game.load.crossOrigin = true;
+    // load bg image
+    this.load.image("foursquare", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/four-square.png");
+    this.load.image("threecirc", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/three-circle.png");
+    this.load.image("multi-1", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/multi-1.png");
+    this.load.image("multi-tenent", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/multi-tenent.png");
+    this.load.image("hq", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/hq.png");
+    this.load.image("factory", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/factory.png");
+    this.load.onLoadComplete.add(this.imageLoadComplete, this);
     //  Advanced profiling, including the fps rate, fps min/max, suggestedFps and msMin/msMax are updated
     this.game.time.advancedTiming = true;
 
     this.globals.crewController = new CrewContentController();
     //this.sectorGroup = new SectorView(this.game, this.game.stage, "sectorGroup", true);
-    let totalBlocksX: number = 64;
-    let totalBlocksY: number = 64;
-    this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
   }
 
-  // sddd() {
-  //   console.log("HIIHJPOIJ:LKJ");
-  // }
+  imageLoadComplete() {
+    console.log("* image load complete");
+    // var image = this.game.cache.checkImageKey('foursquare');
+    // console.log("* image in cache", image);
+  }
 
   create() {
     console.log("== LobbyState.create ==");
 
     var __this = this;
     // this.game.paused = false;
+    let totalBlocksX: number = 64;
+    let totalBlocksY: number = 64;
+    this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
     // set bg color
     this.game.stage.backgroundColor = "#000000";
     // size game canvas
     this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
     // set game bounds
-    let offset: number = (this.sectorView.totalBlocksX * this.sectorView.totalBlocksY) / 4;
+    let offset: number = (74 * 74) / 4;
     // this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
     this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset*2), this.sectorView.gridGroup.height + (offset*2));
     // this.game.world.setBounds(0, 0, this.sectorView.gridGroup.width, this.sectorView.gridGroup.height);
@@ -149,7 +160,7 @@ export default class LobbyState extends Phaser.State {
   }
 
   render() {
-    this.game.debug.cameraInfo(this.game.camera, window.innerWidth - 350, window.innerHeight - 150);
+    // this.game.debug.cameraInfo(this.game.camera, window.innerWidth - 350, window.innerHeight - 150);
     this.game.debug.text('FPS: ' + this.game.time.fps || 'FPS: --', 40, 40, "#00ff00");
   }
 

@@ -62,7 +62,7 @@ export default class App extends Phaser.Game {
     super(
       w,//window.innerWidth * window.devicePixelRatio,
       h,//window.innerHeight * window.devicePixelRatio,
-      Phaser.AUTO,
+      Phaser.WEBGL_MULTI,
       "content", null
       // {
       //   preload: this.preload,
