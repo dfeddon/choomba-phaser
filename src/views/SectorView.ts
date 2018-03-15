@@ -18,9 +18,11 @@ class SectorView extends Phaser.Sprite {
 	// worldscale: number;
 	// currentState: number;
 	// isMobile: boolean;
+	sectorGroup: Phaser.Group;
 	gridGroup: Phaser.Group;
 	emitterGroup: Phaser.Group;
 	uiGroup: Phaser.Group;
+	fovGroup: Phaser.Group;
 	fov: Phaser.Sprite;
 	b1Sprite: Phaser.Sprite;
 	compass: Phaser.Graphics;
@@ -49,11 +51,25 @@ class SectorView extends Phaser.Sprite {
 
 		this.renderTimerActive = false;
 
+		// sector group
+		this.sectorGroup = this.game.make.group();
+		// this.gridGroup.inputEnableChildren = true;
+		// this.gridGroup.ignoreChildInput = false;
+		// this.gridGroup.onChildInputDown.add(this.clickHandler, this);
+		
+
 		// grid group
 		this.gridGroup = this.game.make.group();
 		this.gridGroup.inputEnableChildren = true;
 		this.gridGroup.ignoreChildInput = false;
 		this.gridGroup.onChildInputDown.add(this.clickHandler, this);
+
+		this.fovGroup = this.game.make.group();
+		this.fovGroup.inputEnableChildren = false;
+		this.fovGroup.ignoreChildInput = true;
+
+		this.sectorGroup.add(this.gridGroup);
+		this.sectorGroup.add(this.fovGroup);
 
 		// emitter group
 		this.emitterGroup = this.game.add.group();
@@ -63,6 +79,13 @@ class SectorView extends Phaser.Sprite {
 		this.emitterGroup.cameraOffset.y = 0;//-7;
 		this.emitterGroup.inputEnableChildren = false;
 		this.emitterGroup.ignoreChildInput = true;
+
+		// UI group
+		this.uiGroup = this.game.make.group();
+		this.uiGroup.fixedToCamera = true;
+		this.uiGroup.inputEnableChildren = true;
+		this.uiGroup.ignoreChildInput = false;
+		// this.uiGroup.onChildInputDown.add(this.clickHandler, this);		
 
 		// console.log("* emitter", this.emitterGroup.world);
 		// console.log("derek", this.game.world.position, this.game.stage.position, this.game.canvas.getBoundingClientRect());
@@ -74,25 +97,22 @@ class SectorView extends Phaser.Sprite {
 		// fov fov
 		let fov: Phaser.Graphics = this.game.make.graphics(0, 0);
 		// fov.beginFill(0xffffff, 1);
-		fov.lineStyle(1, 0x9dd7e7, 1);
+		fov.lineStyle(2, 0x9dd7e7, 1);
 		// blockRec.beginFill(0x121f1f, 1);
 		fov.drawRect(0, 0, 64, 64);
 		fov.endFill();
-		this.fov = this.game.add.sprite(32, 32, fov.generateTexture());
-		this.fov.anchor.setTo(0.5, 0.5);
+		// this.fov = this.game.add.sprite(32, 32, fov.generateTexture());
+		// this.fov.anchor.setTo(0.5, 0.5);
+		// let fovTexture = fov.generateTexture();
+		let fovReticle: Phaser.Sprite = this.game.make.sprite(32, 32, fov.generateTexture());
+		fovReticle.anchor.setTo(0.5, 0.5);
+		this.fov = this.fovGroup.add(fovReticle);
 		// this.game.add.sprite(0, 0, this.fov.key);//(0, 0, this.fov.key);
 		// this.game.physics.p2.enable(this.fov);
 		// this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		// this.game.physics.enable(this.fov, Phaser.Physics.ARCADE);
 		this.game.camera.follow(this.fov);
 		
-		// UI group
-		this.uiGroup = this.game.make.group();
-		this.uiGroup.fixedToCamera = true;
-		this.uiGroup.inputEnableChildren = true;
-		this.uiGroup.ignoreChildInput = false;
-		// this.uiGroup.onChildInputDown.add(this.clickHandler, this);		
-
 		// add nav
 		this.compass = this.game.make.graphics(0, 0);
 		let compassSize: number = 100;
@@ -290,6 +310,10 @@ class SectorView extends Phaser.Sprite {
 		}*/
 		// this.gridGroup.onChildInputDown.add(this.clickHandler, this);
 		// this.gridGroup.rotation = 0.25;
+		this.sectorGroup.rotation = 0.45;
+		// this.gridGroup.rotation = 0.45;
+		// this.fovGroup.rotation = 0.45;
+
 
 		// adjust emitter group x/y
 		// console.log("===================", this.x, this.gridGroup.x, this.emitterGroup.x, this.game.camera);

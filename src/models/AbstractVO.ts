@@ -7,6 +7,8 @@ class AbstractVO extends Object {
 
   // protected AWSService = AWSService;//.getInstance();
   private _uid: number;
+  private _createdAt: number;
+  private _updatedAt: number;
 
   protected _initializing: boolean = true;
 
@@ -14,7 +16,6 @@ class AbstractVO extends Object {
     super();
     // set uid
     this._uid = new Date().valueOf() + ((Math.floor(Math.random() * 4000)) + 1000);
-    // this.AWS = AWSService.getInstance();
     // console.log("* uid", this.uid);
   }
 
@@ -39,6 +40,22 @@ class AbstractVO extends Object {
 
   public get uid(): number {
     return this._uid;
+  }
+
+  public get createdAt(): number {
+    return this._createdAt;
+  }
+
+  public set createdAt(value: number) {
+    this._createdAt = value;
+  }
+
+  public get updatedAt(): number {
+    return this._updatedAt;
+  }
+
+  public set updatedAt(value: number) {
+    this._updatedAt = value;
   }
 
 }

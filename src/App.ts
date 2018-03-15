@@ -15,6 +15,7 @@ import { CharacterVO } from './models/CharactersVO';
 import { NumberHelper } from './helpers/NumberHelper';
 import { CharactersSchema } from './services/Schemas/CharactersSchema';
 import { DynamooseService } from './services/DynamooseService';
+import { PlayerService } from './services/PlayerService';
 // import { AWSIoTService } from './services/AWSIoTService';
 import { Globals } from './services/Globals';
 import { PlayerVO } from './models/PlayersVO';
@@ -100,7 +101,7 @@ export default class App extends Phaser.Game {
     // init dynamoose
     // AWS.dynamoose.setGame(this);
 
-    // start socketCluster
+    // start socketCluster (assign user to sector id)
     SocketClusterService.getInstance().init(this);
 
     // stub user
@@ -119,7 +120,12 @@ export default class App extends Phaser.Game {
     let playerStubId: number = parseInt(new Phaser.Net(this).getQueryString("player"));
     
     // get player
-    AWS.dynamoose.findById(new PlayersSchema(), playerStubId, function (err: any, player: any) {
+    var p: any = new PlayerService();
+    p.init(playerStubId, function(err: any, result: any) {
+      if (err) console.error("Error: ", err);
+      else __this.state.start("BootState");
+    });
+    /*AWS.dynamoose.findById(new PlayersSchema(), playerStubId, function (err: any, player: any) {
       if (err) return console.log(JSON.stringify(err));
       console.log("* player", player);
 
@@ -128,11 +134,17 @@ export default class App extends Phaser.Game {
         Globals.getInstance().player = new PlayerVO(player);
 
         console.log("* getting owner from entity", player.entity);
-        let characterPoolLength: number = 10;
+        let characterPoolLength: number = 10; // TODO: this *should be* defined in entity vo
         // get entity
         AWS.dynamoose.findById(new EntitiesSchema(), player.entity, function (err: any, entity: any) {
           if (err) return console.log(err);
-          console.log("* len", entity.characters);
+
+          // if not assigned a sector, do so now
+          if (player.entity.sector === undefined) {
+
+          }
+          // if sectors are full, create a new one
+          console.log("* len", entity.sector);
           // if no entity characters, set empty array
           if (!entity.characters)
             entity.characters = [];
@@ -207,7 +219,8 @@ export default class App extends Phaser.Game {
         // console.log(Globals.getInstance().entity);
       }
       else console.log("!! no player found");
-    });
+    });*/
+    /*
     var vo: CharacterVO = AWS.dynamoose.createCharacter();
     console.log(vo.handle);
     console.log(vo.getLabelByRole());
@@ -217,6 +230,7 @@ export default class App extends Phaser.Game {
     console.log("* meat", vo.meat);
     console.log("* cybermancy", vo.cybermancy);
     console.log(vo);
+    */
   }
 
   // preload() {

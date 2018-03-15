@@ -5,6 +5,7 @@ import { ArtifactVO } from "./ArtifactsVO";
 import { PlayerVO } from "./PlayersVO";
 import { CharacterVO } from "./CharactersVO";
 import { AllianceVO } from "./AlliancesVO";
+import { SectorBlockVO } from "./SectorBlockVO";
 
 /** Entity class defines the base construct of the player's entity/self.
  * @class
@@ -21,6 +22,7 @@ class EntityVO extends AbstractVO {
   private _characters: number[];
   private _properties: StructureVO[] = [];
   private _artifacts: ArtifactVO[] = [];
+  private _blocksKnown: SectorBlockVO[];
   // private _crew: CrewVO;
   private _biz: number;
   private _creds: number;
@@ -115,7 +117,16 @@ class EntityVO extends AbstractVO {
 
 	public set characterPool(value: CharacterVO[]) {
 		this._characterPool = value;
-	}
+  }
+  
+  public get blocksKnown(): SectorBlockVO[] {
+    return this._blocksKnown;
+  }
+
+  public set blocksKnown(value: SectorBlockVO[]) {
+    this._blocksKnown = value;
+  }
+  
 }
 
 export { EntityVO };

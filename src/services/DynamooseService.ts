@@ -192,6 +192,24 @@ class DynamooseService {
       return callback(null);
     });
   }
+
+  getAllByArray(schema: any, ids: number[], callback: any): any {
+    console.log("* Dynamoose.getAllByArray");
+    let pool: object[] = [];
+    for (let id of ids) {
+      console.log("+ id", id);
+      this.findById(schema, id, function (err: any, result: any) {
+        if (err) return callback(err);
+        console.log("* got ids", result);
+        pool.push(result);
+        console.log(pool.length, ids.length);
+        if (pool.length === ids.length) {
+          console.log("* done!", pool);
+          return callback(null, pool)
+        }
+      });
+    }
+  }
   ///////////////////////////////
   // get characters by array
   ///////////////////////////////
