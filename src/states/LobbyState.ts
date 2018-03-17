@@ -14,22 +14,22 @@ import { LobbyDropper } from "../controllers/LobbyDropper";
 import { CharacterVO } from "../models/CharactersVO";
 import { LobbyContentController } from "../controllers/LobbyContentController";
 import { CrewContentController } from "../controllers/CrewContentController";
-import { SectorView } from "../views/SectorView";
+import { LobbyController } from "../controllers/LobbyController";
 
 export default class LobbyState extends Phaser.State {
-  charDragSource: any;
-  charDragTarget: any;
-  glob: number = 0;
-  doc: any = document;
-  // public sc: SocketClusterService;
-  sc: SocketClusterService = SocketClusterService.getInstance();
-  currentChannel: any;
-  // player id stub
-  player: string;
-  selectedIncident: IncidentVO;
-  lobbyContentController: LobbyContentController = new LobbyContentController();
+  // charDragSource: any;
+  // charDragTarget: any;
+  // glob: number = 0;
+  // doc: any = document;
+  // // public sc: SocketClusterService;
+  // // sc: SocketClusterService = SocketClusterService.getInstance();
+  // currentChannel: any;
+  // // player id stub
+  // player: string;
+  // selectedIncident: IncidentVO;
+  // lobbyContentController: LobbyContentController = new LobbyContentController();
   globals: Globals = Globals.getInstance();
-  sectorView: SectorView;
+  lobbyController: LobbyController; // instantiate controller, not view, and instantiate view and service from controller
 
   // fnc
   combatBegin: any;
@@ -62,42 +62,15 @@ export default class LobbyState extends Phaser.State {
   create() {
     console.log("== LobbyState.create ==");
 
-    // var __this = this;
-    // this.game.paused = false;
-    let totalBlocksX: number = 64;
-    let totalBlocksY: number = 64;
-    this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
-    // set bg color
-    this.game.stage.backgroundColor = "#000000";
-    // size game canvas
-    this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
-    // set game bounds
-    let offset: number = (74 * 74) / 4;
-    // this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
-    this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset*2), this.sectorView.gridGroup.height + (offset*2));
-    // this.game.world.setBounds(0, 0, this.sectorView.gridGroup.width, this.sectorView.gridGroup.height);
-    // this.game.camera.focusOnXY(this.sectorView.gridGroup.width / 2, this.sectorView.gridGroup.height / 2);
-    // console.log('*****', this.game.world);
-    // start arcade physics
-    // this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    // instantiate sector controller, not view
+    this.lobbyController = new LobbyController(this.game, this).create();
     
-    // add sector
-    // var sector: Phaser.Sprite = this.game.add.sprite(0, 0, this.sectorView.key);//this.sectorGroup = new SectorView.addBlocks();
-    // this.sectorView.created();
-    // spr.inputEnabled = true;
-    // spr.events.onInputDown.add(function() {console.log("HIIHIHIH")}, this);
-    // this.sectorGroup.inputEnabled = true;
-    // this.sectorGroup.events.onInputDown.add(this.scdd, this);
-
-    // this.game.state.start("NavigationState", true, false);
-    // this.sc = SocketClusterService.getInstance();
-    this.player = this.game.rnd.integerInRange(1000, 9000).toString();
     // console.log("* player id", this.player);
     this.doRun();
     // console.log("***", NameGenerator);
     // this.sc = SocketClusterService.getInstance();
     // console.log("cluster", this.sc);
-
+    /*
     //////////////////////////////////////////////
     // tab content manager
     //////////////////////////////////////////////
@@ -148,11 +121,11 @@ export default class LobbyState extends Phaser.State {
         name = document.getElementById('crew-name-' + Globals.getInstance().player.entity.characterPool[i].position.toString()) as HTMLElement;
         name.innerText = Globals.getInstance().player.entity.characterPool[i].handle;
 
-        item.addEventListener("click", function(e) {
+        item.addEventListener("click", (e) => {
           Globals.getInstance().crewController.clickHandler(e);
         });
-      } // end for loop */
-    }
+      } // end for loop
+    } */
   }
 
   update() {
@@ -168,158 +141,154 @@ export default class LobbyState extends Phaser.State {
     this.game.world.removeAll();
   }
 
-  dragStart(e: any) {
-    console.log("dragstart");
-  }
-
   doRun() {
     console.log("== LobbyState.doRun ==");
     // var _this = this;
 
-    //////////////////////////////////////////////
-    // open global incidents channel
-    //////////////////////////////////////////////
-    this.sc.startGlobalChannels();
+    // //////////////////////////////////////////////
+    // // open global incidents channel
+    // //////////////////////////////////////////////
+    // this.sc.startGlobalChannels();
 
     // pause render loop
     // this.game.paused = true;//lockRender = true;
 
-    //////////////////////////////////////////////
-    // hide game view
-    //////////////////////////////////////////////
-    document.getElementById("gameView").style.display = "grid";
+    // //////////////////////////////////////////////
+    // // hide game view
+    // //////////////////////////////////////////////
+    // document.getElementById("gameView").style.display = "grid";
 
-    //////////////////////////////////////////////
-    // show lobby UI
-    //////////////////////////////////////////////
-    var lobbyStateHtml = document.getElementById("lobbyState");
-    lobbyStateHtml.style.display = "grid";
-    lobbyStateHtml.addEventListener("click", function(e) {
-      console.log("* lobbyStateHTML clicked *", e.clientY, lobbyStateHtml.clientHeight);
-      if (e.clientY > 1000)//lobbyStateHtml.clientHeight > 1000)
-        lobbyStateHtml.style.height = "10%";
-      else lobbyStateHtml.style.height = "10%";//"100%";
-    });
+    // //////////////////////////////////////////////
+    // // show lobby UI
+    // //////////////////////////////////////////////
+    // var lobbyStateHtml = document.getElementById("lobbyState");
+    // lobbyStateHtml.style.display = "grid";
+    // lobbyStateHtml.addEventListener("click", (e) => {
+    //   console.log("* lobbyStateHTML clicked *", e.clientY, lobbyStateHtml.clientHeight);
+    //   if (e.clientY > 1000)//lobbyStateHtml.clientHeight > 1000)
+    //     lobbyStateHtml.style.height = "10%";
+    //   else lobbyStateHtml.style.height = "10%";//"100%";
+    // });
 
-    //////////////////////////////////////////////
-    // listen for pulse click event (stub)
-    //////////////////////////////////////////////
-    this.doc.getElementById('pulseClicker').onclick = (e: MouseEvent) => {
-      console.log("* onclick", e.target);
-      console.log("* player", this.player);
+    // //////////////////////////////////////////////
+    // // listen for pulse click event (stub)
+    // //////////////////////////////////////////////
+    // this.doc.getElementById('pulseClicker').onclick = (e: MouseEvent) => {
+    //   console.log("* onclick", e.target);
+    //   console.log("* player", this.player);
 
-      // TODO: send custom incident socket vo
-      // create incidentVO
-      var obj: object = {
-        id: NumberHelper.UIDGenerator(),
-        handle: "Cipher's Incident",
-        description: "Tunnelling down into the grime of BAMA Sprawl...",
-        entity: Globals.getInstance().player.entity.id,
-        property: 1
-      };
-      // save it to dynamoDB?
-      AWSService.getInstance().dynamoose.create(new IncidentsSchema(), obj, (err: any, item: any) => {
-        if (err) return console.log(err);
-        else return this.incidentCreatedHandler(item);// console.log(item);
-      });
-    }
+    //   // TODO: send custom incident socket vo
+    //   // create incidentVO
+    //   var obj: object = {
+    //     id: NumberHelper.UIDGenerator(),
+    //     handle: "Cipher's Incident",
+    //     description: "Tunnelling down into the grime of BAMA Sprawl...",
+    //     entity: Globals.getInstance().player.entity.id,
+    //     property: 1
+    //   };
+    //   // save it to dynamoDB?
+    //   AWSService.getInstance().dynamoose.create(new IncidentsSchema(), obj, (err: any, item: any) => {
+    //     if (err) return console.log(err);
+    //     else return this.incidentCreatedHandler(item);// console.log(item);
+    //   });
+    // }
     
-    //////////////////////////////////////////////
-    //////////////////////////////////////////////
-    this.doc.pulseItemHandler = (e: any) => {
-      // user elected to JOIN an extant incident (if successful, global event by id should be disabled)
-      console.log("pulseItemHandler", e.getAttribute('data-uid'));
-      var incident = JSON.parse(e.getAttribute('data-uid'));
-      console.log("* incident", incident, incident._uid);
+    // //////////////////////////////////////////////
+    // //////////////////////////////////////////////
+    // this.doc.pulseItemHandler = (e: any) => {
+    //   // user elected to JOIN an extant incident (if successful, global event by id should be disabled)
+    //   console.log("pulseItemHandler", e.getAttribute('data-uid'));
+    //   var incident = JSON.parse(e.getAttribute('data-uid'));
+    //   console.log("* incident", incident, incident._uid);
 
-      // store incident, then send with combatBegin fnc
-      this.selectedIncident = new IncidentVO(incident);
-      // TODO: Assign attack/defense characters to incident
-      console.log("* assign", this.selectedIncident);
+    //   // store incident, then send with combatBegin fnc
+    //   this.selectedIncident = new IncidentVO(incident);
+    //   // TODO: Assign attack/defense characters to incident
+    //   console.log("* assign", this.selectedIncident);
 
-      // join incident
-      this.sc.joinChannel(incident.channel);
-    }
+    //   // join incident
+    //   this.sc.joinChannel(incident.channel);
+    // }
 
-    //////////////////////////////////////////////
-    //////////////////////////////////////////////
-    this.combatBegin = (combatBeginData: any) => { //incident: IncidentVO) {
-      console.log("== LobbyState.combatBegin ==", combatBeginData, this.selectedIncident);
-      console.log("* is instigator?", this.selectedIncident.entity, Globals.getInstance().player.entity.id);
-      var opponent: number[];
-      if (this.selectedIncident.entity.id === Globals.getInstance().player.entity.id) {
-        opponent = combatBeginData.challenger;
-      } else opponent = combatBeginData.owner;
-      // hide lobby UI
-      document.getElementById("lobbyState").style.display = "none";
-      // show game canvas
-      document.getElementById("gameView").style.display = "grid";
-      // un-pause game
-      this.game.paused = false;
-      // switch to NavigationState
-      // _this.game.state.states.NavigationState.doRun();
+    // //////////////////////////////////////////////
+    // //////////////////////////////////////////////
+    // this.combatBegin = (combatBeginData: any) => { //incident: IncidentVO) {
+    //   console.log("== LobbyState.combatBegin ==", combatBeginData, this.selectedIncident);
+    //   console.log("* is instigator?", this.selectedIncident.entity, Globals.getInstance().player.entity.id);
+    //   var opponent: number[];
+    //   if (this.selectedIncident.entity.id === Globals.getInstance().player.entity.id) {
+    //     opponent = combatBeginData.challenger;
+    //   } else opponent = combatBeginData.owner;
+    //   // hide lobby UI
+    //   document.getElementById("lobbyState").style.display = "none";
+    //   // show game canvas
+    //   document.getElementById("gameView").style.display = "grid";
+    //   // un-pause game
+    //   this.game.paused = false;
+    //   // switch to NavigationState
+    //   // _this.game.state.states.NavigationState.doRun();
 
-      // update models
-      // incident
-      // crew
-      // defending crew (if combat)
+    //   // update models
+    //   // incident
+    //   // crew
+    //   // defending crew (if combat)
 
-      // now, start state (key, clearWorld, clearCache, param)
-      this.game.state.start("NavigationState", true, false, { i: this.selectedIncident, o: opponent });
-    }
+    //   // now, start state (key, clearWorld, clearCache, param)
+    //   this.game.state.start("NavigationState", true, false, { i: this.selectedIncident, o: opponent });
+    // }
   
-    //////////////////////////////////////////////
-    // drag and drop crew members
-    //////////////////////////////////////////////
-    document.ondragstart = (e) => {
-      console.log("ondragstart", e.target);
-      let img: HTMLImageElement = e.target as HTMLImageElement;
-      console.log(img);
-      // only allow dragging of extant slots
-      if (!img.getAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE)) {
-        console.log("* empty slot");
-        if (e.stopPropagation)
-          e.stopPropagation();
-        if (e.preventDefault)
-          e.preventDefault();
-      } else {
-        console.log("* valid image");
-      }
-      this.charDragSource = img;
-      e.stopImmediatePropagation();
-    };
-    document.ondragover = function(e) {
-      // console.log("ondragover", e);
-      e.preventDefault();
-    };
-    document.ondragenter = function(e) {
-      console.log("ondragenter");
-    }
-    document.ondragleave = function(e) {
-      console.log("ondragleave");
-    }
-    // ... and drop
-    document.ondrop = (e) => {
-      console.log("* ondrop", e);
-      if (e.stopPropagation)
-        e.stopPropagation();
-      if (e.preventDefault)
-        e.preventDefault();
-      let targ = e.target as any;
-      let src = this.charDragSource;
+    // //////////////////////////////////////////////
+    // // drag and drop crew members
+    // //////////////////////////////////////////////
+    // document.ondragstart = (e) => {
+    //   console.log("ondragstart", e.target);
+    //   let img: HTMLImageElement = e.target as HTMLImageElement;
+    //   console.log(img);
+    //   // only allow dragging of extant slots
+    //   if (!img.getAttribute(LobbyDropper.CHARACTER_ID_ATTRIBUTE)) {
+    //     console.log("* empty slot");
+    //     if (e.stopPropagation)
+    //       e.stopPropagation();
+    //     if (e.preventDefault)
+    //       e.preventDefault();
+    //   } else {
+    //     console.log("* valid image");
+    //   }
+    //   this.charDragSource = img;
+    //   e.stopImmediatePropagation();
+    // };
+    // document.ondragover = (e) => {
+    //   // console.log("ondragover", e);
+    //   e.preventDefault();
+    // };
+    // document.ondragenter = (e) => {
+    //   console.log("ondragenter");
+    // }
+    // document.ondragleave = (e) => {
+    //   console.log("ondragleave");
+    // }
+    // // ... and drop
+    // document.ondrop = (e) => {
+    //   console.log("* ondrop", e);
+    //   if (e.stopPropagation)
+    //     e.stopPropagation();
+    //   if (e.preventDefault)
+    //     e.preventDefault();
+    //   let targ = e.target as any;
+    //   let src = this.charDragSource;
 
-      // handle drop logic in LobbyDropper class
-      LobbyDropper.dropped(src, targ);      
-    };
+    //   // handle drop logic in LobbyDropper class
+    //   LobbyDropper.dropped(src, targ);      
+    // };
 
-    //////////////////////////////////////////////
-    // touch events
-    //////////////////////////////////////////////
-    document.ontouchstart = function(e) {
-      var i = e.target as any;
-      console.log("ontouchstart", i.id);
-      e.stopImmediatePropagation();
-    };
+    // //////////////////////////////////////////////
+    // // touch events
+    // //////////////////////////////////////////////
+    // document.ontouchstart = (e) => {
+    //   var i = e.target as any;
+    //   console.log("ontouchstart", i.id);
+    //   e.stopImmediatePropagation();
+    // };
   } // end doRun()
 
   	// pulseItemHandler() {
@@ -338,70 +307,70 @@ export default class LobbyState extends Phaser.State {
 
 	// }
 
-  //////////////////////////////////////////////
-  // add incident
-  //////////////////////////////////////////////
-	addIncident(vo: any) {
-    console.log("* adding pulse item", vo);
-    // vo: { [f]: , [t]ype: , [i]d: , [o]wner: }
+  // //////////////////////////////////////////////
+  // // add incident
+  // //////////////////////////////////////////////
+	// addIncident(vo: any) {
+  //   console.log("* adding pulse item", vo);
+  //   // vo: { [f]: , [t]ype: , [i]d: , [o]wner: }
     
-    // don't add incidents created by *me*
-    console.log(vo.o, this.player);
-    if (vo.o === this.player) {
-      return console.log("++ incident creator is ME!");
-    }
-    console.log("* id", vo.i, typeof(vo.i));
-    // get incident from db by id
-    AWSService.getInstance().dynamoose.findById(new IncidentsSchema(), vo.i, function(err: any, item: any) {
-      if (err) return console.log(err);
+  //   // don't add incidents created by *me*
+  //   console.log(vo.o, this.player);
+  //   if (vo.o === this.player) {
+  //     return console.log("++ incident creator is ME!");
+  //   }
+  //   console.log("* id", vo.i, typeof(vo.i));
+  //   // get incident from db by id
+  //   AWSService.getInstance().dynamoose.findById(new IncidentsSchema(), vo.i, (err: any, item: any) => {
+  //     if (err) return console.log(err);
       
-      console.log("## got incident via db " + JSON.stringify(item), "color:lime");
-    // });
-      // clone wrapper
-      var wrapper: any = document.getElementById("items-pulse-wrapper").cloneNode(true);
-      var pulse: any = document.getElementById("pulse-grid");
-      // insert item
-      pulse.insertAdjacentElement("afterbegin", wrapper);
-      // update labels
-      var handle: any = document.getElementById("pulse-item-label");  
-      var desc: any = document.getElementById("pulse-item-description");
-      handle.innerText = item.handle;
-      desc.innerText = item.description;
-      // assign channel to vo
-      item.channel = vo.i;
-      // assign vo data to div
-      wrapper.setAttribute("data-uid", JSON.stringify(item));//.toString());// = vo;
-    });
-  }
+  //     console.log("## got incident via db " + JSON.stringify(item), "color:lime");
+  //   // });
+  //     // clone wrapper
+  //     var wrapper: any = document.getElementById("items-pulse-wrapper").cloneNode(true);
+  //     var pulse: any = document.getElementById("pulse-grid");
+  //     // insert item
+  //     pulse.insertAdjacentElement("afterbegin", wrapper);
+  //     // update labels
+  //     var handle: any = document.getElementById("pulse-item-label");  
+  //     var desc: any = document.getElementById("pulse-item-description");
+  //     handle.innerText = item.handle;
+  //     desc.innerText = item.description;
+  //     // assign channel to vo
+  //     item.channel = vo.i;
+  //     // assign vo data to div
+  //     wrapper.setAttribute("data-uid", JSON.stringify(item));//.toString());// = vo;
+  //   });
+  // }
   
-  //////////////////////////////////////////////
-  // incident created
-  //////////////////////////////////////////////
-  incidentCreatedHandler(i: IncidentVO) {
-    console.log("* incident created handler", i);
-    // var i: IncidentVO = (data as any).incidents[0];
-    var incidentVO = new IncidentVO(i);
-    console.log("* derek", incidentVO);
-    this.selectedIncident = incidentVO;
-    // console.log("* net", new Phaser.Net(_this.game).getQueryString("player"));
-    // save it to dynamoDB?
-    // send it below (or just incident id, text, and owner)
-    // perhaps channel name is same as incident id?
-    this.sc.createChannel(i.id, this.player);
-  }
+  // //////////////////////////////////////////////
+  // // incident created
+  // //////////////////////////////////////////////
+  // incidentCreatedHandler(i: IncidentVO) {
+  //   console.log("* incident created handler", i);
+  //   // var i: IncidentVO = (data as any).incidents[0];
+  //   var incidentVO = new IncidentVO(i);
+  //   console.log("* derek", incidentVO);
+  //   this.selectedIncident = incidentVO;
+  //   // console.log("* net", new Phaser.Net(_this.game).getQueryString("player"));
+  //   // save it to dynamoDB?
+  //   // send it below (or just incident id, text, and owner)
+  //   // perhaps channel name is same as incident id?
+  //   this.sc.createChannel(i.id, this.player);
+  // }
 	
 
-	renameDescendantsOfNode = function(node: any, suffix: number) {
-		for (var i = 0; i < node.childNodes.length; i++) {
-			var child = node.childNodes[i];
-			if (child.id) // require id?
-			{
-				this.renameDescendantsOfNode(child, suffix);
-				child.setAttribute("id", child.id + "_" + suffix);
-				console.log("* child", child);
-			}
-		}
-		return node;
-	}
+	// renameDescendantsOfNode = (node: any, suffix: number) => {
+	// 	for (var i = 0; i < node.childNodes.length; i++) {
+	// 		var child = node.childNodes[i];
+	// 		if (child.id) // require id?
+	// 		{
+	// 			this.renameDescendantsOfNode(child, suffix);
+	// 			child.setAttribute("id", child.id + "_" + suffix);
+	// 			console.log("* child", child);
+	// 		}
+	// 	}
+	// 	return node;
+	// }
 
 }

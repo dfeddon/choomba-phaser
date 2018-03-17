@@ -20,7 +20,7 @@ import { PlayerService } from './services/PlayerService';
 import { Globals } from './services/Globals';
 import { PlayerVO } from './models/PlayersVO';
 import { EntityVO } from './models/EntitiesVO';
-import { SectorController } from './controllers/SectorController';
+import { LobbyController } from './controllers/LobbyController';
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
@@ -131,7 +131,7 @@ export default class App extends Phaser.Game {
             this.go();//__this.go();
           }
         }
-        // new SectorController().createSector();
+        // new LobbyController().generateNewSector();
       }
     });
     /*AWS.dynamoose.findById(new PlayersSchema(), playerStubId, function (err: any, player: any) {

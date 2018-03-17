@@ -123,7 +123,7 @@ class SocketClusterService {
 				// incident.channel = data.i;
 				// incident.entity = new EntityVO();
 				// push to punk net
-				(_this.game.state.getCurrentState() as LobbyState).addIncident(data);
+				(_this.game.state.getCurrentState() as LobbyState).lobbyController.addIncident(data);
 			}
     	});
 	}
