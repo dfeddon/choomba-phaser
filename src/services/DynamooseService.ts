@@ -20,6 +20,10 @@ class DynamooseService {
   public static readonly DYNAMODB_TABLE_ENTITIES: string = "PNK_entities";
   public static readonly DYNAMODB_TABLE_PLAYERS: string = "PNK_players";
   public static readonly DYNAMODB_TABLE_CHARACTERS: string = "PNK_characters";
+  public static readonly DYNAMODB_TABLE_SECTORS: string = "PNK_sectors";
+  public static readonly DYNAMODB_TABLE_SECTOR_DISTRICTS: string = "PNK_sectordistricts";
+  public static readonly DYNAMODB_TABLE_SECTOR_BLOCKS: string = "PNK_sectorblocks";
+
 
   entity: EntityVO;
 
@@ -154,6 +158,7 @@ class DynamooseService {
       return callback(null, item);
     });
   }
+
   ///////////////////////////////
   // update #id
   ///////////////////////////////
@@ -194,21 +199,44 @@ class DynamooseService {
   }
 
   getAllByArray(schema: any, ids: number[], callback: any): any {
-    console.log("* Dynamoose.getAllByArray");
+    // console.log("* Dynamoose.getAllByArray");
     let pool: object[] = [];
     for (let id of ids) {
-      console.log("+ id", id);
+      // console.log("+ id", id);
       this.findById(schema, id, function (err: any, result: any) {
         if (err) return callback(err);
-        console.log("* got ids", result);
+        // console.log("* got ids", result);
         pool.push(result);
         console.log(pool.length, ids.length);
         if (pool.length === ids.length) {
-          console.log("* done!", pool);
+          // console.log("* done!", pool);
           return callback(null, pool)
         }
       });
     }
+  }
+
+  batchCreate(schema: any, items: object[], callback: any, options?: object) {
+    // console.log("* batchPut", items);
+    schema.model.batchPut(items, options, function(err: any, result: any) {
+      if (err)
+        console.log(JSON.stringify(err));
+      if (err) return callback(err, null);
+      else return callback(null, result);
+    });
+  }
+
+  ///////////////////////////////
+  // findById #id
+  ///////////////////////////////
+  getAll(schema: any, callback: any): any {
+    console.log("* Dynamoose.getAll");
+    schema.model.scan().exec(function (err: any, result: any) {
+      // console.log(item, err);
+      if (err) return callback(err, null);
+      console.log("%c## found " + JSON.stringify(result), "color:lime");
+      return callback(null, result);
+    });
   }
   ///////////////////////////////
   // get characters by array

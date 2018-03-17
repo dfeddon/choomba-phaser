@@ -10,7 +10,10 @@ class EntitiesSchema extends dynamoose.Schema {
 		schema = {
 			id: 			{ type: Number, hashKey: true },
 			name:			{ type: String },
-			characters:		{ type: [Number] }
+			characters:		{ type: [Number] },
+			sector:			{ type: Number },
+			blocksKnown: 	{ type: [Number] },
+			hqBlock: 		{ type: Number }
 		};
 
 		options = {

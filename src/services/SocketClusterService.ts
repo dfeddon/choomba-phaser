@@ -19,7 +19,8 @@ class SocketClusterService {
 	public static readonly INCIDENT_TYPE_COMBAT_BEGIN: number = 4;
 
 	private static instance: SocketClusterService;
-  	public socket: any = null;
+	public socket: any = null;
+	// public socketCluster: any;
 	// public socketData: object = {};
 	// global incidents
 	public globalIncidentsChannelName: string = "incidentsA";		

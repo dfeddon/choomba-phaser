@@ -11,6 +11,7 @@ import * as NameGenerator from "fantastical";
 import { NumberHelper } from "../helpers/NumberHelper";
 import { CharactersSchema } from "../services/Schemas/CharactersSchema";
 import { AWSService } from "../services/AWSService";
+import { CharacterService } from "../services/CharacterService";
 
 class CharacterVO extends AbstractVO {
 
@@ -443,7 +444,8 @@ class CharacterVO extends AbstractVO {
     
     // update service
     if (!this._initializing)
-      this.update(AWSService.getInstance().dynamoose, new CharactersSchema(), "position");
+      this.update(new CharacterService(), new CharactersSchema(), "position");
+      // this.update(AWSService.getInstance().dynamoose, new CharactersSchema(), "position");
 	}
 
 	public get status(): number {

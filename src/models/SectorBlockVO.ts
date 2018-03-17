@@ -1,6 +1,6 @@
 import { AbstractVO } from "./AbstractVO";
 import { VectorVO } from "./VectorsVO";
-import { SectorVO } from "./SectorVO";
+import { SectorDistrictVO } from "./SectorDistrictVO";
 
 class SectorBlockVO extends AbstractVO {
 
@@ -12,18 +12,28 @@ class SectorBlockVO extends AbstractVO {
 	public static readonly BUILDING_TYPE_FACTORY: number = 6;
 	public static readonly BUILDING_TYPE_CHEMLAB: number = 7;
 
-	private _sector: SectorVO;
+	// private _sector: SectorVO;
 	private _vector: VectorVO;
+	private _district: SectorDistrictVO;
 	private _index: number;
 	private _type: number;
 	private _owner: number;
 
-	public get sector(): SectorVO {
-		return this._sector;
+
+	constructor(district: SectorDistrictVO, index?: number, type?: number) {
+		super();
+
+		this._district = district;
+		if (index) this._index = index;
+		if (type) this._type = type;
 	}
 
-	public set sector(value: SectorVO) {
-		this._sector = value;
+	public get district(): SectorDistrictVO {
+		return this._district;
+	}
+
+	public set sector(value: SectorDistrictVO) {
+		this._district = value;
 	}
 
 	public get vector(): VectorVO {
@@ -56,10 +66,6 @@ class SectorBlockVO extends AbstractVO {
 
 	public set owner(value: number) {
 		this._owner = value;
-	}
-	
-	constructor(sector: number, index?: number, type?: number) {
-		super();
 	}
 }
 

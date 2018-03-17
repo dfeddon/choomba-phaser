@@ -60,7 +60,7 @@ class EntityService extends AbstractService {
 				// array to store new character ids
 				var characterIds: number[] = [];
 				// save to db
-				new CharacterService().batchCreate(newCharacters, function(err: any, result: CharacterVO[]) {
+				/*new CharacterService().batchCreate(newCharacters, function(err: any, result: CharacterVO[]) {
 					if (err) return callback(err, null);
 					console.log("returned batch create characters", result);
 
@@ -78,7 +78,7 @@ class EntityService extends AbstractService {
 						if (err) return callback(err, null);
 						return callback(null, result);
 					});
-				});
+				});*/
 			} else { // all slots filled, get existing characters from db
 				new CharacterService().getAllByArray(vo.characters, new EntitiesSchema(), function(err: any, result: any) {
 					if (err) return callback(err, null);
@@ -98,7 +98,7 @@ class EntityService extends AbstractService {
 		super.findById(id, new EntitiesSchema(), callback);
 	}
 	create(obj: EntityVO, callback: any): any {
-		super.create(new EntitiesSchema(), obj, callback);
+		super.create(obj, new EntitiesSchema(), callback);
 	}
 	update(id: number, obj: EntityVO, type: number, callback: any) {
 		super.update(id, obj, new EntitiesSchema(), callback);

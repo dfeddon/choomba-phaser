@@ -3,13 +3,8 @@ class NumberHelper {
 	}
 
 	static UIDGenerator(): number {
-		var rnd = Math.floor(Math.random() * 10000 + 10000);
-		var d: number = Date.now();
-		var uid: number = parseInt(d + "" + rnd);
-		// var uid: number = parseInt(d) + rnd;//parseInt(Date.now() + "" + rnd);
-		console.log("* uidGen", uid, typeof (uid), d);
-
-		return uid;
+		let counter = Date.now() % 1e9;
+		return (Math.random() * 1e9 >>> 0) + (counter++);
 	}
 	static randomRange(min: number, max: number): number {
 		// console.log("== NumberHelper.randomRange ==", min, max);

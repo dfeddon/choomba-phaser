@@ -20,6 +20,7 @@ import { PlayerService } from './services/PlayerService';
 import { Globals } from './services/Globals';
 import { PlayerVO } from './models/PlayersVO';
 import { EntityVO } from './models/EntitiesVO';
+import { SectorController } from './controllers/SectorController';
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
@@ -120,10 +121,18 @@ export default class App extends Phaser.Game {
     let playerStubId: number = parseInt(new Phaser.Net(this).getQueryString("player"));
     
     // get player
-    var p: any = new PlayerService();
-    p.init(playerStubId, function(err: any, result: any) {
+    new PlayerService().init(playerStubId, (err: any, result: any) => {
       if (err) console.error("Error: ", err);
-      else __this.state.start("BootState");
+      else {
+        console.log("* got player", result);
+        if (result.entity) {
+          if (result.entity.blocksKnown.length > 0)
+          {
+            this.go();//__this.go();
+          }
+        }
+        // new SectorController().createSector();
+      }
     });
     /*AWS.dynamoose.findById(new PlayersSchema(), playerStubId, function (err: any, player: any) {
       if (err) return console.log(JSON.stringify(err));
@@ -231,6 +240,10 @@ export default class App extends Phaser.Game {
     console.log("* cybermancy", vo.cybermancy);
     console.log(vo);
     */
+  }
+
+  go() {
+    this.state.start("BootState");
   }
 
   // preload() {
