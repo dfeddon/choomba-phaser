@@ -42,8 +42,8 @@ class SectorService extends AbstractService {
 
 	// custom functions
 	createNewAndPopulate(callback: any) {
-		let __this = this;
-		this.getAll(new SectorsSchema(), function (err: any, result: any) {
+		// let __this = this;
+		this.getAll(new SectorsSchema(), (err: any, result: any) => {
 			console.log("* result", result.count);
 			let sectorCount: number = parseInt(result.count);
 			// validate number of extant sectors
@@ -73,7 +73,7 @@ class SectorService extends AbstractService {
 			let blockService = new SectorBlockService();
 
 			// for (let b of vo.districts)
-			__this.create(vo, function (err: any, result: any) {
+			this.create(vo, function (err: any, result: any) {
 				if (err) return callback(err, null);
 				console.log("* sector created");
 

@@ -62,7 +62,7 @@ export default class LobbyState extends Phaser.State {
   create() {
     console.log("== LobbyState.create ==");
 
-    var __this = this;
+    // var __this = this;
     // this.game.paused = false;
     let totalBlocksX: number = 64;
     let totalBlocksY: number = 64;
@@ -108,9 +108,9 @@ export default class LobbyState extends Phaser.State {
     let directivesTab: HTMLElement = document.getElementById("tabDirectives");
     let currentView: HTMLElement = document.getElementById("section-pulse");
 
-    let tabHandler = function(e: Event) {
+    let tabHandler = (e: Event) => {
       // console.log("tab clicked", e.srcElement.id);
-      __this.lobbyContentController.addContent(e.srcElement.id);
+      this.lobbyContentController.addContent(e.srcElement.id);
     };
     pulseTab.addEventListener("click", tabHandler);
     crewTab.addEventListener("click", tabHandler);
@@ -174,7 +174,7 @@ export default class LobbyState extends Phaser.State {
 
   doRun() {
     console.log("== LobbyState.doRun ==");
-    var _this = this;
+    // var _this = this;
 
     //////////////////////////////////////////////
     // open global incidents channel
@@ -204,9 +204,9 @@ export default class LobbyState extends Phaser.State {
     //////////////////////////////////////////////
     // listen for pulse click event (stub)
     //////////////////////////////////////////////
-    this.doc.getElementById('pulseClicker').onclick = function(e: MouseEvent) {
+    this.doc.getElementById('pulseClicker').onclick = (e: MouseEvent) => {
       console.log("* onclick", e.target);
-      console.log("* player", _this.player);
+      console.log("* player", this.player);
 
       // TODO: send custom incident socket vo
       // create incidentVO
@@ -218,36 +218,36 @@ export default class LobbyState extends Phaser.State {
         property: 1
       };
       // save it to dynamoDB?
-      AWSService.getInstance().dynamoose.create(new IncidentsSchema(), obj, function(err: any, item: any) {
+      AWSService.getInstance().dynamoose.create(new IncidentsSchema(), obj, (err: any, item: any) => {
         if (err) return console.log(err);
-        else return _this.incidentCreatedHandler(item);// console.log(item);
+        else return this.incidentCreatedHandler(item);// console.log(item);
       });
     }
     
     //////////////////////////////////////////////
     //////////////////////////////////////////////
-    this.doc.pulseItemHandler = function(e: any) {
+    this.doc.pulseItemHandler = (e: any) => {
       // user elected to JOIN an extant incident (if successful, global event by id should be disabled)
       console.log("pulseItemHandler", e.getAttribute('data-uid'));
       var incident = JSON.parse(e.getAttribute('data-uid'));
       console.log("* incident", incident, incident._uid);
 
       // store incident, then send with combatBegin fnc
-      _this.selectedIncident = new IncidentVO(incident);
+      this.selectedIncident = new IncidentVO(incident);
       // TODO: Assign attack/defense characters to incident
-      console.log("* assign", _this.selectedIncident);
+      console.log("* assign", this.selectedIncident);
 
       // join incident
-      _this.sc.joinChannel(incident.channel);
+      this.sc.joinChannel(incident.channel);
     }
 
     //////////////////////////////////////////////
     //////////////////////////////////////////////
-    this.combatBegin = function(combatBeginData: any) { //incident: IncidentVO) {
+    this.combatBegin = (combatBeginData: any) => { //incident: IncidentVO) {
       console.log("== LobbyState.combatBegin ==", combatBeginData, this.selectedIncident);
       console.log("* is instigator?", this.selectedIncident.entity, Globals.getInstance().player.entity.id);
       var opponent: number[];
-      if (this.selectedIncident.entity === Globals.getInstance().player.entity.id) {
+      if (this.selectedIncident.entity.id === Globals.getInstance().player.entity.id) {
         opponent = combatBeginData.challenger;
       } else opponent = combatBeginData.owner;
       // hide lobby UI
@@ -265,13 +265,13 @@ export default class LobbyState extends Phaser.State {
       // defending crew (if combat)
 
       // now, start state (key, clearWorld, clearCache, param)
-      _this.game.state.start("NavigationState", true, false, { i: this.selectedIncident, o: opponent });
+      this.game.state.start("NavigationState", true, false, { i: this.selectedIncident, o: opponent });
     }
   
     //////////////////////////////////////////////
     // drag and drop crew members
     //////////////////////////////////////////////
-    document.ondragstart = function(e) {
+    document.ondragstart = (e) => {
       console.log("ondragstart", e.target);
       let img: HTMLImageElement = e.target as HTMLImageElement;
       console.log(img);
@@ -285,7 +285,7 @@ export default class LobbyState extends Phaser.State {
       } else {
         console.log("* valid image");
       }
-      _this.charDragSource = img;
+      this.charDragSource = img;
       e.stopImmediatePropagation();
     };
     document.ondragover = function(e) {
@@ -299,14 +299,14 @@ export default class LobbyState extends Phaser.State {
       console.log("ondragleave");
     }
     // ... and drop
-    document.ondrop = function(e) {
+    document.ondrop = (e) => {
       console.log("* ondrop", e);
       if (e.stopPropagation)
         e.stopPropagation();
       if (e.preventDefault)
         e.preventDefault();
       let targ = e.target as any;
-      let src = _this.charDragSource;
+      let src = this.charDragSource;
 
       // handle drop logic in LobbyDropper class
       LobbyDropper.dropped(src, targ);      

@@ -73,7 +73,7 @@ class AbstractService {
 
 	batchCycle(schema: any, items: AbstractVO[], options: object | {}, callback: any) {
 		console.log("* batch cycling", items.length);
-		let __this = this;
+		// let __this = this;
 		// chuck 50 items per cycle @ 20 second intervals
 		let cycles = items.length / 50;
 		// determine items to batch
@@ -85,7 +85,7 @@ class AbstractService {
 		for (let item of chunk) {
 			batch.push(item.toDatabase(false));
 		}
-		this.AWS.dynamoose.batchCreate(schema, batch, options, function (err: any, result: any) {
+		this.AWS.dynamoose.batchCreate(schema, batch, options, (err: any, result: any) => {
 			if (err) return callback(err, null);
 			else {
 				if (cycles < 1)
@@ -93,7 +93,7 @@ class AbstractService {
 				else {
 					// wait 20 seconds
 					setTimeout(() => {
-						__this.batchCycle(schema, items, options, callback);
+						this.batchCycle(schema, items, options, callback);
 					}, 1000 * 20);
 				}
 			}

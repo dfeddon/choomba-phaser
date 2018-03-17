@@ -25,7 +25,7 @@ class SectorView extends Phaser.Sprite {
 	fovGroup: Phaser.Group;
 	fov: Phaser.Sprite;
 	b1Sprite: Phaser.Sprite;
-	compass: Phaser.Graphics;
+	// compass: Phaser.Graphics;
 	totalBlocksX: number;
 	totalBlocksY: number;
 	rndBuilding: string[];
@@ -114,7 +114,7 @@ class SectorView extends Phaser.Sprite {
 		this.game.camera.follow(this.fov);
 		
 		// add nav
-		this.compass = this.game.make.graphics(0, 0);
+		/*this.compass = this.game.make.graphics(0, 0);
 		let compassSize: number = 100;
 		let compassPadding: number = 50;
 		this.compass.lineStyle(1, 0x121f1f, 1);
@@ -126,7 +126,7 @@ class SectorView extends Phaser.Sprite {
 
 		this.compass.inputEnabled = true;
 		this.compass.input.useHandCursor = true;
-		this.compass.events.onInputDown.add(this.compassClickHandler, this);
+		this.compass.events.onInputDown.add(this.compassClickHandler, this);*/
 
 		// add scale
 		let zoom: Phaser.Graphics = this.game.make.graphics(0, 0);
@@ -343,7 +343,7 @@ class SectorView extends Phaser.Sprite {
 		// var enabled = this.game.renderer.setTexturePriority(['foursquare', 'threecirc']);
 	}
 
-	compassClickHandler(e: any, p: Phaser.Point) {
+	/*compassClickHandler(e: any, p: Phaser.Point) {
 		// console.log("* compass clicked", e, p);
 
 		/*this.compass.inputEnabled = false;
@@ -399,12 +399,12 @@ class SectorView extends Phaser.Sprite {
 				t = this.game.add.tween(this.fov).to({ x: this.fov.x + stepper }, 250, Phaser.Easing.Quadratic.InOut, true);
 			break;
 		}
-		t.onComplete.add(this.fovCompleteHandler, this);*/
-	}
+		t.onComplete.add(this.fovCompleteHandler, this);
+	}*/
 
 	fovCompleteHandler(a: any, b: any) {
 		// console.log("**", a, b);
-		this.compass.inputEnabled = true;
+		// this.compass.inputEnabled = true;
 	}
 
 	zoomClickHandler(e: Phaser.Graphics, p: Phaser.Point) {

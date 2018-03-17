@@ -340,9 +340,8 @@ export default class NavigationState extends Phaser.State {
   }
 
   doRun() {
-    var __this = this;
+    // var __this = this;
     console.log("== NavigationState.doRun ==", this.incident);
-    // var _this = this;
 
     // show/hide navigation ui
     document.getElementById("navigation-ui-container").style.display = "none";
@@ -399,9 +398,9 @@ export default class NavigationState extends Phaser.State {
     // ]
     // get opponent characterVO's
     // var o: CharacterVO[];
-    AWSService.getInstance().dynamoose.getCharactersByArray(this.opponent, function (result: CharacterVO[]) {
+    AWSService.getInstance().dynamoose.getCharactersByArray(this.opponent, (result: CharacterVO[]) => {
       // o = result;
-      __this.initIncident(crew, result);//[]);//defenders);
+      this.initIncident(crew, result);//[]);//defenders);
     });
     // this.initIncident(crew, this.opponent);//[]);//defenders);
 
