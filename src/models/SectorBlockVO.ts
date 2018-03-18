@@ -1,6 +1,7 @@
 import { AbstractVO } from "./AbstractVO";
 import { VectorVO } from "./VectorsVO";
 import { SectorDistrictVO } from "./SectorDistrictVO";
+import { isNumber } from "util";
 
 class SectorBlockVO extends AbstractVO {
 
@@ -19,22 +20,47 @@ class SectorBlockVO extends AbstractVO {
 	private _type: number;
 	private _owner: number;
 
+	constructor(data?: object | {}, generateId?: boolean) {
+		if (generateId === undefined)
+			generateId = true;
 
-	constructor(district: SectorDistrictVO, index?: number, type?: number) {
-		super();
+		super(generateId);
+
+		if (data)
+			Object.assign(this, data);
+	}
+
+	fromDatabase(data: object): object {
+		var instance: SectorBlockVO = new SectorBlockVO({}, false);
+		// instantiate subclasses
+		instance.vector = new VectorVO(0, 0);
+		instance.district = new SectorDistrictVO();
+		// convert db object to model
+		let vo: object = super.fromDatabase(data, instance);
+		return vo;
+	}
+
+	create(district: SectorDistrictVO, index?: number, type?: number) {
+		// super();
 
 		this._district = district;
 		if (index) this._index = index;
 		if (type) this._type = type;
+
+		return this;
 	}
 
 	public get district(): SectorDistrictVO {
 		return this._district;
 	}
 
-	public set sector(value: SectorDistrictVO) {
+	public set district(value: SectorDistrictVO) {
 		this._district = value;
 	}
+
+	// public set sector(value: SectorVO) {
+	// 	this._district = value;
+	// }
 
 	public get vector(): VectorVO {
 		return this._vector;

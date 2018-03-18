@@ -21,6 +21,7 @@ import { Globals } from './services/Globals';
 import { PlayerVO } from './models/PlayersVO';
 import { EntityVO } from './models/EntitiesVO';
 import { LobbyController } from './controllers/LobbyController';
+import { SectorService } from './services/SectorService';
 
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
@@ -119,131 +120,34 @@ export default class App extends Phaser.Game {
     // start boot
     let __this = this;
     let playerStubId: number = parseInt(new Phaser.Net(this).getQueryString("player"));
-    
+    this.getPlayer(playerStubId);
+    // this.generateNewSector();
+  }
+
+  getPlayer(id: number) {
     // get player
-    new PlayerService().init(playerStubId, (err: any, result: any) => {
+    new PlayerService().init(id, (err: any, result: any) => {
       if (err) console.error("Error: ", err);
       else {
         console.log("* got player", result);
         if (result.entity) {
-          if (result.entity.blocksKnown.length > 0)
-          {
+          if (result.entity.blocksKnown.length > 0) {
             this.go();//__this.go();
           }
         }
-        // new LobbyController().generateNewSector();
       }
     });
-    /*AWS.dynamoose.findById(new PlayersSchema(), playerStubId, function (err: any, player: any) {
-      if (err) return console.log(JSON.stringify(err));
-      console.log("* player", player);
-
-      // store player globally
-      if (player) {
-        Globals.getInstance().player = new PlayerVO(player);
-
-        console.log("* getting owner from entity", player.entity);
-        let characterPoolLength: number = 10; // TODO: this *should be* defined in entity vo
-        // get entity
-        AWS.dynamoose.findById(new EntitiesSchema(), player.entity, function (err: any, entity: any) {
-          if (err) return console.log(err);
-
-          // if not assigned a sector, do so now
-          if (player.entity.sector === undefined) {
-
-          }
-          // if sectors are full, create a new one
-          console.log("* len", entity.sector);
-          // if no entity characters, set empty array
-          if (!entity.characters)
-            entity.characters = [];
-          Globals.getInstance().player.entity = new EntityVO(entity);
-          // if character pool has empty slots, fill them
-          if (entity.characters.length < characterPoolLength) {
-            var newCharacters: object[] = [];
-            let num: number = characterPoolLength - entity.characters.length;
-            console.log("* need to generate", num, "new characters");
-            if (num === characterPoolLength) {
-              // new user, fill pool, ensuring entity has at least *one* role for each *position*
-              console.log("* new char!");
-              // frontline (tank [1], gcannon [2]) backline (healer [3], cleanser [4]) midline (aoe [6], dot [5], buff [7], debuff [8])
-              // 1 frontline
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(1, 2)).toObject());
-              // 1 backline
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(3, 4)).toObject());
-              // 2 mid
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(5, 6)).toObject());
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(7, 8)).toObject());
-              // subtrack them
-              num -= 4;
-            }
-            // generate new chars (random)
-            for (var i = 0; i < num; i++) {
-              console.log('* newChar push');
-              newCharacters.push(new CharacterVO().createCharacter(NumberHelper.randomRange(1, 8)).toObject());
-            }
-            // array to store new character ids
-            var characterIds: number[] = [];
-            // save to db
-            for (let schema of newCharacters) {
-              console.log("*****", typeof(schema), schema, typeof(characterIds));
-              // add new character ids to array
-              characterIds.push((schema as CharacterVO).id);
-              // create new character
-              AWS.dynamoose.create(new CharactersSchema(), schema, function(err: any, result: any) {
-                if (err) console.log(err);
-                else {
-                  console.log("%c## created: " + JSON.stringify(result), "color:lime");
-                  // add new char to global entity
-                  console.log("**pool");
-                  console.log("-", Globals.getInstance().player.entity);
-                  Globals.getInstance().player.entity.characterPool.push(result);
-                  // append character id's to existing entity schema...
-                  console.log("id", result.id);
-                  entity.characters.push(result.id);
-                }
-              });
-            }
-            // append new character ids to existing entity.characters array
-            let updatedCharacters: number[] = entity.characters.concat(characterIds);
-            console.log("* updating enitity characters array", typeof(updatedCharacters), updatedCharacters);
-            console.log("* entity id", player.entity, typeof(player.entity));
-            AWS.dynamoose.update(new EntitiesSchema(), { id: player.entity }, DynamooseService.UPDATE_TYPE_PUT, { characters: updatedCharacters }, function (err: any, item: any) {
-              if (err) console.log(err);
-              else console.log(item);
-            });
-            // get characters from db
-          }
-          else { // all slots filled, get characters
-            AWS.dynamoose.getCharactersByArray(entity.characters, function(result: CharacterVO[]) {
-              // console.log('**', result);
-              Globals.getInstance().player.entity.characterPool = result;
-              // test Globals
-              console.log("*g", Globals.getInstance().player);
-              __this.state.start("BootState");
-            });
-            // __this.state.start("BootState");
-          }
-        });
-        // console.log(Globals.getInstance().entity);
-      }
-      else console.log("!! no player found");
-    });*/
-    /*
-    var vo: CharacterVO = AWS.dynamoose.createCharacter();
-    console.log(vo.handle);
-    console.log(vo.getLabelByRole());
-    console.log("* grit", vo.grit);
-    console.log("* reflexes", vo.reflexes);
-    console.log("* focus", vo.focus);
-    console.log("* meat", vo.meat);
-    console.log("* cybermancy", vo.cybermancy);
-    console.log(vo);
-    */
   }
 
   go() {
     this.state.start("BootState");
+  }
+
+  generateNewSector() {
+    new SectorService().createNewAndPopulate(function (err: any, result: any) {
+      if (err) console.log("* error", JSON.stringify(err));
+      else console.log("* success!");
+    });
   }
 
   // preload() {

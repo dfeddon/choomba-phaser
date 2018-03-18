@@ -11,7 +11,7 @@ class IncidentVO extends AbstractVO {
   // public static readonly INCIDENT_TYPE_STRUCTURE: number = 5;
   // public static readonly INCIDENT_TYPE_ALLIANCE: number = 6;
 
-  private _id: number;
+  // private _id: number;
   private _handle: string;
   private _description: string;
   private _type: number;
@@ -27,15 +27,15 @@ class IncidentVO extends AbstractVO {
     if (vo) Object.assign(this, vo);
   }
 
-	public get id(): number {
-		return this._id;
-	}
+	// public get id(): number {
+	// 	return this._id;
+	// }
 
-	public set id(value: number) {
-    // if (typeof(value) === "string")
-    //   value = parseInt(value);
-		this._id = value;
-	}
+	// public set id(value: number) {
+  //   // if (typeof(value) === "string")
+  //   //   value = parseInt(value);
+	// 	this._id = value;
+	// }
 
   public get handle(): string {
     return this._handle;

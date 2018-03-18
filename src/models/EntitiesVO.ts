@@ -12,7 +12,7 @@ import { SectorVO } from "./SectorVO";
  * @class
  */
 class EntityVO extends AbstractVO {
-  private _id: number;
+  // private _id: number;
   private _owner: PlayerVO;
   private _name: string;
   private _level: number;
@@ -42,13 +42,13 @@ class EntityVO extends AbstractVO {
   }
 
   // getters & setters
-  public get id(): number {
-    return this._id;
-  }
+  // public get id(): number {
+  //   return this._id;
+  // }
 
-  public set id(value: number) {
-    this._id = value;
-  }
+  // public set id(value: number) {
+  //   this._id = value;
+  // }
 
 	public get owner(): PlayerVO {
 		return this._owner;

@@ -5,6 +5,7 @@ import { SectorDistrictVO } from "../models/SectorDistrictVO";
 import { NumberHelper } from "../helpers/NumberHelper";
 import { SectorService } from "../services/SectorService";
 import { SectorsSchema } from "../services/Schemas/SectorsSchema";
+import { SectorController } from "./SectorController";
 import { SectorView } from "../views/SectorView";
 import { LobbyDom } from "../views/dom/LobbyDom";
 import { SocketClusterService } from "../services/SocketClusterService";
@@ -17,7 +18,7 @@ class LobbyController {
 
 	game: Phaser.Game;
 	state: Phaser.State;
-	sectorView: SectorView;
+	// sectorView: SectorView;
 	selectedIncident: IncidentVO;
 	player: string;
 	sc: SocketClusterService = SocketClusterService.getInstance();
@@ -33,17 +34,20 @@ class LobbyController {
 
 		var dom = new LobbyDom(this.game, this.state).create();
 		
-		let totalBlocksX: number = 64;
-		let totalBlocksY: number = 64;
-		this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
-		// set bg color
-		this.game.stage.backgroundColor = "#000000";
-		// size game canvas
-		this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
-		// set game bounds
-		let offset: number = (74 * 74) / 4;
-		// this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
-		this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset * 2),this.sectorView.gridGroup.height + (offset * 2));
+		let sectorController: SectorController = new SectorController(this.game, this.state);
+		sectorController.init();
+
+		// let totalBlocksX: number = 64;
+		// let totalBlocksY: number = 64;
+		// this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
+		// // set bg color
+		// this.game.stage.backgroundColor = "#000000";
+		// // size game canvas
+		// this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
+		// // set game bounds
+		// let offset: number = (74 * 74) / 4;
+		// // this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
+		// this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset * 2),this.sectorView.gridGroup.height + (offset * 2));
 
 		return this;
 	}

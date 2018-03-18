@@ -133,7 +133,7 @@ class DynamooseService {
   // create
   ///////////////////////////////
   create(schema: any, obj: any, callback: any): any {
-    schema.model.create(obj, function(err: any, item: any) {
+    schema.model.create(obj, (err: any, item: any) => {
       if (err) return callback(err, null); //console.error(err);
       console.log("%c## dynamoose created", "color:lime");
       return callback(null, item);
@@ -151,7 +151,7 @@ class DynamooseService {
   ///////////////////////////////
   findById(schema: any, key: number, callback: any, options?: any): any {
     console.log("%c## findById " + key, "color:lime");
-    schema.model.get({ id: key }, function(err: any, item: any) {
+    schema.model.get({ id: key }, (err: any, item: any) => {
       // console.log(item, err);
       if (err) return callback(err, null);
       console.log("%c## found " + JSON.stringify(item), "color:lime");
@@ -182,7 +182,7 @@ class DynamooseService {
       break;
     }
     console.log(JSON.stringify(key), JSON.stringify(typeObj));
-    schema.model.update(key, typeObj, function(err: any) {
+    schema.model.update(key, typeObj, (err: any) => {
       if (err) return console.error(err);
       console.log("%c## save success", "color:lime");
     });
@@ -191,7 +191,7 @@ class DynamooseService {
   // delete #id
   ///////////////////////////////
   delete(schema: any, key: any, callback: any, options?: any): any {
-    schema.model.delete(key, options, function(err: any) {
+    schema.model.delete(key, options, (err: any) => {
       if (err) return callback(err);
       console.log("%c## deleted", "color:lime");
       return callback(null);
@@ -203,7 +203,7 @@ class DynamooseService {
     let pool: object[] = [];
     for (let id of ids) {
       // console.log("+ id", id);
-      this.findById(schema, id, function (err: any, result: any) {
+      this.findById(schema, id, (err: any, result: any) => {
         if (err) return callback(err);
         // console.log("* got ids", result);
         pool.push(result);
@@ -218,11 +218,19 @@ class DynamooseService {
 
   batchCreate(schema: any, items: object[], callback: any, options?: object) {
     // console.log("* batchPut", items);
-    schema.model.batchPut(items, options, function(err: any, result: any) {
+    schema.model.batchPut(items, options, (err: any, result: any) => {
       if (err)
         console.log(JSON.stringify(err));
       if (err) return callback(err, null);
       else return callback(null, result);
+    });
+  }
+
+  batchGet(schema: any, items: object[], callback: any, options?: object) {
+    console.log("* batchGet", items);
+    schema.model.batchGet(items, options, (err: any, result: any) => {
+      if (err) return callback(err, null);
+      return callback(null, result);
     });
   }
 

@@ -21,11 +21,14 @@ class SectorBlockService extends AbstractService {
 	update(id: number, obj: SectorBlockVO, type: number, callback: any) {
 		super.update(id, obj, new SectorBlocksSchema(), callback);
 	}
-	getAllByArray(ids: number[], schema: any, callback: any) {
+	getAllByArray(ids: number[], callback: any) {
 		super.getAllByArray(ids, new SectorBlocksSchema(), callback);
 	}
-	batchCreate(schema: any, items: any[], options: object, callback: any) {
+	batchCreate(items: any[], options: object, callback: any) {
 		super.batchCreate(new SectorBlocksSchema(), items, options, callback);
+	}
+	batchGet(items: any[], options: object, callback: any) {
+		super.batchGet(new SectorBlocksSchema(), items, options, callback);
 	}
 
 	// end overrides

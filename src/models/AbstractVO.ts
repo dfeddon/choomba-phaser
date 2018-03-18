@@ -4,40 +4,55 @@ import { NumberHelper } from "../helpers/NumberHelper";
 
 // import { CharactersSchema } from "../services/Schemas/CharactersSchema";
 
-class AbstractVO extends Object {
+abstract class AbstractVO extends Object {
   // public static readonly SCHEMA_TYPE_CHARACTER:number = 1;
 
   // protected AWSService = AWSService;//.getInstance();
   private _uid: number;
-  private _createdAt: number;
-  private _updatedAt: number;
+  private _createdAt: object;
+  private _updatedAt: object;
 
   protected _initializing: boolean = true;
 
-  constructor() {
+  constructor(generateId?: boolean) {
     super();
     // set uid
-    this._uid = NumberHelper.UIDGenerator();// new Date().valueOf() + ((Math.floor(Math.random() * 4000)) + 1000);
+    console.log("* abstractvo", generateId);
+    if (generateId !== false)
+      this._uid = NumberHelper.UIDGenerator();// new object().valueOf() + ((Math.floor(Math.random() * 4000)) + 1000);
     // console.log("* uid", this.uid);
   }
 
-  // update db of single property
-  protected update = function(service: any, schema:any, property: string): any {
-    console.log("-- saving", schema, property);
+  fromDatabase(obj: object, instance: object): object {
+    // get properties
+    let p: any[] = Object.getOwnPropertyNames(obj);
 
-    // create db-friendly object
-    let key: object = {id:this.id};
-    let prop:object = {};
+    // assign to object
+    p.forEach(element => {
+      console.log('=>', element, obj[element], typeof(obj[element]), typeof(instance[element]));
 
-    // set property
-    prop[property] = this[property];
-    console.log('auto-updating -->', key, prop);
-
-    // send to db
-    service.update(schema, key, 1, prop, function(err: any, item: any) {
-      if (err) console.log(err);
-      else console.log(item);
+      // if data is number and instance is object, potential subclass id
+      if (typeof(obj[element]) === "number" && typeof(instance[element]) === "object") {
+        // we might have the id for an subclass member
+        console.log("***************");//, instance[element]);
+        if (instance[element].id) {
+          console.log("* change generated id from", instance[element].id, 'to database id', obj[element]);
+          instance[element].id = obj[element];
+        } else if (instance[element].id) {
+          console.log("* removing generated id from subclass", instance[element].id);
+          instance[element].id === null;
+        }
+      } else if (typeof(obj[element]) === "object" && (element === 'createdAt' || element === 'updatedAt')) {
+        instance[element] = obj[element];
+      } 
+      else if (obj[element] !== Object(obj[element])) {
+        instance[element] = obj[element];
+      }
+      else if (obj[element] instanceof Array) {
+        instance[element] = obj[element];
+      }
     });
+    return instance;
   }
 
   toDatabase(send: boolean = false): object {
@@ -79,25 +94,50 @@ class AbstractVO extends Object {
     console.log("# sending to db...");
   }
 
+  // update db of single property
+  protected update = (service: any, schema: any, property: string): any => {
+    console.log("-- saving", schema, property);
+
+    // create db-friendly object
+    let key: object = { id: this.uid };
+    let prop: object = {};
+
+    // set property
+    prop[property] = this[property];
+    console.log('auto-updating -->', key, prop);
+
+    // send to db
+    service.update(schema, key, 1, prop, function (err: any, item: any) {
+      if (err) console.log(err);
+      else console.log(item);
+    });
+  }
 
   // getters & setters
   public get uid(): number {
     return this._uid;
   }
 
-  public get createdAt(): number {
+  public set id(value: number) {
+    this._uid = value;
+  }
+  public get id(): number {
+    return this._uid;
+  }
+
+  public get createdAt(): object {
     return this._createdAt;
   }
 
-  public set createdAt(value: number) {
+  public set createdAt(value: object) {
     this._createdAt = value;
   }
 
-  public get updatedAt(): number {
+  public get updatedAt(): object {
     return this._updatedAt;
   }
 
-  public set updatedAt(value: number) {
+  public set updatedAt(value: object) {
     this._updatedAt = value;
   }
 

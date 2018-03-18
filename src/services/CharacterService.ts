@@ -26,10 +26,13 @@ class CharacterService extends AbstractService {
 	create(obj: CharacterVO, callback: any): any {
 		super.create(obj, new CharactersSchema(), callback);
 	}
-	getAllByArray(ids: number[], schema: any, callback: any) {
+	update(key: number, obj: object, callback: any) {
+		super.update(key, obj, new CharactersSchema(), callback);
+	}
+	getAllByArray(ids: number[], callback: any) {
 		super.getAllByArray(ids, new CharactersSchema(), callback);
 	}
-	batchCreate(schema: any, items: any[], options: object, callback: any) {
+	batchCreate(items: any[], options: object, callback: any) {
 		super.batchCreate(new CharactersSchema(), items, options, callback);
 	}
 	// end overrides

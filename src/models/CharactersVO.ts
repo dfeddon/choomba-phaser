@@ -30,7 +30,7 @@ class CharacterVO extends AbstractVO {
   
   // privates
   // private _uid: number;
-  private _id: number;
+  // private _id: number;
   private _handle: string;
   private _role: number;
   private _owner: number;
@@ -61,84 +61,7 @@ class CharacterVO extends AbstractVO {
 
     if (!this._handle)
       this._handle = NameGenerator.species.human(false);
-
-    // if (!this.atlas) {
-    //   this.atlas = new AtlasVO();
-    //   // define animation keys
-    //   console.log("* data", jsonData);
-    //   var json: JSON = (<any>jsonData).characters;
-    //   console.log("* json", json);
-    //   for (var i in json[this.key]) {
-    //     // console.log(i);
-    //     this.atlas.keys.push(i);
-    //   }
-    //   // define animations
-    //   var data, prefix, frame;
-    //   for (var j in this.atlas.keys) {
-    //     // set data
-    //     data = json[this.key][this.atlas.keys[j]];
-    //     // instantiate prefix
-    //     prefix = new AtlasPrefixTypeVO(null, this.atlas.keys[j], data.prefix);
-    //     // instatiate frame
-    //     frame = new AtlasFrameVO(
-    //       prefix,
-    //       data.start,
-    //       data.stop,
-    //       data.suffix,
-    //       data.zeroPad
-    //     );
-    //     // add to animation frames
-    //     this.atlas.frames.push(frame);
-    //   }
-    // 
-    // }
-
   }
-  /*constructor(key?: string, handle?: string, vector?: VectorVO) {
-    super();
-    console.log("* CharacterVO constructor");
-    this.key = key;
-    if (handle)
-      this.handle = handle;
-    else this.handle = NameGenerator.species.human(false);
-    console.log("* character handle:", this.handle);
-    this.vector = vector;
-
-    // combat
-    this._characterCombat = new CharacterCombatVO();
-
-    this.atlas = new AtlasVO();
-    // define animation keys
-    console.log("* data", jsonData);
-    var json: JSON = (<any>jsonData).characters;
-    console.log("* json", json);
-    for (var i in json[this.key]) {
-      // console.log(i);
-      this.atlas.keys.push(i);
-    }
-    // define animations
-    var data, prefix, frame;
-    for (var j in this.atlas.keys) {
-      // set data
-      data = json[this.key][this.atlas.keys[j]];
-      // instantiate prefix
-      prefix = new AtlasPrefixTypeVO(null, this.atlas.keys[j], data.prefix);
-      // instatiate frame
-      frame = new AtlasFrameVO(
-        prefix,
-        data.start,
-        data.stop,
-        data.suffix,
-        data.zeroPad
-      );
-      // add to animation frames
-      this.atlas.frames.push(frame);
-    }
-    // Object.assign(this, data);
-    // if (!this.id) {
-    //   this.id = new Date().getTime().toString();
-    // }
-  }*/
 
   createCharacter(role?: number): CharacterVO {
     console.log("* characterVO.createCharacter()", role);
@@ -157,8 +80,8 @@ class CharacterVO extends AbstractVO {
     this._status = CharacterVO.CHARACTER_STATUS_AVAILABLE;
 
     // generate uid
-    if (!this.id)
-      this._id = NumberHelper.UIDGenerator();
+    // if (!this.id)
+    //   this._id = NumberHelper.UIDGenerator();
 
     // first, randomly assign values to all attributs (from 1 - 18/100?)
     this._grit = NumberHelper.randomRange(0, 50);
@@ -240,29 +163,16 @@ class CharacterVO extends AbstractVO {
     }
     return label;
   }
-  toObject(): object {
-    var obj: any = {};
-    obj.id = this.id;
-    obj.handle = this.handle;
-    obj.role = this.role;
-    obj.position = this.position;
-    obj.grit = this.grit;
-    obj.reflexes = this.reflexes;
-    obj.focus = this.focus;
-    obj.cybermancy = this.cybermancy;
-    obj.meat = this.meat;
-    obj.status = this.status;
-    return obj;
-  }
+
   // getters/setters
 
-	public get id(): number {
-		return this._id;
-	}
+	// public get id(): number {
+	// 	return this._id;
+	// }
 
-	public set id(value: number) {
-		this._id = value;
-	}
+	// public set id(value: number) {
+	// 	this._id = value;
+	// }
   
   /** Character's unqiue id
    * @member
@@ -328,27 +238,6 @@ class CharacterVO extends AbstractVO {
       break;
     }
   }
-
-  // /** Character's attributes.
-  //  * @member
-  //  * @private
-  //  * @type {AttributeVO}
-  //  */
-  // public get attributes(): AttributeVO {
-  //   return this._attributes;
-  // }
-
-  // public set attributes(value: AttributeVO) {
-  //   this._attributes = value;
-  // }
-
-  // public get atlas(): AtlasVO {
-  //   return this._atlas;
-  // }
-
-  // public set atlas(value: AtlasVO) {
-  //   this._atlas = value;
-  // }
 
   /** Character's atlas key.
    * @member
@@ -441,11 +330,11 @@ class CharacterVO extends AbstractVO {
 
 	public set position(value: number) {
     this._position = value;
-    
+    console.log("* set position", value);
     // update service
-    if (!this._initializing)
-      this.update(new CharacterService(), new CharactersSchema(), "position");
-      // this.update(AWSService.getInstance().dynamoose, new CharactersSchema(), "position");
+    if (!this._initializing) {
+      this.update(AWSService.getInstance().dynamoose, new CharactersSchema(), "position");
+    }
 	}
 
 	public get status(): number {

@@ -21,10 +21,10 @@ class SectorDistrictService extends AbstractService {
 	update(id: number, obj: SectorVO, type: number, callback: any) {
 		super.update(id, obj, new SectorDistrictsSchema(), callback);
 	}
-	getAllByArray(ids: number[], schema: any, callback: any) {
+	getAllByArray(ids: number[], callback: any) {
 		super.getAllByArray(ids, new SectorDistrictsSchema(), callback);
 	}
-	batchCreate(schema: any, items: any[], options: object, callback: any) {
+	batchCreate(items: any[], options: object, callback: any) {
 		super.batchCreate(new SectorDistrictsSchema(), items, options, callback);
 	}
 	// end overrides

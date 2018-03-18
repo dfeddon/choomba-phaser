@@ -80,7 +80,7 @@ class EntityService extends AbstractService {
 					});
 				});*/
 			} else { // all slots filled, get existing characters from db
-				new CharacterService().getAllByArray(vo.characters, new EntitiesSchema(), function(err: any, result: any) {
+				new CharacterService().getAllByArray(vo.characters, function(err: any, result: any) {
 					if (err) return callback(err, null);
 					vo.characterPool = result as CharacterVO[]
 					return callback(null, vo);
@@ -103,7 +103,7 @@ class EntityService extends AbstractService {
 	update(id: number, obj: EntityVO, type: number, callback: any) {
 		super.update(id, obj, new EntitiesSchema(), callback);
 	}
-	getAllByArray(ids: number[], schema: any, callback: any) {
+	getAllByArray(ids: number[], callback: any) {
 		super.getAllByArray(ids, new EntitiesSchema(), callback);
 	}
 

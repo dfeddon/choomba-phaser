@@ -2,7 +2,7 @@ import { AbstractVO } from "./AbstractVO";
 import { StructureSectionVO } from "./StructureSectionsVO";
 
 class StructureVO extends AbstractVO {
-	private _id: number;
+	// private _id: number;
 	private _level: number;
 	private _sections: StructureSectionVO[];
 
@@ -10,13 +10,13 @@ class StructureVO extends AbstractVO {
 		super();
 	}
 
-	public get id(): number {
-		return this._id;
-	}
+	// public get id(): number {
+	// 	return this._id;
+	// }
 
-	public set id(value: number) {
-		this._id = value;
-	}
+	// public set id(value: number) {
+	// 	this._id = value;
+	// }
 
 	public get level(): number {
 		return this._level;

@@ -9,7 +9,7 @@ class SectorBlocksSchema extends dynamoose.Schema {
 
 		schema = {
 			id: { type: Number, hashKey: true },
-			index: { type: Number, rangeKey: true },
+			index: { type: Number },
 			name: { type: String },
 			type: { type: Number },
 			owner: { type: Number },

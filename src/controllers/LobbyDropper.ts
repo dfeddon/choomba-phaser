@@ -44,8 +44,8 @@ class LobbyDropper {
 			console.log("* switching positions...", srcPosition, targPosition);
 			
 			// switch character positions (auto-save)
-			srcVO.position = targPosition;
-			targVO.position = srcPosition;
+			(srcVO as CharacterVO).position = targPosition;
+			(targVO as CharacterVO).position = srcPosition;
 
 			// switch image slots
 			src.setAttribute('src', targSrc);
@@ -84,6 +84,8 @@ class LobbyDropper {
 				targLabel.innerText = srcVO.handle;
 				// change char vo position attribute to slot num
 				srcVO.position = targPosition;
+
+				console.log("* targ/src", typeof(srcVO), srcVO);
 
 				// src is pool
 				src.setAttribute('src', targSrc);

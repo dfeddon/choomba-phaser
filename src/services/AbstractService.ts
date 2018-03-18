@@ -4,7 +4,7 @@ import { PlayersSchema } from './Schemas/PlayersSchema';
 import { DynamooseService } from './DynamooseService';
 import { AbstractVO } from '../models/AbstractVO';
 
-class AbstractService {
+abstract class AbstractService {
 	
 	AWS: AWSService;
 	// batchRemaining: AbstractVO[];
@@ -14,21 +14,21 @@ class AbstractService {
 	}
 
 	findById(id: number, schema: any, callback: any): any {
-		this.AWS.dynamoose.findById(schema, id, function (err: any, result: any) {
+		this.AWS.dynamoose.findById(schema, id, (err: any, result: any) => {
 			if (err) return callback(err, null);
 			else return callback(null, result);
 		});
 	}
 
 	create(obj: AbstractVO, schema: any, callback: any) {
-		this.AWS.dynamoose.create(schema, obj.toDatabase(false), function(err: any, result: any) {
+		this.AWS.dynamoose.create(schema, obj.toDatabase(false), (err: any, result: any) => {
 			if (err) return callback(err, null);
 			else return callback(null, result);
 		});
 	}
 
-	update(key: number, obj: AbstractVO, schema: any, callback: any) {
-		this.AWS.dynamoose.update(schema, { id: key }, DynamooseService.UPDATE_TYPE_PUT, obj.toDatabase(), function (err: any, result: any) {
+	update(key: number, obj: any, schema: any, callback: any) {
+		this.AWS.dynamoose.update(schema, { id: key }, DynamooseService.UPDATE_TYPE_PUT, obj.toDatabase(), (err: any, result: any) => {
 			if (err) return callback(err, null);
 			else return callback(null, result);
 		});
@@ -42,14 +42,21 @@ class AbstractService {
 	}
 
 	getAllByArray(keys: number[], schema: any, callback: any) {
-		this.AWS.dynamoose.getAllByArray(schema, keys, function (err: any, result: any) {
+		this.AWS.dynamoose.getAllByArray(schema, keys, (err: any, result: any) => {
 			if (err) return callback(err, null);
 			else return callback(null, result);
 		});
 	}
 
 	getAll(schema: any, callback: any) {
-		this.AWS.dynamoose.getAll(schema, function(err: any, result: any) {
+		this.AWS.dynamoose.getAll(schema, (err: any, result: any) => {
+			if (err) return callback(err, null);
+			else return callback(null, result);
+		})
+	}
+
+	batchGet(schema: any, items: AbstractVO[], options: object | {}, callback: any) {
+		this.AWS.dynamoose.batchGet(schema, items, options, (err: any, result: any) => {
 			if (err) return callback(err, null);
 			else return callback(null, result);
 		})
@@ -63,7 +70,7 @@ class AbstractService {
 			for (let item of items) {
 				batch.push(item.toDatabase(false));
 			}
-			this.AWS.dynamoose.batchCreate(schema, batch, options, function(err: any, result: any) {
+			this.AWS.dynamoose.batchCreate(schema, batch, options, (err: any, result: any) => {
 				if (err) return callback(err, null);
 				else return callback(null, result);
 			});

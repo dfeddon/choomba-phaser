@@ -4,6 +4,7 @@ import { CharacterVO } from "../models/CharactersVO";
 import { VectorVO } from "../models/VectorsVO";
 import { BuildingFactoryView } from "../views/BuildingFactoryView";
 import * as _ from "lodash";
+import { Globals } from "../services/Globals";
 
 class SectorView extends Phaser.Sprite {
 
@@ -183,8 +184,9 @@ class SectorView extends Phaser.Sprite {
 
 		// random building pool
 		this.rndBuilding = ['foursquare', 'threecirc', 'multi-1', 'multi-tenent', 'hq', 'factory'];
+		this.drawIsoGrid();
 		// let length: number = (window.innerWidth > window.innerHeight) ? window.innerWidth : window.innerHeight;
-		let total: number = Math.ceil(this.totalBlocksX * this.totalBlocksY);
+		/*let total: number = Math.ceil(this.totalBlocksX * this.totalBlocksY);
 		console.log("* total", total);
 		this.gridGroup.removeAll(true);
 		var enabled = this.game.renderer.setTexturePriority(this.rndBuilding);
@@ -200,7 +202,7 @@ class SectorView extends Phaser.Sprite {
 		let padding: number = 10;
 		// shuffle
 		// grids = _.shuffle(grids);
-		this.gridGroup.align(this.totalBlocksX, this.totalBlocksY, 64 + padding, 64 + padding);
+		this.gridGroup.align(this.totalBlocksX, this.totalBlocksY, 64 + padding, 64 + padding);*/
 		// empty block
 		// let bdgEmpty: Phaser.Sprite = new BuildingFactoryView(this.game, 0, 0).getBuilding(BuildingFactoryView.BUILDING_TYPE_EMPTY);
 		// rndBuilding.push(bdgEmpty);
@@ -225,9 +227,9 @@ class SectorView extends Phaser.Sprite {
 		blockCarHor.destroy();*/
 
 		// block style
-		let totalGrids = this.totalBlocksX * this.totalBlocksY; // 64 x 64
+		// let totalGrids = this.totalBlocksX * this.totalBlocksY; // 64 x 64
 		// totalGrids = totalGrids / 4;
-		let r = Math.sqrt(totalGrids) - 1;
+		// let r = Math.sqrt(totalGrids) - 1;
 
 		// grid
 		// console.log("* max textures on this machine", this.game.renderer.maxTextures);
@@ -310,6 +312,7 @@ class SectorView extends Phaser.Sprite {
 		}*/
 		// this.gridGroup.onChildInputDown.add(this.clickHandler, this);
 		// this.gridGroup.rotation = 0.25;
+		// this.drawGrid();
 		this.sectorGroup.rotation = 0.45;
 		// this.gridGroup.rotation = 0.45;
 		// this.fovGroup.rotation = 0.45;
@@ -326,8 +329,30 @@ class SectorView extends Phaser.Sprite {
 
 	}
 
-	redrawGrid() {
+	drawIsoGrid() {
+		console.log('* blocksKnown', Globals.getInstance().player.entity.blocksKnown);
+	}
+
+	drawGrid() {
 		console.log(this.game.renderType);
+		// let length: number = (window.innerWidth > window.innerHeight) ? window.innerWidth : window.innerHeight;
+		let total: number = Math.ceil(this.totalBlocksX * this.totalBlocksY);
+		console.log("* total", total);
+		this.gridGroup.removeAll(true);
+		var enabled = this.game.renderer.setTexturePriority(this.rndBuilding);
+		console.log("* priority", enabled);
+		var rnd: number;
+		var sprite: Phaser.Sprite;
+		let grids = this.gridGroup.createMultiple(total / this.rndBuilding.length, this.rndBuilding, 0, true);
+		grids.forEach(function (grid: Phaser.Sprite) {
+			console.log("+ grid", grid.key);
+			grid.smoothed = false;
+		});
+		console.log("* aligning...");
+		let padding: number = 10;
+		// shuffle
+		// grids = _.shuffle(grids);
+		this.gridGroup.align(this.totalBlocksX, this.totalBlocksY, 64 + padding, 64 + padding);
 		// let longest: number = (window.innerWidth > window.innerHeight) ? window.innerWidth : window.innerHeight;
 		// let total: number = Math.ceil(longest / 64);
 		// console.log("* total", total);
@@ -522,7 +547,7 @@ class SectorView extends Phaser.Sprite {
 		// 	console.log("emit", emitter);
 		// }
 		this.emitterGroup.visible = true;
-		this.redrawGrid();
+		// this.drawGrid();
 		// return;
 		var grid: Phaser.Sprite;
 		for (let g = 0; g < this.gridGroup.length; g++) {

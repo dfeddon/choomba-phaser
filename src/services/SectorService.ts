@@ -63,12 +63,13 @@ class SectorService extends AbstractService {
 
 				// now, create blocks, adding them to respective districts
 				for (let j = 0; j < SectorVO.SECTOR_TOTAL_BLOCKS / SectorVO.SECTOR_DISTRICTS_TOTAL; j++) {
-					block = new SectorBlockVO(district, j + 1, NumberHelper.randomRange(1, 8))
+					block = new SectorBlockVO().create(district, j + 1, NumberHelper.randomRange(1, 8))
 					district.blocks.push(block);//addBlock(block);
 					allblocks.push(block);
 				}
 			}
-			// console.log("*", vo);
+			console.log("*", vo);
+			// return;
 			let districtService = new SectorDistrictService();
 			let blockService = new SectorBlockService();
 
@@ -77,11 +78,11 @@ class SectorService extends AbstractService {
 				if (err) return callback(err, null);
 				console.log("* sector created");
 
-				districtService.batchCreate(new SectorDistrictsSchema(), vo.districts, {}, function(err: any, result: any) {
+				districtService.batchCreate(vo.districts, {}, function(err: any, result: any) {
 					if (err) return callback(err, null);
 					console.log("* districts created");
 
-					blockService.batchCreate(new SectorBlocksSchema(), allblocks, {}, function(err: any, result: any) {
+					blockService.batchCreate(allblocks, {}, function(err: any, result: any) {
 						if (err) return callback(err, null);
 						console.log("* blocks created");
 						return callback(null, result);
