@@ -5,6 +5,9 @@ import { VectorVO } from "../models/VectorsVO";
 import { BuildingFactoryView } from "../views/BuildingFactoryView";
 import * as _ from "lodash";
 import { Globals } from "../services/Globals";
+import { SectorBlockVO } from "../models/SectorBlockVO";
+import { PointHelper } from "../helpers/PointHelper";
+import { RandomDataGenerator } from "phaser-ce";
 
 class SectorView extends Phaser.Sprite {
 
@@ -32,6 +35,40 @@ class SectorView extends Phaser.Sprite {
 	rndBuilding: string[];
 	renderTimerActive: boolean;
 
+	blocksKnown: SectorBlockVO[];
+
+	// iso
+		//level array
+	levelData: any[];
+
+	//x & y values of the direction vector for character movement
+	dX: number;
+	dY: number;
+	tileWidth: number;// the width of a tile
+	borderOffset: Phaser.Point;//to centralise the isometric level display
+	wallGraphicHeight: number;
+	floorGraphicWidth: number;
+	floorGraphicHeight: number;
+	heroGraphicWidth: number;
+	heroGraphicHeight: number;
+	wallHeight: number;
+	heroHeight: number;//adjustments to make the legs hit the middle of the tile for initial load
+	heroWidth: number;//for placing hero at the middle of the tile
+	facing: string;//direction the character faces
+	sorcerer: any;//hero
+	sorcererShadow: any;//duh
+	shadowOffset: Phaser.Point;// = new Phaser.Point(this.heroWidth + 7, 11);
+	bmpText: Phaser.BitmapText;//title text
+	normText: Phaser.Text;//text to display hero coordinates
+	minimap: Phaser.Group;//minimap holder group
+	heroMapSprite: Phaser.Sprite;//hero marker sprite in the minimap
+	gameScene: Phaser.RenderTexture;//this is the render texture onto which we draw depth sorted scene
+	floorSprite: Phaser.Sprite;
+	wallSprite: Phaser.Sprite;
+	heroMapTile: Phaser.Point;//hero tile values in array
+	heroMapPos: Phaser.Point;//2D coordinates of hero map marker sprite in minimap, assume this is mid point of graphic
+	heroSpeed: number;//well, speed of our hero 
+
 	// constructor(game: Phaser.Game, parent?: PIXI.DisplayObjectContainer, name?: string, addToStage?: boolean, enableBody?: boolean, physicsBodyType?: number) {
 	constructor(game: Phaser.Game, x: number, y: number, key?: string, totalBlocksX?: number, totalBlocksY?: number) {
 		console.log("== SectorView.constructor ==", x, y, key);
@@ -43,12 +80,52 @@ class SectorView extends Phaser.Sprite {
 		// this.isMobile = false;
 		// game.physics.enable(this);
 		// game.add.existing(this);
-		this.created();
+		// this.created();
 		// return this;
+		let levelArray = [];
+		let xArray: number[];
+		let numX: number = window.innerWidth / 25;// / 50;//128;
+		let numY: number = window.innerHeight / 25;// / 25;//64;
+		for (let i = 0; i < numY; i++) {
+			for (let j = 0; j < numX; j++) {
+				if (j === 0)
+					xArray = [];
+				xArray.push((this.game.rnd.integerInRange(0, 100) >= 25) ? 0 : 1);
+			}
+			levelArray.push(xArray);
+		}
+		console.log(levelArray);
+		levelArray[0][0] = 2;
+		this.levelData = levelArray;
+		// this.levelData = [
+		// 	[1, 0, 0, 0, 1, 0],
+		// 	[0, 0, 0, 0, 0, 0],
+		// 	[0, 0, 1, 2, 0, 0],
+		// 	[0, 0, 0, 0, 0, 0],
+		// 	[0, 0, 0, 1, 0, 0],
+		// 	[0, 1, 0, 0, 0, 0]
+		// ];
+		this.dX = 0;
+		this.dY = 0;
+		this.tileWidth = 50;// the width of a tile
+		this.borderOffset = new Phaser.Point(250, 50);//to centralise the isometric level display
+		this.wallGraphicHeight = 98;
+		this.floorGraphicWidth = 103;
+		this.floorGraphicHeight = 53;
+		this.heroGraphicWidth = 41;
+		this.heroGraphicHeight = 62;
+		this.wallHeight = this.wallGraphicHeight - this.floorGraphicHeight;
+		this.heroHeight = (this.floorGraphicHeight / 2) + (this.heroGraphicHeight - this.floorGraphicHeight) + 6;//adjustments to make the legs hit the middle of the tile for initial load
+		this.heroWidth = (this.floorGraphicWidth / 2) - (this.heroGraphicWidth / 2);//for placing hero at the middle of the tile
+		this.facing = 'south';//direction the character faces
+		this.shadowOffset = new Phaser.Point(this.heroWidth + 7, 11);
+		this.heroSpeed = 1.2;
 	}
 
-	created() {
-		console.log("== SectorView.created() ==", this);
+	created(blocksKnown: SectorBlockVO[]) {
+		console.log("== SectorView.created() ==", this, blocksKnown);
+
+		this.blocksKnown = blocksKnown;
 
 		this.renderTimerActive = false;
 
@@ -184,7 +261,7 @@ class SectorView extends Phaser.Sprite {
 
 		// random building pool
 		this.rndBuilding = ['foursquare', 'threecirc', 'multi-1', 'multi-tenent', 'hq', 'factory'];
-		this.drawIsoGrid();
+		this.initIsoGrid();
 		// let length: number = (window.innerWidth > window.innerHeight) ? window.innerWidth : window.innerHeight;
 		/*let total: number = Math.ceil(this.totalBlocksX * this.totalBlocksY);
 		console.log("* total", total);
@@ -313,7 +390,7 @@ class SectorView extends Phaser.Sprite {
 		// this.gridGroup.onChildInputDown.add(this.clickHandler, this);
 		// this.gridGroup.rotation = 0.25;
 		// this.drawGrid();
-		this.sectorGroup.rotation = 0.45;
+		this.sectorGroup.rotation = 0;//0.45;
 		// this.gridGroup.rotation = 0.45;
 		// this.fovGroup.rotation = 0.45;
 
@@ -329,9 +406,188 @@ class SectorView extends Phaser.Sprite {
 
 	}
 
-	drawIsoGrid() {
-		console.log('* blocksKnown', Globals.getInstance().player.entity.blocksKnown);
+	initIsoGrid() {
+		// let known: SectorBlockVO[] = Globals.getInstance().player.entity.blocksKnown;
+		console.log('* known', this.blocksKnown);
+		console.log("* total known", this.blocksKnown.length);
+		this.createIsoGrid();
+
 	}
+
+	createIsoGrid() {
+		this.bmpText = this.game.add.bitmapText(10, 10, 'font', 'Isometric Tutorial\nUse Arrow Keys', 18);
+		this.normText = this.game.add.text(10, 360, "hi");
+		let upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+		let downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+		let leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+		let rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+		this.game.stage.backgroundColor = '#cccccc';
+		//we draw the depth sorted scene into this render texture
+		this.gameScene = this.game.add.renderTexture(this.game.width, this.game.height);
+		let sp: Phaser.Sprite = this.game.add.sprite(0, 0, this.gameScene);
+		this.gridGroup.add(sp);
+		this.floorSprite = this.game.make.sprite(0, 0, 'floor');
+		this.wallSprite = this.game.make.sprite(0, 0, 'wall');
+		this.sorcererShadow = this.game.make.sprite(0, 0, 'heroShadow');
+		this.sorcererShadow.scale = new Phaser.Point(0.5, 0.6);
+		this.sorcererShadow.alpha = 0.4;
+		this.createIsoLevel();
+	}
+	createIsoLevel() {
+		this.minimap = this.game.add.group();
+		var tileType = 0;
+		for (var i = 0; i < this.levelData.length; i++) {
+			for (var j = 0; j < this.levelData[0].length; j++) {
+				tileType = this.levelData[i][j];
+				this.placeTile(tileType, i, j);
+				if (tileType == 2) {//save hero map tile
+					this.heroMapTile = new Phaser.Point(i, j);
+				}
+			}
+		}
+		this.addHero();
+		this.heroMapSprite = this.minimap.create(this.heroMapTile.y * this.tileWidth, this.heroMapTile.x * this.tileWidth, 'heroTile');
+		this.heroMapSprite.x += (this.tileWidth / 2) - (this.heroMapSprite.width / 2);
+		this.heroMapSprite.y += (this.tileWidth / 2) - (this.heroMapSprite.height / 2);
+		this.heroMapPos = new Phaser.Point(this.heroMapSprite.x + this.heroMapSprite.width / 2, this.heroMapSprite.y + this.heroMapSprite.height / 2);
+		this.heroMapTile = PointHelper.getTileCoordinates(this.heroMapPos, this.tileWidth);
+		this.minimap.scale = new Phaser.Point(0.1, 0.1);
+		this.minimap.x = 0;
+		this.minimap.y = 0;
+		this.renderScene();//draw once the initial state
+	}
+
+	addHero() {
+		// sprite
+		this.sorcerer = this.game.add.sprite(-50, 0, 'hero', '1.png');// keep him out side screen area
+
+		// animation
+		this.sorcerer.animations.add('southeast', ['1.png', '2.png', '3.png', '4.png'], 6, true);
+		this.sorcerer.animations.add('south', ['5.png', '6.png', '7.png', '8.png'], 6, true);
+		this.sorcerer.animations.add('southwest', ['9.png', '10.png', '11.png', '12.png'], 6, true);
+		this.sorcerer.animations.add('west', ['13.png', '14.png', '15.png', '16.png'], 6, true);
+		this.sorcerer.animations.add('northwest', ['17.png', '18.png', '19.png', '20.png'], 6, true);
+		this.sorcerer.animations.add('north', ['21.png', '22.png', '23.png', '24.png'], 6, true);
+		this.sorcerer.animations.add('northeast', ['25.png', '26.png', '27.png', '28.png'], 6, true);
+		this.sorcerer.animations.add('east', ['29.png', '30.png', '31.png', '32.png'], 6, true);
+	}
+	placeTile(tileType: any, i: any, j: any) {//place minimap
+		var tile = 'greenTile';
+		if (tileType == 1) {
+			tile = 'redTile';
+		}
+		this.minimap.create(j * this.tileWidth, i * this.tileWidth, tile);
+	}
+	renderScene() {
+		// this.gameScene.clear();//clear the previous frame then draw again
+		var tileType = 0;
+		for (var i = 0; i < this.levelData.length; i++) {
+			for (var j = 0; j < this.levelData[0].length; j++) {
+				tileType = this.levelData[i][j];
+				this.drawTileIso(tileType, i, j);
+				if (i == this.heroMapTile.y && j == this.heroMapTile.x) {
+					// this.drawHeroIso();
+				}
+			}
+		}
+		this.normText.text = 'Hero is on x,y: ' + this.heroMapTile.x + ',' + this.heroMapTile.y;
+		this.gridGroup.x = - (this.gridGroup.children[0] as Phaser.Sprite).centerX;
+		this.gridGroup.y = - (this.gridGroup.children[0] as Phaser.Sprite).centerY;
+	}
+	drawHeroIso() {
+		var isoPt = new Phaser.Point();//It is not advisable to create points in update loop
+		var heroCornerPt = new Phaser.Point(this.heroMapPos.x - this.heroMapSprite.width / 2, this.heroMapPos.y - this.heroMapSprite.height / 2);
+		isoPt = PointHelper.cartesianToIsometric(heroCornerPt);//find new isometric position for hero from 2D map position
+		this.gameScene.renderXY(this.sorcererShadow, isoPt.x + this.borderOffset.x + this.shadowOffset.x, isoPt.y + this.borderOffset.y + this.shadowOffset.y, false);//draw shadow to render texture
+		this.gameScene.renderXY(this.sorcerer, isoPt.x + this.borderOffset.x + this.heroWidth, isoPt.y + this.borderOffset.y - this.heroHeight, false);//draw hero to render texture
+	}
+	drawTileIso(tileType: any, i: any, j: any) {//place isometric level tiles
+		var isoPt = new Phaser.Point();//It is not advisable to create point in update loop
+		var cartPt = new Phaser.Point();//This is here for better code readability.
+		cartPt.x = j * this.tileWidth;
+		cartPt.y = i * this.tileWidth;
+		isoPt = PointHelper.cartesianToIsometric(cartPt);
+		if (tileType == 1) {
+			this.gameScene.renderXY(this.wallSprite, isoPt.x + this.borderOffset.x, isoPt.y + this.borderOffset.y - this.wallHeight, false);
+		} else {
+			this.gameScene.renderXY(this.floorSprite, isoPt.x + this.borderOffset.x, isoPt.y + this.borderOffset.y, false);
+		}
+	}
+	isWalkable() {//It is not advisable to create points in update loop, but for code readability.
+		var able = true;
+		var heroCornerPt = new Phaser.Point(this.heroMapPos.x - this.heroMapSprite.width / 2, this.heroMapPos.y - this.heroMapSprite.height / 2);
+		var cornerTL = new Phaser.Point();
+		cornerTL.x = heroCornerPt.x + (this.heroSpeed * this.dX);
+		cornerTL.y = heroCornerPt.y + (this.heroSpeed * this.dY);
+		// now we have the top left corner point. we need to find all 4 corners based on the map marker graphics width & height
+		//ideally we should just provide the hero a volume instead of using the graphics' width & height
+		var cornerTR = new Phaser.Point();
+		cornerTR.x = cornerTL.x + this.heroMapSprite.width;
+		cornerTR.y = cornerTL.y;
+		var cornerBR = new Phaser.Point();
+		cornerBR.x = cornerTR.x;
+		cornerBR.y = cornerTL.y + this.heroMapSprite.height;
+		var cornerBL = new Phaser.Point();
+		cornerBL.x = cornerTL.x;
+		cornerBL.y = cornerBR.y;
+		var newTileCorner1;
+		var newTileCorner2;
+		var newTileCorner3 = this.heroMapPos;
+		//let us get which 2 corners to check based on current facing, may be 3
+		switch (this.facing) {
+			case "north":
+				newTileCorner1 = cornerTL;
+				newTileCorner2 = cornerTR;
+				break;
+			case "south":
+				newTileCorner1 = cornerBL;
+				newTileCorner2 = cornerBR;
+				break;
+			case "east":
+				newTileCorner1 = cornerBR;
+				newTileCorner2 = cornerTR;
+				break;
+			case "west":
+				newTileCorner1 = cornerTL;
+				newTileCorner2 = cornerBL;
+				break;
+			case "northeast":
+				newTileCorner1 = cornerTR;
+				newTileCorner2 = cornerBR;
+				newTileCorner3 = cornerTL;
+				break;
+			case "southeast":
+				newTileCorner1 = cornerTR;
+				newTileCorner2 = cornerBR;
+				newTileCorner3 = cornerBL;
+				break;
+			case "northwest":
+				newTileCorner1 = cornerTR;
+				newTileCorner2 = cornerBL;
+				newTileCorner3 = cornerTL;
+				break;
+			case "southwest":
+				newTileCorner1 = cornerTL;
+				newTileCorner2 = cornerBR;
+				newTileCorner3 = cornerBL;
+				break;
+		}
+		//check if those corners fall inside a wall after moving
+		newTileCorner1 = PointHelper.getTileCoordinates(newTileCorner1, this.tileWidth);
+		if (this.levelData[newTileCorner1.y][newTileCorner1.x] == 1) {
+			able = false;
+		}
+		newTileCorner2 = PointHelper.getTileCoordinates(newTileCorner2, this.tileWidth);
+		if (this.levelData[newTileCorner2.y][newTileCorner2.x] == 1) {
+			able = false;
+		}
+		newTileCorner3 = PointHelper.getTileCoordinates(newTileCorner3, this.tileWidth);
+		if (this.levelData[newTileCorner3.y][newTileCorner3.x] == 1) {
+			able = false;
+		}
+		return able;
+	}
+
 
 	drawGrid() {
 		console.log(this.game.renderType);

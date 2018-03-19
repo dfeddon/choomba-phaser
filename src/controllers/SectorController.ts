@@ -23,13 +23,13 @@ class SectorController {
 		for (let blocks of Globals.getInstance().player.entity.blocksKnown)
 			array.push({ id: blocks });
 		console.log(Globals.getInstance().player.entity.blocksKnown);
-		console.log('* array', array);
+		// console.log('* array', array);
 		new SectorBlockService().batchGet(array, {}, (err: any, result: any) => {
 			if (err) return console.log(err);
 			else {
-				console.log("raw result", result);
+				// console.log("raw result", result);
 				for (let block of result) {
-					console.log("* block", block);
+					// console.log("* block", block);
 					this.blocksKnown.push(new SectorBlockVO().fromDatabase(block) as SectorBlockVO);
 				}
 				console.log('* blocksKnown final', this.blocksKnown);
@@ -43,6 +43,7 @@ class SectorController {
 		let totalBlocksX: number = 64;
 		let totalBlocksY: number = 64;
 		this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
+		this.sectorView.created(this.blocksKnown);
 		// set bg color
 		this.game.stage.backgroundColor = "#000000";
 		// size game canvas

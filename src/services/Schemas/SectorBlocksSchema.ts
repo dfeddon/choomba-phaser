@@ -15,7 +15,6 @@ class SectorBlocksSchema extends dynamoose.Schema {
 			owner: { type: Number },
 			manager: { type: Number },
 			district: { type: Number }
-
 		};
 
 		options = {

@@ -42,12 +42,16 @@ abstract class AbstractVO extends Object {
           console.log("* removing generated id from subclass", instance[element].id);
           instance[element].id === null;
         }
-      } else if (typeof(obj[element]) === "object" && (element === 'createdAt' || element === 'updatedAt')) {
-        instance[element] = obj[element];
       } 
+      // include createdAt and updatedAt
+      else if (typeof(obj[element]) === "object" && (element === 'createdAt' || element === 'updatedAt')) {
+        instance[element] = obj[element];
+      }
+      // ... and primitives
       else if (obj[element] !== Object(obj[element])) {
         instance[element] = obj[element];
       }
+      // ... and arrays
       else if (obj[element] instanceof Array) {
         instance[element] = obj[element];
       }

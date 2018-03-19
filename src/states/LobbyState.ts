@@ -34,6 +34,20 @@ export default class LobbyState extends Phaser.State {
     this.load.image("multi-tenent", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/multi-tenent.png");
     this.load.image("hq", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/hq.png");
     this.load.image("factory", "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/structures/factory.png");
+
+    // iso
+    this.load.crossOrigin = 'Anonymous';
+    //load all necessary assets
+    this.load.bitmapFont('font', 'https://dl.dropboxusercontent.com/s/z4riz6hymsiimam/font.png?dl=0', 'https://dl.dropboxusercontent.com/s/7caqsovjw5xelp0/font.xml?dl=0');
+    this.load.image('greenTile', 'https://dl.dropboxusercontent.com/s/nxs4ptbuhrgzptx/green_tile.png?dl=0');
+    this.load.image('redTile', 'https://dl.dropboxusercontent.com/s/zhk68fq5z0c70db/red_tile.png?dl=0');
+    this.load.image('heroTile', 'https://dl.dropboxusercontent.com/s/8b5zkz9nhhx3a2i/hero_tile.png?dl=0');
+    this.load.image('heroShadow', 'https://dl.dropboxusercontent.com/s/sq6deec9ddm2635/ball_shadow.png?dl=0');
+    this.load.image('floor', 'https://dl.dropboxusercontent.com/s/h5n5usz8ejjlcxk/floor.png?dl=0');
+    this.load.image('wall', 'https://dl.dropboxusercontent.com/s/uhugfdq1xcwbm91/block.png?dl=0');
+    this.load.image('ball', 'https://dl.dropboxusercontent.com/s/pf574jtx7tlmkj6/ball.png?dl=0');
+
+    // complete
     this.load.onLoadComplete.add(this.imageLoadComplete, this);
     //  Advanced profiling, including the fps rate, fps min/max, suggestedFps and msMin/msMax are updated
     this.game.time.advancedTiming = true;

@@ -25,7 +25,7 @@
         "express": "^4.16.2",
         "fantastical": "^1.0.2",
         "lodash": "^4.17.4",
-        "phaser-ce": "^2.9.2",
+        "phaser-ce": "^2.10.2",
         "socketcluster-client": "^9.0.0",
         "tslint": "^5.9.1"
     },
