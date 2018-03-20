@@ -99,9 +99,10 @@ class LobbyDom {
 		lobbyStateHtml.style.display = "grid";
 		lobbyStateHtml.addEventListener("click", (e) => {
 			console.log("* lobbyStateHTML clicked *", e.clientY, lobbyStateHtml.clientHeight);
-			if (e.clientY > 1000)//lobbyStateHtml.clientHeight > 1000)
-				lobbyStateHtml.style.height = "10%";
-			else lobbyStateHtml.style.height = "10%";//"100%";
+			lobbyStateHtml.style.display = "none";
+			// if (e.clientY > 1000)//lobbyStateHtml.clientHeight > 1000)
+			// 	lobbyStateHtml.style.height = "10%";
+			// else lobbyStateHtml.style.height = "10%";//"100%";
 		});
 
 		//////////////////////////////////////////////

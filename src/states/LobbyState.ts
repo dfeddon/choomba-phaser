@@ -43,9 +43,12 @@ export default class LobbyState extends Phaser.State {
     this.load.image('redTile', 'https://dl.dropboxusercontent.com/s/zhk68fq5z0c70db/red_tile.png?dl=0');
     this.load.image('heroTile', 'https://dl.dropboxusercontent.com/s/8b5zkz9nhhx3a2i/hero_tile.png?dl=0');
     this.load.image('heroShadow', 'https://dl.dropboxusercontent.com/s/sq6deec9ddm2635/ball_shadow.png?dl=0');
-    this.load.image('floor', 'https://dl.dropboxusercontent.com/s/h5n5usz8ejjlcxk/floor.png?dl=0');
-    this.load.image('wall', 'https://dl.dropboxusercontent.com/s/uhugfdq1xcwbm91/block.png?dl=0');
+    // this.load.image('floor', 'https://dl.dropboxusercontent.com/s/h5n5usz8ejjlcxk/floor.png?dl=0');
+    // this.load.image('wall', 'https://dl.dropboxusercontent.com/s/uhugfdq1xcwbm91/block.png?dl=0');
     this.load.image('ball', 'https://dl.dropboxusercontent.com/s/pf574jtx7tlmkj6/ball.png?dl=0');
+
+    this.load.image('floor1', 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/floor1_128x64.png');
+    this.load.image('tent1', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/tent_0_idle_45_128x64.png');
 
     // complete
     this.load.onLoadComplete.add(this.imageLoadComplete, this);
