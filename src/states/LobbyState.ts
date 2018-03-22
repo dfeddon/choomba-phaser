@@ -48,8 +48,13 @@ export default class LobbyState extends Phaser.State {
     this.load.image('ball', 'https://dl.dropboxusercontent.com/s/pf574jtx7tlmkj6/ball.png?dl=0');
 
     this.load.image('floor1', 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/floor1_128x64.png');
+    this.load.image('floor2', 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/floor2_128x64.png');
     this.load.image('tent1', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/tent_0_idle_45_128x64.png');
     this.load.image('bldg1', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building1_128x76.png');
+    this.load.image('bldg2', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building2_128x69.png');
+    this.load.image('bldg3', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building3_128x72.png');
+    this.load.image('bldg4', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building4_128x81.png');
+    this.load.image('reticle', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/reticle_128x64.png');
 
     // complete
     this.load.onLoadComplete.add(this.imageLoadComplete, this);
