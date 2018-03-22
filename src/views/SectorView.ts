@@ -84,8 +84,8 @@ class SectorView extends Phaser.Sprite {
 		// return this;
 		let levelArray = [];
 		let xArray: number[];
-		let numX: number = Math.floor(window.innerWidth / 64);// / 50;//128;
-		let numY: number = Math.floor(window.innerHeight / 64);// / 25;//64;
+		let numX: number = Math.floor(window.innerWidth / 64) + 10;// / 50;//128;
+		let numY: number = Math.floor(window.innerHeight / 64) + 10;// / 25;//64;
 		console.log("* scene w/h", numX, numY, numX*64, numY*64);
 		for (let i = 0; i < numY; i++) {
 			for (let j = 0; j < numX; j++) {
@@ -775,14 +775,14 @@ class SectorView extends Phaser.Sprite {
 		console.log("* sector click handler", e, p);
 		console.log("* e", e.x, e.y);
 		console.log("* p", p.x, p.y);
-		console.log("* world", p.x - p.worldX, p.y - p.worldY);
-		let npt: Phaser.Point = new Phaser.Point(p.x-p.worldX, p.y-p.worldY);
+		// console.log("* world", p.x - p.worldX, p.y - p.worldY);
+		// let npt: Phaser.Point = new Phaser.Point(p.x-p.worldX, p.y-p.worldY);
 		// console.log('x', e.x, p.x, this.fov.x, this.game.camera.x);
 		// console.log("* cam w/h", this.game.camera.width, this.game.camera.height, this.game.width, this.game.height);
 		// console.log("* calc", p.screenX - p.x, p.screenY - p.y);
 		// console.log("* fov", this.fov.x, this.fov.y, 'dif', this.fov.x - p.x, this.fov.y - p.y);
 		// console.log("* bounds offset", this.game.world.bounds.x, this.game.world.bounds.y);
-		let pt: Phaser.Point = PointHelper.isometricToCartesian(npt);//, this.gameScene, this.game.camera);
+		let pt: Phaser.Point = PointHelper.isometricToCartesian(p);//, this.gameScene, this.game.camera);
 		console.log(pt);
 		// let pt2: Phaser.Point = PointHelper.cartesianToIsometric(p);
 		// let tile: Phaser.Point = PointHelper.getTileCoordinates(PointHelper.isometricToCartesian(p), 64);

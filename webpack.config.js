@@ -1,20 +1,42 @@
-const path = require("path");
+var path = require("path");
+const webpack = require("webpack");
+
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
-var BitBarWebpackProgressPlugin = require("bitbar-webpack-progress-plugin");
+const BitBarWebpackProgressPlugin = require("bitbar-webpack-progress-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+// the path(s) that should be cleaned
+let pathsToClean = [
+    'dist/public/*.*'
+]
+
+// the clean options to use
+let cleanOptions = {
+    root: __dirname,
+    verbose: true,
+    watch: false,
+    exclude: ['BlurX.js', 'BlurY.js'],
+    verbose: true,
+    dry: false
+}
 
 module.exports = [{
+// const webpackConfig = {
     devtool: "#cheap-module-eval-source-map",
     entry: {
         client: "./src/App.ts",
         // server: "./src/Server.ts"
+        // vendor: [
+        //     'lodash'
+        // ]
     },
     // context: path.resolve(__dirname, './src/'),
     output: {
-        filename: "bundle.[name].js",
+        filename: "bundle.[name].[chunkhash].js",
         path: path.resolve(__dirname, "dist/public")
     },
     resolve: {
@@ -25,6 +47,16 @@ module.exports = [{
     node: {
         fs: "empty",
         tls: "empty"
+    },
+    stats: {
+        builtAt: true,
+        colors: true,
+        env: true,
+        children: false,
+        errorDetails: true,
+        hash: true,
+        warnings: true,
+        version: true
     },
     watch: true,
     watchOptions: {
@@ -66,7 +98,19 @@ module.exports = [{
             }
         ]
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendors",
+                    chunks: "all"
+                }
+            }
+        }
+    },
     plugins: [
+        new CleanWebpackPlugin(pathsToClean, cleanOptions),
         new HtmlWebpackPlugin({
             title: "Choomba.io",
             template: "src/public/index.ejs"
@@ -91,16 +135,17 @@ module.exports = [{
             filename: "section-directives.html",
             template: "src/public/html/section-directives.html"
         }),
-        new UglifyJSPlugin({
-            // parallel: {
-            //     cache: true,
-            //     workers: 1
-            // },
-            // output: {
-            //     comments: false,
-            //     beautify: false
-            // }
-        }),
+        new webpack.HashedModuleIdsPlugin(),
+        // new UglifyJSPlugin({
+        //     // parallel: {
+        //     //     cache: true,
+        //     //     workers: 1
+        //     // },
+        //     // output: {
+        //     //     comments: false,
+        //     //     beautify: false
+        //     // }
+        // }),
         // new HtmlWebpackIncludeAssetsPlugin({
         //     assets: ['css/index.css'],
         //     append: false
@@ -115,4 +160,5 @@ module.exports = [{
         // })
         new BitBarWebpackProgressPlugin()
     ]
+// }
 }];

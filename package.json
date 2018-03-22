@@ -5,7 +5,7 @@
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "clear && webpack --progress --colors --watch --display-error-details",
+        "build": "clear && webpack --mode development --progress --colors --watch",
         "server": "http-server ./dist/public/ -p 3001",
         "sockets": "node ../choomba-socketcluster/server"
     },
@@ -20,7 +20,7 @@
         "@types/lodash": "^4.14.85",
         "aws-iot-device-sdk": "^2.1.0",
         "aws-sdk": "^2.202.0",
-        "bitbar-webpack-progress-plugin": "^0.1.3",
+        "bitbar-webpack-progress-plugin": "^1.0.0",
         "dynamoose": "^0.8.6",
         "express": "^4.16.2",
         "fantastical": "^1.0.2",
@@ -36,19 +36,20 @@
         "babel-preset-env": "^1.6.1",
         "babel-preset-es2015": "^6.24.1",
         "browser-sync": "^2.18.13",
-        "browser-sync-webpack-plugin": "^1.2.0",
-        "copy-webpack-plugin": "^4.4.2",
+        "browser-sync-webpack-plugin": "^2.2.2",
+        "clean-webpack-plugin": "^0.1.19",
+        "copy-webpack-plugin": "^4.5.1",
         "css-loader": "^0.28.7",
-        "html-webpack-include-assets-plugin": "^1.0.2",
-        "html-webpack-plugin": "^2.30.1",
+        "html-webpack-include-assets-plugin": "^1.0.4",
+        "html-webpack-plugin": "^3.0.7",
         "node-sass": "^4.6.0",
         "sass-loader": "^6.0.6",
         "style-loader": "^0.19.0",
-        "ts-loader": "^3.1.1",
+        "ts-loader": "^4.1.0",
         "typescript": "^2.7.2",
-        "uglifyjs-webpack-plugin": "^1.2.2",
-        "webpack": "^3.11.0",
-        "webpack-cli": "^2.0.9",
-        "webpack-dev-server": "^2.11.2"
+        "uglifyjs-webpack-plugin": "^1.2.4",
+        "webpack": "^4.2.0",
+        "webpack-cli": "^2.0.12",
+        "webpack-dev-server": "^3.1.1"
     }
 }

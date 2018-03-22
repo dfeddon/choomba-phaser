@@ -49,6 +49,7 @@ export default class LobbyState extends Phaser.State {
 
     this.load.image('floor1', 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/floor1_128x64.png');
     this.load.image('tent1', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/tent_0_idle_45_128x64.png');
+    this.load.image('bldg1', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building1_128x76.png');
 
     // complete
     this.load.onLoadComplete.add(this.imageLoadComplete, this);

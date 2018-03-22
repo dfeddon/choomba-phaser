@@ -1,4 +1,6 @@
 // import AWS = require("aws-sdk");
+declare var socketCluster: any // suppress error when injecting socketCluster
+
 import LobbyState from "../states/LobbyState";
 import { IncidentVO } from "../models/IncidentsVO";
 import * as stub from "../helpers/stubJson.json";
@@ -44,7 +46,7 @@ class SocketClusterService {
   	init(game: Phaser.Game) {
 		  var _this = this;
 		var options = { port: 8000 };
-		var socket = (socketCluster as any).connect(options);
+		var socket = socketCluster.connect(options);
 		this.socket = socket;
 		this.game = game;
 
