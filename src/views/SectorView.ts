@@ -100,10 +100,10 @@ class SectorView extends Phaser.Sprite {
 		
 		let levelArray = [];
 		let xArray: object[];
-		let numX: number = 5;//Math.floor(window.innerWidth / this.tileWidth) + 10;// / 50;//128;
-		let numY: number = 5;//Math.floor(window.innerHeight / this.tileWidth) + 10;// / 25;//this.tileWidth;
-		this.game.stage.width = 5 * 128;
-		this.game.stage.height = 5 * 128;
+		let numX: number = 15;//Math.floor(window.innerWidth / this.tileWidth) + 10;// / 50;//128;
+		let numY: number = 15;//Math.floor(window.innerHeight / this.tileWidth) + 10;// / 25;//this.tileWidth;
+		this.game.stage.width = numX * 128;
+		this.game.stage.height = numY * 128;
 		console.log("* stage vs world", this.game.stage.width, this.game.world.width);
 		this.game.stage.backgroundColor = "#4488AA";
 		let rng: number;
@@ -119,7 +119,8 @@ class SectorView extends Phaser.Sprite {
 				else if (rng < 10) tile = {t:3,h:tileHeight + 5,k:"bldg2"};
 				else if (rng < 15) tile = { t: 4, h: tileHeight + 8, k: "bldg3" };
 				else if (rng < 20) tile = { t: 5, h: tileHeight + 17, k: "bldg4" };
-				else if (rng < 25) tile = { t: 6, h: tileHeight, k: "floor2" };
+				else if (rng < 25) tile = { t: 6, h: tileHeight + 52, k: "bldg5" };
+				else if (rng < 30) tile = { t: 7, h: tileHeight, k: "floor2" };
 				// else if (rng < 48) tile = {t:1,h:this.tileWidth,k:"tent1"};
 				else tile = {t:0,h:this.tileWidth,k:"floor1"};
 				xArray.push(tile);
@@ -453,7 +454,7 @@ class SectorView extends Phaser.Sprite {
 		this.gridGroup.add(sp);
 		// this.floorSprite = this.game.make.sprite(0, 0, 'floor');
 		// this.wallSprite = this.game.make.sprite(0, 0, 'wall');
-		let spriteKeys: string[] = ["floor1", "floor2", "tent1", "bldg1", "bldg2", "bldg3", "bldg4"];
+		let spriteKeys: string[] = ["floor1", "floor2", "tent1", "bldg1", "bldg2", "bldg3", "bldg4", "bldg5"];
 		this.tileSprites = [];
 		for (let key of spriteKeys)
 			this.tileSprites.push({ key: key, sprite: this.game.make.sprite(0, 0, key) });
@@ -816,6 +817,11 @@ class SectorView extends Phaser.Sprite {
 		// console.log("* bounds offset", this.game.world.bounds.x, this.game.world.bounds.y);
 		let pt: Phaser.Point = PointHelper.isometricToCartesian(p);//, this.gameScene, this.game.camera);
 		console.log('pt', pt.x, pt.y);
+		let ptr = new Point(Math.ceil((p.x - 64) / 64) * 64, Math.ceil((p.y - 64) / 64) * 64);
+		console.log('ptr', ptr.x, ptr.y);
+		// let ptr: Point = new Point(0,0);
+		// ptr.x = (p.x / 32 + p.y / 32) / 2;
+		// ptr.y = (p.y / 32 - (p.x / 64)) / 2;
 		// let tileCoord: Phaser.Point = PointHelper.getTileCoordinates(pt, 64);
 		// console.log("tile:", tileCoord.x, tileCoord.y);
 		// console.log("local", this.gridGroup.toLocal(pt, this.gridGroup));
@@ -860,7 +866,7 @@ class SectorView extends Phaser.Sprite {
 		// this.game.camera.lerp = new Phaser.Point(0.1, 0.1);
 		// this.game.camera.view.centerOn(e.position.x, e.position.y);
 		// console.log("* rot", offsetY);//e.position.x * this.gridGroup.rotation, e.position.y * this.gridGroup.rotation);
-		this.game.add.tween(this.fov).to({ x: p.x, y: p.y }, 500, Phaser.Easing.Quadratic.InOut, true);
+		this.game.add.tween(this.fov).to({ x: ptr.x, y: ptr.y }, 500, Phaser.Easing.Quadratic.InOut, true);
 		let t: Phaser.Tween = this.game.add.tween(this.fov).to({ alpha: 1 }, 650, "Linear", true);
 		t.onComplete.add(this.mapMoveCompleteHandler, this)
 	}

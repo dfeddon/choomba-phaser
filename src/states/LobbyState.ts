@@ -42,10 +42,10 @@ export default class LobbyState extends Phaser.State {
     this.load.image('greenTile', 'https://dl.dropboxusercontent.com/s/nxs4ptbuhrgzptx/green_tile.png?dl=0');
     this.load.image('redTile', 'https://dl.dropboxusercontent.com/s/zhk68fq5z0c70db/red_tile.png?dl=0');
     this.load.image('heroTile', 'https://dl.dropboxusercontent.com/s/8b5zkz9nhhx3a2i/hero_tile.png?dl=0');
-    this.load.image('heroShadow', 'https://dl.dropboxusercontent.com/s/sq6deec9ddm2635/ball_shadow.png?dl=0');
+    // this.load.image('heroShadow', 'https://dl.dropboxusercontent.com/s/sq6deec9ddm2635/ball_shadow.png?dl=0');
     // this.load.image('floor', 'https://dl.dropboxusercontent.com/s/h5n5usz8ejjlcxk/floor.png?dl=0');
     // this.load.image('wall', 'https://dl.dropboxusercontent.com/s/uhugfdq1xcwbm91/block.png?dl=0');
-    this.load.image('ball', 'https://dl.dropboxusercontent.com/s/pf574jtx7tlmkj6/ball.png?dl=0');
+    // this.load.image('ball', 'https://dl.dropboxusercontent.com/s/pf574jtx7tlmkj6/ball.png?dl=0');
 
     this.load.image('floor1', 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/floor1_128x64.png');
     this.load.image('floor2', 'http://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/floor2_128x64.png');
@@ -54,6 +54,7 @@ export default class LobbyState extends Phaser.State {
     this.load.image('bldg2', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building2_128x69.png');
     this.load.image('bldg3', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building3_128x72.png');
     this.load.image('bldg4', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building4_128x81.png');
+    this.load.image('bldg5', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building5_128x80.png');
     this.load.image('reticle', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/reticle_128x64.png');
 
     // complete
