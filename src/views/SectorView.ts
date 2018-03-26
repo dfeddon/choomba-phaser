@@ -148,7 +148,7 @@ class SectorView extends Phaser.Sprite {
 		this.gridGroup = this.game.make.group();
 		this.gridGroup.inputEnableChildren = true;
 		this.gridGroup.ignoreChildInput = false;
-		this.gridGroup.onChildInputDown.add(this.clickHandler, this);
+		// this.gridGroup.onChildInputDown.add(this.clickHandler, this);
 		this.gridGroup.name = "gridGroup";
 
 		this.fovGroup = this.game.make.group();
@@ -502,6 +502,7 @@ class SectorView extends Phaser.Sprite {
 		this.minimap.create(j * this.tileWidth, i * this.tileWidth, tile);
 	}
 	renderScene() {
+		console.log("* renderScene");
 		(this.gameScene as any).clear();//clear the previous frame then draw again
 		var tileType = 0;
 		for (var i = 0; i < this.levelData.length; i++) {
@@ -526,6 +527,7 @@ class SectorView extends Phaser.Sprite {
 	// 	this.gameScene.renderXY(this.sorcerer, isoPt.x + this.borderOffset.x + this.heroWidth, isoPt.y + this.borderOffset.y - this.heroHeight, false);//draw hero to render texture
 	// }
 	drawTileIso(tileType: any, y: number, x: number) {//place isometric level tiles
+		// console.log("* drawTileIso", tileType, x, y);
 		var isoPt = new Phaser.Point();//It is not advisable to create point in update loop
 		var cartPt = new Phaser.Point();//This is here for better code readability.
 		cartPt.x = x * this.tileWidth;
@@ -803,111 +805,111 @@ class SectorView extends Phaser.Sprite {
 		}
 	}
 
-	clickHandler(e: Phaser.Sprite, p: Phaser.Point) {
-		console.log("* sector click handler", e, p);
-		// console.log("* e", e.x, e.y);
-		// console.log("* p", p.x - this.borderOffset.x, p.y);
-		// let tile: Phaser.Point = PointHelper.getTileCoordinates(new Phaser.Point(p.x-this.borderOffset.x, p.y), 64);
-		// console.log("* tile", tile.x, tile.y);
-		// let padj: Phaser.Point = new Point(p.x)
-		// let itc: Phaser.Point = PointHelper.isometricToCartesian(p);
-		// console.log("iso to cart", itc.x, itc.y, this.borderOffset.x, this.borderOffset.y);
-		// console.log("****", p.y + (p.x / 2), p.y - (p.x / 2))  // (-(1 / 2) * screen_x) + (1 * screen_y) + (0 * 1)
-		console.log("===================");
-		// let cart: Phaser.Point = PointHelper.isometricToCartesian(new Phaser.Point((p.x - this.borderOffset.x) - 64, p.y));
-		let cart: Phaser.Point = PointHelper.iso2cart(p, this.borderOffset, this.tileWidth);
-		console.log("==", cart.x, cart.y, this.borderOffset.x, this.borderOffset.y);
-		let grid: Phaser.Point = PointHelper.getTileCoordinates(cart, 64);
-		console.log("==", grid);
-		console.log("== tile", this.levelData[grid.y][grid.x]);
-		let iso: Phaser.Point = PointHelper.cart2iso(grid, this.borderOffset);
-		console.log("++", iso);
-		console.log("===================");
-		let pt: Phaser.Point = PointHelper.cartesianToIsometric(p);//, this.gameScene, this.game.camera);
-		let ptr: Point = new Point(0,0);
-		ptr.x = (p.x / 32 + p.y / 32) / 2;
-		ptr.y = (p.y / 32 - (p.x / 64)) / 2;
-		// console.log("local", this.gridGroup.toLocal(pt, this.gridGroup));
-		//
-		this.lockTheRenderer(false);
-		let addressString = (grid.x + 1).toString() + this.streetToText(grid.x + 1) + " street & " + (grid.y + 1).toString() + this.streetToText(grid.y + 1) + " avenue";
-		this.getGroupChildByName(this.uiGroup, "address", function(item: any) {
-			item.setText(addressString);
-		});
-		let strucTypeString: string = this.keyToString(this.levelData[grid.y][grid.x].k as string);
-		this.getGroupChildByName(this.uiGroup, "structure", function (item: any) {
-			console.log("structType", item, strucTypeString);
-			item.setText(strucTypeString);
-		});
-		let ownerString: string = "[Unclaimed Territory]";
-		this.getGroupChildByName(this.uiGroup, "owner", function (item: any) {
-			item.setText(ownerString);
-		});
+	// clickHandler(e: Phaser.Sprite, p: Phaser.Point) {
+	// 	console.log("* sector click handler", e, p);
+	// 	// console.log("* e", e.x, e.y);
+	// 	// console.log("* p", p.x - this.borderOffset.x, p.y);
+	// 	// let tile: Phaser.Point = PointHelper.getTileCoordinates(new Phaser.Point(p.x-this.borderOffset.x, p.y), 64);
+	// 	// console.log("* tile", tile.x, tile.y);
+	// 	// let padj: Phaser.Point = new Point(p.x)
+	// 	// let itc: Phaser.Point = PointHelper.isometricToCartesian(p);
+	// 	// console.log("iso to cart", itc.x, itc.y, this.borderOffset.x, this.borderOffset.y);
+	// 	// console.log("****", p.y + (p.x / 2), p.y - (p.x / 2))  // (-(1 / 2) * screen_x) + (1 * screen_y) + (0 * 1)
+	// 	console.log("===================");
+	// 	// let cart: Phaser.Point = PointHelper.isometricToCartesian(new Phaser.Point((p.x - this.borderOffset.x) - 64, p.y));
+	// 	let cart: Phaser.Point = PointHelper.iso2cart(p, this.borderOffset, this.tileWidth);
+	// 	console.log("==", cart.x, cart.y, this.borderOffset.x, this.borderOffset.y);
+	// 	let grid: Phaser.Point = PointHelper.getTileCoordinates(cart, 64);
+	// 	console.log("==", grid);
+	// 	console.log("== tile", this.levelData[grid.y][grid.x]);
+	// 	let iso: Phaser.Point = PointHelper.cart2iso(grid, this.borderOffset);
+	// 	console.log("++", iso);
+	// 	console.log("===================");
+	// 	let pt: Phaser.Point = PointHelper.cartesianToIsometric(p);//, this.gameScene, this.game.camera);
+	// 	let ptr: Point = new Point(0,0);
+	// 	ptr.x = (p.x / 32 + p.y / 32) / 2;
+	// 	ptr.y = (p.y / 32 - (p.x / 64)) / 2;
+	// 	// console.log("local", this.gridGroup.toLocal(pt, this.gridGroup));
+	// 	//
+	// 	this.lockTheRenderer(false);
+	// 	let addressString = (grid.x + 1).toString() + this.streetToText(grid.x + 1) + " street & " + (grid.y + 1).toString() + this.streetToText(grid.y + 1) + " avenue";
+	// 	this.getGroupChildByName(this.uiGroup, "address", function(item: any) {
+	// 		item.setText(addressString);
+	// 	});
+	// 	let strucTypeString: string = this.keyToString(this.levelData[grid.y][grid.x].k as string);
+	// 	this.getGroupChildByName(this.uiGroup, "structure", function (item: any) {
+	// 		console.log("structType", item, strucTypeString);
+	// 		item.setText(strucTypeString);
+	// 	});
+	// 	let ownerString: string = "[Unclaimed Territory]";
+	// 	this.getGroupChildByName(this.uiGroup, "owner", function (item: any) {
+	// 		item.setText(ownerString);
+	// 	});
 
-		this.fov.alpha = 0;
-		// this.emitterGroup.visible = false;
-		// let offsetX: number = 0;//this.tileWidth / 2;
-		// let offsetY: number = 0;//this.tileWidth / 2;
-		// console.log("* rot", this.gridGroup.rotation);
-		// var coord: any = this.pointFromAngle(e.centerX, e.centerY);
-		// offsetY = Math.cos(this.gridGroup.rotation) * e.position.y;
-		// e.loadTexture(this.b1Sprite.key);
-		// this.game.camera.focusOnXY(p.x, p.y);
-		// this.game.camera.lerp = new Phaser.Point(0.1, 0.1);
-		// this.game.camera.view.centerOn(e.position.x, e.position.y);
-		// ptr.x = 0; ptr.y = 0;
-		// ptr.x += this.borderOffset.x;
-		// ptr.y += this.borderOffset.y;
-		// console.log("* rot", offsetY);//e.position.x * this.gridGroup.rotation, e.position.y * this.gridGroup.rotation);
-		this.game.add.tween(this.fov).to({ x: iso.x, y: iso.y }, 500, Phaser.Easing.Quadratic.InOut, true);
-		let t: Phaser.Tween = this.game.add.tween(this.fov).to({ alpha: 1 }, 650, "Linear", true);
-		t.onComplete.add(this.mapMoveCompleteHandler, this)
-	}
+	// 	this.fov.alpha = 0;
+	// 	// this.emitterGroup.visible = false;
+	// 	// let offsetX: number = 0;//this.tileWidth / 2;
+	// 	// let offsetY: number = 0;//this.tileWidth / 2;
+	// 	// console.log("* rot", this.gridGroup.rotation);
+	// 	// var coord: any = this.pointFromAngle(e.centerX, e.centerY);
+	// 	// offsetY = Math.cos(this.gridGroup.rotation) * e.position.y;
+	// 	// e.loadTexture(this.b1Sprite.key);
+	// 	// this.game.camera.focusOnXY(p.x, p.y);
+	// 	// this.game.camera.lerp = new Phaser.Point(0.1, 0.1);
+	// 	// this.game.camera.view.centerOn(e.position.x, e.position.y);
+	// 	// ptr.x = 0; ptr.y = 0;
+	// 	// ptr.x += this.borderOffset.x;
+	// 	// ptr.y += this.borderOffset.y;
+	// 	// console.log("* rot", offsetY);//e.position.x * this.gridGroup.rotation, e.position.y * this.gridGroup.rotation);
+	// 	this.game.add.tween(this.fov).to({ x: iso.x, y: iso.y }, 500, Phaser.Easing.Quadratic.InOut, true);
+	// 	let t: Phaser.Tween = this.game.add.tween(this.fov).to({ alpha: 1 }, 650, "Linear", true);
+	// 	t.onComplete.add(this.mapMoveCompleteHandler, this)
+	// }
 
-	mapMoveCompleteHandler(e: Phaser.Sprite, p: Phaser.Point) {
-		console.log("* mapMoveComplete", e, p);
-		// console.log("len", this.gridGroup.length);
-		// console.log("rem", this.emitterGroup.getChildAt(0).x)
-		// TODO: adjust emitters to fit grid gaps
-		// console.log(this.emitterGroup.width, window.innerWidth);
-		// for (let emitter in this.emitterGroup.children) {
-		// 	console.log("emit", emitter);
-		// }
-		// this.emitterGroup.visible = true;
-		// this.drawGrid();
-		// return;
-		var grid: Phaser.Sprite;
-		for (let g = 0; g < this.gridGroup.length; g++) {
-			grid = this.gridGroup.getChildAt(g) as Phaser.Sprite;
-			// console.log('inCamera', grid.inCamera);
-			grid.renderable = grid.inCamera;
-			// if (grid.inCamera === true) {
-			// 	console.log("x", grid.x, this.game.camera.x);
-			// 	console.log('pre', this.emitterGroup.cameraOffset.x);
-			// 	// if (grid.x < this.game.camera.x)
-			// 	// 	this.emitterGroup.cameraOffset.x = this.game.camera.x - grid.x;
-			// 	// else this.emitterGroup.cameraOffset.x = grid.x - this.game.camera.x;
-			// 	// this.emitterGroup.x += Math.abs(grid.x - this.game.camera.x);
-			// 	// console.log('post', this.emitterGroup.cameraOffset.x);
-			// 	break;
-			// }
-		}
-		this.lockTheRenderer(false);
-		if (this.renderTimerActive === false) {
-			this.game.time.events.add(Phaser.Timer.SECOND * 2, this.lockTheRenderer, this);
-			this.renderTimerActive = true;
-		}
-	}
+	// mapMoveCompleteHandler(e: Phaser.Sprite, p: Phaser.Point) {
+	// 	console.log("* mapMoveComplete", e, p);
+	// 	// console.log("len", this.gridGroup.length);
+	// 	// console.log("rem", this.emitterGroup.getChildAt(0).x)
+	// 	// TODO: adjust emitters to fit grid gaps
+	// 	// console.log(this.emitterGroup.width, window.innerWidth);
+	// 	// for (let emitter in this.emitterGroup.children) {
+	// 	// 	console.log("emit", emitter);
+	// 	// }
+	// 	// this.emitterGroup.visible = true;
+	// 	// this.drawGrid();
+	// 	// return;
+	// 	var grid: Phaser.Sprite;
+	// 	for (let g = 0; g < this.gridGroup.length; g++) {
+	// 		grid = this.gridGroup.getChildAt(g) as Phaser.Sprite;
+	// 		// console.log('inCamera', grid.inCamera);
+	// 		grid.renderable = grid.inCamera;
+	// 		// if (grid.inCamera === true) {
+	// 		// 	console.log("x", grid.x, this.game.camera.x);
+	// 		// 	console.log('pre', this.emitterGroup.cameraOffset.x);
+	// 		// 	// if (grid.x < this.game.camera.x)
+	// 		// 	// 	this.emitterGroup.cameraOffset.x = this.game.camera.x - grid.x;
+	// 		// 	// else this.emitterGroup.cameraOffset.x = grid.x - this.game.camera.x;
+	// 		// 	// this.emitterGroup.x += Math.abs(grid.x - this.game.camera.x);
+	// 		// 	// console.log('post', this.emitterGroup.cameraOffset.x);
+	// 		// 	break;
+	// 		// }
+	// 	}
+	// 	this.lockTheRenderer(false);
+	// 	if (this.renderTimerActive === false) {
+	// 		this.game.time.events.add(Phaser.Timer.SECOND * 2, this.lockTheRenderer, this);
+	// 		this.renderTimerActive = true;
+	// 	}
+	// }
 
-	lockTheRenderer(bool?: boolean) {
-		// console.log("* lockTheRenderer", bool);
-		// stub (forcing lockRender OFF)
-		bool = false;
-		if (bool === undefined) bool = true;
-		console.log("* render lock", bool);
-		this.game.lockRender = bool;
-		this.renderTimerActive = false;
-	}
+	// lockTheRenderer(bool?: boolean) {
+	// 	// console.log("* lockTheRenderer", bool);
+	// 	// stub (forcing lockRender OFF)
+	// 	bool = false;
+	// 	if (bool === undefined) bool = true;
+	// 	console.log("* render lock", bool);
+	// 	this.game.lockRender = bool;
+	// 	this.renderTimerActive = false;
+	// }
 
 	// setState(state: number) {
 	// 	// console.log("Crew.setCurrentState", state, this.children.length);

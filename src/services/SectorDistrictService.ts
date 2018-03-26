@@ -27,6 +27,9 @@ class SectorDistrictService extends AbstractService {
 	batchCreate(items: any[], options: object, callback: any) {
 		super.batchCreate(new SectorDistrictsSchema(), items, options, callback);
 	}
+	batchGet(items: any[], options: object, callback: any) {
+		super.batchGet(new SectorDistrictsSchema(), items, options, callback);
+	}
 	// end overrides
 	// batchCreate(batch: CharacterVO[], callback: any): any {
 	// 	var i = batch.length;

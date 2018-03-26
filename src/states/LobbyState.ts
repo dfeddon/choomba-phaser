@@ -84,7 +84,7 @@ export default class LobbyState extends Phaser.State {
 
   render() {
     // this.game.debug.cameraInfo(this.game.camera, window.innerWidth - 350, window.innerHeight - 150);
-    this.game.debug.text('FPS: ' + this.game.time.fps || 'FPS: --', window.innerWidth - 40, window.innerHeight - 40, "#00ff00");
+    this.game.debug.text('FPS: ' + this.game.time.fps || 'FPS: --', window.innerWidth - 150, window.innerHeight - 20, "#00ff00");
   }
 
   shutdown() {
