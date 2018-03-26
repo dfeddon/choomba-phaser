@@ -99,7 +99,7 @@ class LobbyDom {
 		lobbyStateHtml.style.display = "grid";
 		lobbyStateHtml.addEventListener("click", (e) => {
 			console.log("* lobbyStateHTML clicked *", e.clientY, lobbyStateHtml.clientHeight);
-			lobbyStateHtml.style.display = "none";
+			//lobbyStateHtml.style.display = "none";
 			// if (e.clientY > 1000)//lobbyStateHtml.clientHeight > 1000)
 			// 	lobbyStateHtml.style.height = "10%";
 			// else lobbyStateHtml.style.height = "10%";//"100%";
@@ -108,7 +108,7 @@ class LobbyDom {
 		//////////////////////////////////////////////
 		// listen for pulse click event (stub)
 		//////////////////////////////////////////////
-		this.doc.getElementById('pulseClicker').onclick = (e: MouseEvent) => {
+		/*this.doc.getElementById('pulseClicker').onclick = (e: MouseEvent) => {
 			console.log("* onclick", e.target);
 			console.log("* player", this.player);
 
@@ -126,7 +126,7 @@ class LobbyDom {
 			// 	if (err) return console.log(err);
 			// 	else return this.incidentCreatedHandler(item);// console.log(item);
 			// });
-		}
+		}*/
 
 		this.dragAndDrop();
 

@@ -21,7 +21,7 @@ $get-path-to-assets: "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/
     @include scrollbars(.25em, slategray, #161616);
     @include user-select(none); // mixin to disable text selection
     width: 100vw; // fullscreen width
-    height: 100vh; // fullscreen height
+    // height: 50px;//100vh; // fullscreen height
     top: 0;
     left: 0;
     position: absolute; // overlay phaser div
@@ -34,14 +34,14 @@ $get-path-to-assets: "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/
     display: subgrid;
     // justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 0px;
     font-size: 15px;
     // line-height: 1;
     // font-family: 'hobeaux-rococeaux-background', Helvetica;
     // font-weight: 20;
     // cursor: pointer;
     transition: all .3s ease;
-    // width: 100vw; // fullscreen width
+    width: 100vw; // fullscreen width
     // height: 90vh; // fullscreen height
 }
 
@@ -106,13 +106,15 @@ $get-path-to-assets: "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.75);
+
 }
 
 // squad
 #squad-row {
     display: grid;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    // padding-top: 20px;
+    // padding-bottom: 20px;
     grid-template-columns: 75px 75px 75px 75px; //1fr 1fr 1fr 1fr;
     // grid-column-gap: 1px;
     // grid-row-gap: 1px;
@@ -125,7 +127,7 @@ $get-path-to-assets: "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/
 
 .crew-cells {
     display: grid;
-    grid-template-rows: 25px 100px 20px; //1fr 1fr;
+    grid-template-rows: 25px 100px;// 20px; //1fr 1fr;
     grid-row-gap: 0px;
     align-items: center;
     // border: 0.5px solid #fff;
@@ -199,9 +201,9 @@ input {
 .labelTab {
   display: inline-block;
   margin: 0 0 -1px;
-  padding: 15px 25px;
+  padding: 15px 15px;
   font-family: $roboto-slab;
-  font-size: 1.3em;
+  font-size: 1.1em;
   font-weight: 600;
   text-align: center;
   color: #bbb;

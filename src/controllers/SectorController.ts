@@ -40,17 +40,22 @@ class SectorController {
 	}
 
 	getView() {
-		let totalBlocksX: number = 64;
-		let totalBlocksY: number = 64;
+		let totalBlocksX: number = 13;
+		let totalBlocksY: number = 13;
+		this.game.stage.width = totalBlocksX * 64;
+		this.game.stage.height = totalBlocksY * 32;
+		this.game.stage.backgroundColor = "#000";
 		this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
 		this.sectorView.created(this.blocksKnown);
 		// set bg color
 		// this.game.stage.backgroundColor = "#4488AA";
 		// size game canvas
 		// this.game.scale.setGameSize(window.innerWidth, window.innerHeight);//h * 2);
+		
 		// set game bounds
-		// let offset: number = (74 * 74) / 4;
-		// this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
+		// let offset: number = (64 * 64) / 4;
+		// this.game.world.setBounds(-offset, -offset, this.game.stage.width + offset, this.game.stage.height + offset);
+
 		// this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset * 2), this.sectorView.gridGroup.height + (offset * 2));
 		// this.game.clearBeforeRender = false; // this negates stage backgroundcolor
 

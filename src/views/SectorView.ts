@@ -76,42 +76,29 @@ class SectorView extends Phaser.Sprite {
 		super(game, x, y, key);//game, parent, name, addToStage, enableBody, physicsBodyType);
 		this.totalBlocksX = totalBlocksX;
 		this.totalBlocksY = totalBlocksY;
-		// this.currentState = 0;
-		// this.isMobile = false;
-		// game.physics.enable(this);
-		// game.add.existing(this);
-		// this.created();
-		// return this;
-		this.dX = 0;
-		this.dY = 0;
 		this.tileWidth = 64;//50;// the width of a tile
-		this.borderOffset = new Phaser.Point(320, this.tileWidth);//250, 50);//to centralise the isometric level display
-		this.wallGraphicHeight = this.tileWidth;//72;
-		this.floorGraphicWidth = 128;//103;
-		this.floorGraphicHeight = this.tileWidth;//53;
-		this.heroGraphicWidth = 41;
-		this.heroGraphicHeight = 62;
-		this.wallHeight = this.wallGraphicHeight - this.floorGraphicHeight;
-		this.heroHeight = (this.floorGraphicHeight / 2) + (this.heroGraphicHeight - this.floorGraphicHeight) + 6;//adjustments to make the legs hit the middle of the tile for initial load
-		this.heroWidth = (this.floorGraphicWidth / 2) - (this.heroGraphicWidth / 2);//for placing hero at the middle of the tile
+		this.borderOffset = new Phaser.Point(this.tileWidth * this.totalBlocksX, this.tileWidth);//250, 50);//to centralise the isometric level display
+		// this.wallGraphicHeight = this.tileWidth;//72;
+		// this.floorGraphicWidth = 128;//103;
+		// this.floorGraphicHeight = this.tileWidth;//53;
+		// this.heroGraphicWidth = 41;
+		// this.heroGraphicHeight = 62;
+		// this.wallHeight = this.wallGraphicHeight - this.floorGraphicHeight;
+		// this.heroHeight = (this.floorGraphicHeight / 2) + (this.heroGraphicHeight - this.floorGraphicHeight) + 6;//adjustments to make the legs hit the middle of the tile for initial load
+		// this.heroWidth = (this.floorGraphicWidth / 2) - (this.heroGraphicWidth / 2);//for placing hero at the middle of the tile
 		this.facing = 'south';//direction the character faces
 		this.shadowOffset = new Phaser.Point(this.heroWidth + 7, 11);
 		this.heroSpeed = 1.2;
 		
 		let levelArray = [];
 		let xArray: object[];
-		let numX: number = 15;//Math.floor(window.innerWidth / this.tileWidth) + 10;// / 50;//128;
-		let numY: number = 15;//Math.floor(window.innerHeight / this.tileWidth) + 10;// / 25;//this.tileWidth;
-		this.game.stage.width = numX * 128;
-		this.game.stage.height = numY * 128;
-		console.log("* stage vs world", this.game.stage.width, this.game.world.width);
-		this.game.stage.backgroundColor = "#4488AA";
+		// console.log("* stage vs world", this.game.stage.width, this.game.world.width);
 		let rng: number;
 		let tile: object;
 		let tileHeight: number = this.tileWidth;
-		console.log("* scene w/h", numX, numY, numX*this.tileWidth, numY*this.tileWidth);
-		for (let i = 0; i < numY; i++) {
-			for (let j = 0; j < numX; j++) {
+		console.log("* scene w/h", totalBlocksX, totalBlocksY, totalBlocksX * this.tileWidth, totalBlocksY*this.tileWidth);
+		for (let i = 0; i < totalBlocksY; i++) {
+			for (let j = 0; j < totalBlocksX; j++) {
 				if (j === 0)
 					xArray = [];
 				rng = this.game.rnd.integerInRange(0, 100);
@@ -120,7 +107,8 @@ class SectorView extends Phaser.Sprite {
 				else if (rng < 15) tile = { t: 4, h: tileHeight + 8, k: "bldg3" };
 				else if (rng < 20) tile = { t: 5, h: tileHeight + 17, k: "bldg4" };
 				else if (rng < 25) tile = { t: 6, h: tileHeight + 52, k: "bldg5" };
-				else if (rng < 30) tile = { t: 7, h: tileHeight, k: "floor2" };
+				else if (rng < 30) tile = { t: 6, h: tileHeight + 30, k: "bldg6" };
+				else if (rng < 35) tile = { t: 7, h: tileHeight, k: "floor2" };
 				// else if (rng < 48) tile = {t:1,h:this.tileWidth,k:"tent1"};
 				else tile = {t:0,h:this.tileWidth,k:"floor1"};
 				xArray.push(tile);
@@ -170,15 +158,16 @@ class SectorView extends Phaser.Sprite {
 
 		this.sectorGroup.add(this.gridGroup);
 		this.sectorGroup.add(this.fovGroup);
+		// this.sectorGroup.sendToBack(this.fovGroup);
 
 		// emitter group
-		this.emitterGroup = this.game.add.group();
+		/*this.emitterGroup = this.game.add.group();
 		// this.emitterGroup.x = this.game.world.position.x;
 		this.emitterGroup.fixedToCamera = true;
 		this.emitterGroup.cameraOffset.x = 0;//17.5; // <- wtf?
 		this.emitterGroup.cameraOffset.y = 0;//-7;
 		this.emitterGroup.inputEnableChildren = false;
-		this.emitterGroup.ignoreChildInput = true;
+		this.emitterGroup.ignoreChildInput = true;*/
 
 		// UI group
 		this.uiGroup = this.game.make.group();
@@ -454,7 +443,7 @@ class SectorView extends Phaser.Sprite {
 		this.gridGroup.add(sp);
 		// this.floorSprite = this.game.make.sprite(0, 0, 'floor');
 		// this.wallSprite = this.game.make.sprite(0, 0, 'wall');
-		let spriteKeys: string[] = ["floor1", "floor2", "tent1", "bldg1", "bldg2", "bldg3", "bldg4", "bldg5"];
+		let spriteKeys: string[] = ["floor1", "floor2", "tent1", "bldg1", "bldg2", "bldg3", "bldg4", "bldg5", "bldg6"];
 		this.tileSprites = [];
 		for (let key of spriteKeys)
 			this.tileSprites.push({ key: key, sprite: this.game.make.sprite(0, 0, key) });
@@ -536,11 +525,11 @@ class SectorView extends Phaser.Sprite {
 	// 	this.gameScene.renderXY(this.sorcererShadow, isoPt.x + this.borderOffset.x + this.shadowOffset.x, isoPt.y + this.borderOffset.y + this.shadowOffset.y, false);//draw shadow to render texture
 	// 	this.gameScene.renderXY(this.sorcerer, isoPt.x + this.borderOffset.x + this.heroWidth, isoPt.y + this.borderOffset.y - this.heroHeight, false);//draw hero to render texture
 	// }
-	drawTileIso(tileType: any, i: any, j: any) {//place isometric level tiles
+	drawTileIso(tileType: any, y: number, x: number) {//place isometric level tiles
 		var isoPt = new Phaser.Point();//It is not advisable to create point in update loop
 		var cartPt = new Phaser.Point();//This is here for better code readability.
-		cartPt.x = j * this.tileWidth;
-		cartPt.y = i * this.tileWidth;
+		cartPt.x = x * this.tileWidth;
+		cartPt.y = y * this.tileWidth;
 		isoPt = PointHelper.cartesianToIsometric(cartPt);
 		// let sprite: Phaser.Sprite;
 		let tileData: any;
@@ -743,10 +732,11 @@ class SectorView extends Phaser.Sprite {
 		this.game.camera.scale.x += zoomAmount;
 		this.game.camera.scale.y += zoomAmount;
 		*/
-		this.game.camera.bounds.x = 0;//window.innerWidth.x * this.game.camera.scale.x;
-		this.game.camera.bounds.y = 0;//window.innerHeight.y * this.game.camera.scale.y;
-		this.game.camera.bounds.width = (this.totalBlocksX * this.tileWidth) * this.gridGroup.scale.x + ((this.totalBlocksX * this.tileWidth) / 4);
-		this.game.camera.bounds.height = (this.totalBlocksY * this.tileWidth) * this.gridGroup.scale.y + ((this.totalBlocksY * this.tileWidth) / 4);
+		// this.game.camera.width = window.innerWidth;
+		// this.game.camera.bounds.x = 0;//window.innerWidth.x * this.game.camera.scale.x;
+		// this.game.camera.bounds.y = 0;//window.innerHeight.y * this.game.camera.scale.y;
+		// this.game.camera.bounds.width = (this.totalBlocksX * this.tileWidth) * this.gridGroup.scale.x + ((this.totalBlocksX * this.tileWidth) / 4);
+		// this.game.camera.bounds.height = (this.totalBlocksY * this.tileWidth) * this.gridGroup.scale.y + ((this.totalBlocksY * this.tileWidth) / 4);
 		//*/
 	}
 
@@ -795,6 +785,15 @@ class SectorView extends Phaser.Sprite {
 
 	keyToString(k: string) : string {
 		switch(k) {
+			case "floor1": return "Streets";
+			case "floor2": return "Dirt";
+			case "tent1": return "Tents";
+			case "bldg1": return "Orange";
+			case "bldg2": return "Warehouse";
+			case "bldg3": return "Stacked";
+			case "bldg4": return "Oil";
+			case "bldg5": return "Power";
+			case "bldg6": return "Dark";
 			case "hq": return "Headquarters";
 			case "foursquare": return "Warehouse";
 			case "threecirc": return "Silo";
@@ -806,56 +805,47 @@ class SectorView extends Phaser.Sprite {
 
 	clickHandler(e: Phaser.Sprite, p: Phaser.Point) {
 		console.log("* sector click handler", e, p);
-		console.log("* e", e.x, e.y);
-		console.log("* p", p.x, p.y);
-		// console.log("* world", p.x - p.worldX, p.y - p.worldY);
-		// let npt: Phaser.Point = new Phaser.Point(p.x-p.worldX, p.y-p.worldY);
-		// console.log('x', e.x, p.x, this.fov.x, this.game.camera.x);
-		// console.log("* cam w/h", this.game.camera.width, this.game.camera.height, this.game.width, this.game.height);
-		// console.log("* calc", p.screenX - p.x, p.screenY - p.y);
-		// console.log("* fov", this.fov.x, this.fov.y, 'dif', this.fov.x - p.x, this.fov.y - p.y);
-		// console.log("* bounds offset", this.game.world.bounds.x, this.game.world.bounds.y);
-		let pt: Phaser.Point = PointHelper.isometricToCartesian(p);//, this.gameScene, this.game.camera);
-		console.log('pt', pt.x, pt.y);
-		let ptr = new Point(Math.ceil((p.x - 64) / 64) * 64, Math.ceil((p.y - 64) / 64) * 64);
-		console.log('ptr', ptr.x, ptr.y);
-		// let ptr: Point = new Point(0,0);
-		// ptr.x = (p.x / 32 + p.y / 32) / 2;
-		// ptr.y = (p.y / 32 - (p.x / 64)) / 2;
-		// let tileCoord: Phaser.Point = PointHelper.getTileCoordinates(pt, 64);
-		// console.log("tile:", tileCoord.x, tileCoord.y);
+		// console.log("* e", e.x, e.y);
+		// console.log("* p", p.x - this.borderOffset.x, p.y);
+		// let tile: Phaser.Point = PointHelper.getTileCoordinates(new Phaser.Point(p.x-this.borderOffset.x, p.y), 64);
+		// console.log("* tile", tile.x, tile.y);
+		// let padj: Phaser.Point = new Point(p.x)
+		// let itc: Phaser.Point = PointHelper.isometricToCartesian(p);
+		// console.log("iso to cart", itc.x, itc.y, this.borderOffset.x, this.borderOffset.y);
+		// console.log("****", p.y + (p.x / 2), p.y - (p.x / 2))  // (-(1 / 2) * screen_x) + (1 * screen_y) + (0 * 1)
+		console.log("===================");
+		// let cart: Phaser.Point = PointHelper.isometricToCartesian(new Phaser.Point((p.x - this.borderOffset.x) - 64, p.y));
+		let cart: Phaser.Point = PointHelper.iso2cart(p, this.borderOffset, this.tileWidth);
+		console.log("==", cart.x, cart.y, this.borderOffset.x, this.borderOffset.y);
+		let grid: Phaser.Point = PointHelper.getTileCoordinates(cart, 64);
+		console.log("==", grid);
+		console.log("== tile", this.levelData[grid.y][grid.x]);
+		let iso: Phaser.Point = PointHelper.cart2iso(grid, this.borderOffset);
+		console.log("++", iso);
+		console.log("===================");
+		let pt: Phaser.Point = PointHelper.cartesianToIsometric(p);//, this.gameScene, this.game.camera);
+		let ptr: Point = new Point(0,0);
+		ptr.x = (p.x / 32 + p.y / 32) / 2;
+		ptr.y = (p.y / 32 - (p.x / 64)) / 2;
 		// console.log("local", this.gridGroup.toLocal(pt, this.gridGroup));
-		let TILE_WIDTH_HALF = 128;
-		let TILE_HEIGHT_HALF = 64;
-		let sx: number = (pt.x / TILE_WIDTH_HALF + pt.y / TILE_HEIGHT_HALF) / 2;
-		let sy: number = (pt.y / TILE_WIDTH_HALF + pt.x / TILE_WIDTH_HALF) / 2;
-		console.log("*********************8x", sx, sy);
-		// return;
-		// let pt2: Phaser.Point = PointHelper.cartesianToIsometric(p);
-		// let tile: Phaser.Point = PointHelper.getTileCoordinates(PointHelper.isometricToCartesian(p), this.tileWidth);
-		// console.log("* tile", tile);
-		// console.log("* point", pt.x, pt.y);
-		// console.log("* pt2", pt2.x, pt2.y);
-		// console.log("* cam offset", this.cameraOffset.x, this.cameraOffset.y);
-		// console.log("* toLocal", PointHelper.isometricToCartesian(this.gridGroup.toLocal(p, e) as Phaser.Point));
-		// console.log("* group", this.sectorGroup.x, this.gridGroup.x);
-		// return;
+		//
 		this.lockTheRenderer(false);
-		let addressString = (Math.floor(pt.x / 128) + 1).toString() + this.streetToText(pt.x / 128 + 1) + " street & " + (Math.floor(pt.y / this.tileWidth) + 1).toString() + this.streetToText(pt.y / this.tileWidth + 1) + " aveneu";
+		let addressString = (grid.x + 1).toString() + this.streetToText(grid.x + 1) + " street & " + (grid.y + 1).toString() + this.streetToText(grid.y + 1) + " avenue";
 		this.getGroupChildByName(this.uiGroup, "address", function(item: any) {
 			item.setText(addressString);
 		});
-		// let strucTypeString: string = this.keyToString(e.key as string);
-		// this.getGroupChildByName(this.uiGroup, "structure", function (item: any) {
-		// 	item.setText(strucTypeString);
-		// });
-		// let ownerString: string = "[Unclaimed Territory]";
-		// this.getGroupChildByName(this.uiGroup, "owner", function (item: any) {
-		// 	item.setText(ownerString);
-		// });
+		let strucTypeString: string = this.keyToString(this.levelData[grid.y][grid.x].k as string);
+		this.getGroupChildByName(this.uiGroup, "structure", function (item: any) {
+			console.log("structType", item, strucTypeString);
+			item.setText(strucTypeString);
+		});
+		let ownerString: string = "[Unclaimed Territory]";
+		this.getGroupChildByName(this.uiGroup, "owner", function (item: any) {
+			item.setText(ownerString);
+		});
 
 		this.fov.alpha = 0;
-		this.emitterGroup.visible = false;
+		// this.emitterGroup.visible = false;
 		// let offsetX: number = 0;//this.tileWidth / 2;
 		// let offsetY: number = 0;//this.tileWidth / 2;
 		// console.log("* rot", this.gridGroup.rotation);
@@ -865,8 +855,11 @@ class SectorView extends Phaser.Sprite {
 		// this.game.camera.focusOnXY(p.x, p.y);
 		// this.game.camera.lerp = new Phaser.Point(0.1, 0.1);
 		// this.game.camera.view.centerOn(e.position.x, e.position.y);
+		// ptr.x = 0; ptr.y = 0;
+		// ptr.x += this.borderOffset.x;
+		// ptr.y += this.borderOffset.y;
 		// console.log("* rot", offsetY);//e.position.x * this.gridGroup.rotation, e.position.y * this.gridGroup.rotation);
-		this.game.add.tween(this.fov).to({ x: ptr.x, y: ptr.y }, 500, Phaser.Easing.Quadratic.InOut, true);
+		this.game.add.tween(this.fov).to({ x: iso.x, y: iso.y }, 500, Phaser.Easing.Quadratic.InOut, true);
 		let t: Phaser.Tween = this.game.add.tween(this.fov).to({ alpha: 1 }, 650, "Linear", true);
 		t.onComplete.add(this.mapMoveCompleteHandler, this)
 	}
@@ -880,7 +873,7 @@ class SectorView extends Phaser.Sprite {
 		// for (let emitter in this.emitterGroup.children) {
 		// 	console.log("emit", emitter);
 		// }
-		this.emitterGroup.visible = true;
+		// this.emitterGroup.visible = true;
 		// this.drawGrid();
 		// return;
 		var grid: Phaser.Sprite;

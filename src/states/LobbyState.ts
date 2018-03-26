@@ -55,6 +55,7 @@ export default class LobbyState extends Phaser.State {
     this.load.image('bldg3', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building3_128x72.png');
     this.load.image('bldg4', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building4_128x81.png');
     this.load.image('bldg5', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building5_128x80.png');
+    this.load.image('bldg6', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/Artboard1.png');
     this.load.image('reticle', 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/reticle_128x64.png');
 
     // complete
@@ -83,7 +84,7 @@ export default class LobbyState extends Phaser.State {
 
   render() {
     // this.game.debug.cameraInfo(this.game.camera, window.innerWidth - 350, window.innerHeight - 150);
-    this.game.debug.text('FPS: ' + this.game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+    this.game.debug.text('FPS: ' + this.game.time.fps || 'FPS: --', window.innerWidth - 40, window.innerHeight - 40, "#00ff00");
   }
 
   shutdown() {
