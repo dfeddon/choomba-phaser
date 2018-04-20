@@ -6,13 +6,18 @@ import { SectorDistrictService } from "../services/SectorDistrictService";
 import _ = require("lodash");
 import { PointHelper } from "../helpers/PointHelper";
 import { Point } from "phaser-ce";
+import { SectorVO } from "../models/SectorVO";
+import { SectorService } from "../services/SectorService";
+import { SectorDistrictVO } from "../models/SectorDistrictVO";
 
 class SectorController {
 	
 	game: Phaser.Game;
 	state: Phaser.State;
 	sectorView: SectorView;
+	sectorVO: SectorVO;
 	blocksKnown: SectorBlockVO[] = [];
+	districtsKnown: SectorDistrictVO[] = [];
 
 	constructor(game: Phaser.Game, state: Phaser.State) {
 		console.log("== SectorController.constructor ==");
@@ -22,6 +27,11 @@ class SectorController {
 
 	init() {
 		// first, check cache
+		// next, load known blocks
+		this.getBlocks();
+	}
+
+	getBlocks() {
 		// else, load blocks known
 		let array: object[] = [];
 		for (let blocks of Globals.getInstance().player.entity.blocksKnown)
@@ -58,15 +68,28 @@ class SectorController {
 			new SectorDistrictService().findById(ids[0], (err: any, result: any) => {
 				if (err) return console.log(err);
 				console.log('* got single district', result);
+				this.districtsKnown.push(new SectorDistrictVO(result))
 				// start view
-				this.getView();
+				this.getSector(result.sector);
 			});
 		} else {
 			new SectorDistrictService().batchGet(ids, {}, (err: any, result: any) => {
 				if (err) return console.log(err);
 				console.log("* got batch districts", result);
+				for (let i = 0; i < result.length; i++)
+					this.districtsKnown.push(new SectorDistrictVO(result[i]));
+				this.getSector(result[0].sector);
 			});
 		}
+	}
+
+	getSector(id: number) {
+		console.log("* getSector", id);
+		new SectorService().findById(id, (err: any, result: any) => {
+			if (err) return console.log(err);
+			console.log('* got sector', result);
+			this.getView();
+		});
 	}
 
 	getView() {
@@ -91,6 +114,7 @@ class SectorController {
 		// this.sectorView.gameScene.addEventListener("click", this.clickHandler);
 		this.sectorView.gridGroup.onChildInputDown.add(this.clickHandler, this);
 	}
+
 	clickHandler(e: Phaser.Sprite, p: Phaser.Point) {
 		console.log("* sector click handler", e, p);
 		// console.log("* e", e.x, e.y);
@@ -147,13 +171,20 @@ class SectorController {
 		// ptr.x += this.borderOffset.x;
 		// ptr.y += this.borderOffset.y;
 		// console.log("* rot", offsetY);//e.position.x * this.gridGroup.rotation, e.position.y * this.gridGroup.rotation);
-		this.game.add.tween(this.sectorView.fov).to({ x: iso.x, y: iso.y }, 500, Phaser.Easing.Quadratic.InOut, true);
-		let t: Phaser.Tween = this.game.add.tween(this.sectorView.fov).to({ alpha: 1 }, 650, "Linear", true);
-		t.onComplete.add(this.mapMoveCompleteHandler, this)
-		// draw iso tile
-		// tileType = this.levelData[i][j];
-		// this.drawTileIso(tileType, i, j);
-		this.drawSingleTile(this.sectorView.levelData[0][0], grid.x, grid.y);
+		if (Globals.getInstance().isMobile === true) {
+			this.sectorView.fov.x = iso.x;
+			this.sectorView.fov.y = iso.y;
+			this.lockTheRenderer(true);
+		}
+		else {
+			this.game.add.tween(this.sectorView.fov).to({ x: iso.x, y: iso.y }, 500, Phaser.Easing.Quadratic.InOut, true);
+			let t: Phaser.Tween = this.game.add.tween(this.sectorView.fov).to({ alpha: 1 }, 650, "Linear", true);
+			t.onComplete.add(this.mapMoveCompleteHandler, this)
+			// draw iso tile
+			// tileType = this.levelData[i][j];
+			// this.drawTileIso(tileType, i, j);
+			// this.drawSingleTile(this.sectorView.levelData[0][0], grid.x, grid.y);
+		}
 	}
 
 	drawSingleTile(tile: object, x: number, y: number): void {

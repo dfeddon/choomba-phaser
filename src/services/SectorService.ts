@@ -51,14 +51,14 @@ class SectorService extends AbstractService {
 				return callback("Invalid sector count!", result);
 			let sectorIndex: number = result.count + SectorVO.SECTOR_INDEX_BASE_VALUE;
 			// create new sector
-			let vo: SectorVO = new SectorVO(sectorCount, "Sector " + (sectorIndex).toString());
+			let vo: SectorVO = new SectorVO({}, sectorCount, "Sector " + (sectorIndex).toString());
 
 			let district: SectorDistrictVO;
 			let block: SectorBlockVO;
 			let allblocks: SectorBlockVO[] = [];
 			for (let i = 0; i < SectorVO.SECTOR_DISTRICTS_TOTAL; i++) {
 				// add new district to sector
-				district = new SectorDistrictVO(i + 1, "District " + (i + 1).toString());
+				district = new SectorDistrictVO({}, i + 1, "District " + (i + 1).toString());
 				vo.districts.push(district);
 
 				// now, create blocks, adding them to respective districts

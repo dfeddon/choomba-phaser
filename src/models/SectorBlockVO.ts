@@ -19,6 +19,7 @@ class SectorBlockVO extends AbstractVO {
 	private _index: number;
 	private _type: number;
 	private _owner: number;
+	private _isKnown: boolean;
 
 	constructor(data?: object | {}, generateId?: boolean) {
 		if (generateId === undefined)
@@ -28,6 +29,9 @@ class SectorBlockVO extends AbstractVO {
 
 		if (data)
 			Object.assign(this, data);
+		
+		if (!this.isKnown)
+			this.isKnown = false;
 	}
 
 	fromDatabase(data: object): object {
@@ -92,6 +96,14 @@ class SectorBlockVO extends AbstractVO {
 
 	public set owner(value: number) {
 		this._owner = value;
+	}
+
+	public get isKnown(): boolean {
+		return this._isKnown;
+	}
+
+	public set isKnown(value: boolean) {
+		this._isKnown = value;
 	}
 }
 

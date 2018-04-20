@@ -444,6 +444,7 @@ class SectorView extends Phaser.Sprite {
 		// this.floorSprite = this.game.make.sprite(0, 0, 'floor');
 		// this.wallSprite = this.game.make.sprite(0, 0, 'wall');
 		let spriteKeys: string[] = ["floor1", "floor2", "tent1", "bldg1", "bldg2", "bldg3", "bldg4", "bldg5", "bldg6"];
+		this.game.renderer.setTexturePriority(spriteKeys);
 		this.tileSprites = [];
 		for (let key of spriteKeys)
 			this.tileSprites.push({ key: key, sprite: this.game.make.sprite(0, 0, key) });
@@ -542,6 +543,10 @@ class SectorView extends Phaser.Sprite {
 				break;
 			}
 		}
+
+		// if tile not known, dim it
+		// tileData.sprite.tint = 0x12051E;
+		// tileData.sprite.alpha = 0.25;
 
 		this.gameScene.renderXY(tileData.sprite, isoPt.x + this.borderOffset.x, isoPt.y + this.borderOffset.y - tileType.h, false);
 		// } else {

@@ -10,17 +10,22 @@ class SectorDistrictVO extends AbstractVO {
 	private _height: number; // 128 * 64
 	private _blockSize: number; // 64
 	private _vector: VectorVO; // x: index - 1 * width, y: index - 1 * height
-	private _blocks: SectorBlockVO[]; // 512 total blocks
+	private _blocks: SectorBlockVO[] = []; // 512 total blocks
 	// private _blocks: object[];
 
-	constructor(index?: number, name?: string) {
+	constructor(data?: object | {}, index?: number, name?: string) {
 		super();
+
+		if (data)
+			Object.assign(this, data);
 
 		if (name)
 		this._name = name;
+
 		if (index)
-		this._index = index;
-		this._blocks = [];
+			this._index = index;
+
+		// this._blocks = [];
 	}
 
 	addBlock(block: SectorBlockVO) {
