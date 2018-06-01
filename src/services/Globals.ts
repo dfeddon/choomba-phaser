@@ -3,6 +3,7 @@ import { EntityVO } from "../models/EntitiesVO";
 import { CharacterVO } from "../models/CharactersVO";
 import * as _ from "lodash";
 import { CrewContentController } from "../controllers/CrewContentController";
+import { TerritoryContentController } from "../controllers/TerritoryContentController";
 
 class Globals {
 	private static instance: Globals;
@@ -16,6 +17,7 @@ class Globals {
 	public isIphone: boolean = false;
 	public isApp: boolean = false;
 	public crewController: CrewContentController;
+	public territoryController: TerritoryContentController;
 
 	// public entity: EntityVO;
 

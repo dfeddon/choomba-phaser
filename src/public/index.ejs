@@ -8,7 +8,8 @@
     </title>
     <meta name="viewport" content="user-scalable=no,  initial-scale=1,  maximum-scale=1,  width=device-width" />
     <!-- <script src="js/lib/phaser.js"></script> -->
-    <script src="//cdn.jsdelivr.net/npm/phaser-ce@2.10.1/build/phaser.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser-ce@2.10.2/build/phaser.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script> -->
     <script type="text/javascript" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/js/lib/socketcluster.min.js"></script>
     <!-- <script src="js/index.js"></script> -->
     <!-- <script src="aws-iot-sdk-browser-bundle.js"></script>
@@ -351,7 +352,7 @@
                     <label id="tabCrew" class="labelTab">Crew</label>
                 
                     <input id="tab3" type="radio" name="tabs">
-                    <label id="tabTerritory" class="labelTab"></label>
+                    <label id="tabTerritory" class="labelTab">Territory</label>
                 
                     <input id="tab4" type="radio" name="tabs">
                     <label id="tabBiz" class="labelTab">Biz</label>
@@ -410,7 +411,17 @@
             <!-- crew pool -->
             <link id="section-crew" rel="import" href="section-crew.html" onload="handleLoad(event)" onerror="handleError(event)">
             <!-- territory -->
-            <link id="section-territory" rel="import" href="section-territory.html" onload="handleLoad(event)" onerror="handleError(event)">
+            <!-- <link id="section-territory" rel="import" href="section-territory.html" onload="handleLoad(event)" onerror="handleError(event)"> -->
+            <div id="section-territory">
+                <!-- <button id="show-modal" @click="showModal = true">Show Modal</button> -->
+                <modal v-if="showModal" @close="showModal = false">
+                    <h3 slot="header">custom header</h3>
+                    <!--
+                    you can use custom content here to overwrite
+                    default content
+                    -->
+                </modal>
+            </div>
             <!-- biz -->
             <link id="section-biz" rel="import" href="section-biz.html" onload="handleLoad(event)" onerror="handleError(event)">
             <!-- directives -->
@@ -440,12 +451,46 @@
     </section>
 
 
-            </div>
-            <div id="navigation-controls-container">
-                <label>Controls</label>
-            </div>
-            </section>
+    </div>
+    <div id="navigation-controls-container">
+        <label>Controls</label>
+    </div>
+    </section>
+
 
 </body>
+
+<!-- template for the modal component -->
+<script type="text/x-template" id="modal-template">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+
+          <div class="modal-header">
+            <slot name="header">
+              default header
+            </slot>
+          </div>
+
+          <div class="modal-body">
+            <slot name="body">
+              default body
+            </slot>
+          </div>
+
+          <div class="modal-footer">
+            <slot name="footer">
+              default footer
+              <button class="modal-default-button" @click="$emit('close')">
+                OK
+              </button>
+            </slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</script>
 
 </html>

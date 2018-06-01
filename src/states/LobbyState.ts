@@ -14,6 +14,7 @@ import { LobbyDropper } from "../controllers/LobbyDropper";
 import { CharacterVO } from "../models/CharactersVO";
 import { LobbyContentController } from "../controllers/LobbyContentController";
 import { CrewContentController } from "../controllers/CrewContentController";
+import { TerritoryContentController } from "../controllers/TerritoryContentController";
 import { LobbyController } from "../controllers/LobbyController";
 
 export default class LobbyState extends Phaser.State {
@@ -64,6 +65,7 @@ export default class LobbyState extends Phaser.State {
     this.game.time.advancedTiming = true;
 
     this.globals.crewController = new CrewContentController();
+    this.globals.territoryController = new TerritoryContentController();
   }
 
   imageLoadComplete() {

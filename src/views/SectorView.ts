@@ -102,15 +102,15 @@ class SectorView extends Phaser.Sprite {
 				if (j === 0)
 					xArray = [];
 				rng = this.game.rnd.integerInRange(0, 100);
-				if (rng < 5) tile = {t:2,h:tileHeight + 12,k:"bldg1"};
-				else if (rng < 10) tile = {t:3,h:tileHeight + 5,k:"bldg2"};
+				if (rng < 5) tile = { t: 2, h: tileHeight + 12, k: "bldg1" };
+				else if (rng < 10) tile = { t: 3, h: tileHeight + 5, k: "bldg2" };
 				else if (rng < 15) tile = { t: 4, h: tileHeight + 8, k: "bldg3" };
 				else if (rng < 20) tile = { t: 5, h: tileHeight + 17, k: "bldg4" };
 				else if (rng < 25) tile = { t: 6, h: tileHeight + 52, k: "bldg5" };
 				else if (rng < 30) tile = { t: 6, h: tileHeight + 30, k: "bldg6" };
 				else if (rng < 35) tile = { t: 7, h: tileHeight, k: "floor2" };
 				// else if (rng < 48) tile = {t:1,h:this.tileWidth,k:"tent1"};
-				else tile = {t:0,h:this.tileWidth,k:"floor1"};
+				else tile = { t: 0, h: this.tileWidth, k: "floor1" };
 				xArray.push(tile);
 			}
 			levelArray.push(xArray);

@@ -122,10 +122,12 @@ class CrewContentController {
 			// console.log("* char id", char.id, selectedId);
 			if (char.id === selectedId) {
 				console.log("* found char", char);
-				vo = char;
+				vo = new CharacterVO(char);// as CharacterVO;
 				break;
 			}
 		}
+		console.log("* typeof", typeof(vo));
+		
 		// populate modal data
 		document.getElementById('character-view-profile-handle').innerText = vo.handle.toUpperCase();
 		document.getElementById('character-view-profile-role').innerText = vo.getLabelByRole().toLowerCase();

@@ -18,6 +18,8 @@ class SectorController {
 	sectorVO: SectorVO;
 	blocksKnown: SectorBlockVO[] = [];
 	districtsKnown: SectorDistrictVO[] = [];
+	totalBlocksX: number;
+	totalBlocksY: number;
 
 	constructor(game: Phaser.Game, state: Phaser.State) {
 		console.log("== SectorController.constructor ==");
@@ -93,12 +95,12 @@ class SectorController {
 	}
 
 	getView() {
-		let totalBlocksX: number = 13;
-		let totalBlocksY: number = 13;
-		this.game.stage.width = totalBlocksX * 64;
-		this.game.stage.height = totalBlocksY * 32;
+		this.totalBlocksX = 13;
+		this.totalBlocksY = 13;
+		this.game.stage.width = this.totalBlocksX * 64;
+		this.game.stage.height = this.totalBlocksY * 32;
 		this.game.stage.backgroundColor = "#000";
-		this.sectorView = new SectorView(this.game, 0, 0, "sectorView", totalBlocksX, totalBlocksY);
+		this.sectorView = new SectorView(this.game, 0, 0, "sectorView", this.totalBlocksX, this.totalBlocksY);
 		this.sectorView.created(this.blocksKnown);
 		// set bg color
 		// this.game.stage.backgroundColor = "#4488AA";
@@ -131,6 +133,11 @@ class SectorController {
 		console.log("==", cart.x, cart.y, this.sectorView.borderOffset.x, this.sectorView.borderOffset.y);
 		let grid: Phaser.Point = PointHelper.getTileCoordinates(cart, 64);
 		console.log("==", grid);
+
+		// validate grid
+		if (grid.x < 0 || grid.y < 0 || grid.x >= this.totalBlocksX || grid.y >= this.totalBlocksY)
+			return console.log("! no tile (negative position)");
+
 		console.log("== tile", this.sectorView.levelData[grid.y][grid.x]);
 		let iso: Phaser.Point = PointHelper.cart2iso(grid, this.sectorView.borderOffset);
 		console.log("++", iso);

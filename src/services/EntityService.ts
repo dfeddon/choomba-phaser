@@ -80,7 +80,7 @@ class EntityService extends AbstractService {
 					});
 				});*/
 			} else { // all slots filled, get existing characters from db
-				new CharacterService().getAllByArray(vo.characters, function(err: any, result: any) {
+				new CharacterService().getAllByArray(vo.characters, (err: any, result: any) => {
 					if (err) return callback(err, null);
 					vo.characterPool = result as CharacterVO[]
 					return callback(null, vo);

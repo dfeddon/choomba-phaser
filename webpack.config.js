@@ -40,8 +40,11 @@ module.exports = [{
         path: path.resolve(__dirname, "dist/public")
     },
     resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js'
+        },
         // Add `.ts` and `.tsx` as a resolvable extension.
-        extensions: [".ts", ".tsx", ".js", ".ejs", ".html", ".json"], // note if using webpack 1 you'd also need a '' in the array as well
+        extensions: [".ts", ".tsx", ".js", ".ejs", ".html", ".json", ".vue"], // note if using webpack 1 you'd also need a '' in the array as well
         modules: ["node_modules"]
     },
     node: {
@@ -95,7 +98,11 @@ module.exports = [{
                         options: { sourceMap: true }
                     }
                 ]
-            }
+            },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            }            
         ]
     },
     optimization: {
