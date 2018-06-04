@@ -8,6 +8,7 @@ const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plug
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const BitBarWebpackProgressPlugin = require("bitbar-webpack-progress-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 // the path(s) that should be cleaned
 let pathsToClean = [
@@ -41,7 +42,9 @@ module.exports = [{
     },
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+            'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1
+            // 'Components': path.resolve(__dirname, 'src/public/vue')
+            'vue-loader': path.resolve(__dirname, 'src/public/vue')
         },
         // Add `.ts` and `.tsx` as a resolvable extension.
         extensions: [".ts", ".tsx", ".js", ".ejs", ".html", ".json", ".vue"], // note if using webpack 1 you'd also need a '' in the array as well
@@ -72,7 +75,24 @@ module.exports = [{
         rules: [
             // loaders will work with webpack 1 or 2; but will be renamed "rules" in future
             // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
-            { test: /\.tsx?$/, loader: "ts-loader" },
+            { 
+                test: /\.tsx?$/, 
+                include: path.resolve(__dirname, 'src'),
+                use: [
+                    // {
+                    //     loader: require.resolve('babel-loader'),
+                    //     options: {
+                    //         compact: true,
+                    //     },
+                    // },
+                    {
+                        loader: require.resolve('ts-loader'),
+                        options: {
+                            appendTsSuffixTo: [/\.vue$/],
+                        }
+                    }
+                ],
+            },
             // { test: /\.json$/, loader: 'json-loader' },
             {
                 test: /\.js$/,
@@ -117,6 +137,7 @@ module.exports = [{
         }
     },
     plugins: [
+        new VueLoaderPlugin(),
         new CleanWebpackPlugin(pathsToClean, cleanOptions),
         new HtmlWebpackPlugin({
             title: "Choomba.io",

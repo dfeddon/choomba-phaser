@@ -52,21 +52,28 @@ class TerritoryContentController {
 				tweets
 			}
 		});*/
+		let tweets = this.getRandomTweet();
+		console.log("* tweets", tweets);
+
 		// register modal component
 		Vue.component('modal', {
-			template: '#modal-template'
-		})
+			template: '#modal-template',
+			props: {
+				tweet: Object
+			},
+		});
 
-		// start app
-		if (!this.vueModal) {
-			this.vueModal = new Vue({
-				el: '#section-territory',
-				data: {
-					showModal: true
-				}
-			});
-		}
-		else this.vueModal.$data.showModal = true;
+		Vue.component("tweet-component", TerritoryVue);
+
+		/*
+		Vue.component("tweet-component", {
+			// render: h => h(TerritoryVue, { props: Object }),
+			props: {
+				tweet: Object
+			},
+			// data: () => { return {tweet: tweets} }
+		});//*/
+
 		/*
 		Vue.component('tweet-component', {
 			template: `
@@ -102,6 +109,20 @@ class TerritoryContentController {
 			}
 		});//*/
 
+		// start app
+		if (!this.vueModal) {
+			this.vueModal = new Vue({
+				el: '#section-territory',
+				data: {
+					showModal: true,
+					tweets: tweets
+				},
+				// template: 'tweet-component'
+			});
+		} else {
+			this.vueModal.$data.showModal = true;
+			this.vueModal.$data.tweets = tweets;
+		}
 
 		return this;
 	}

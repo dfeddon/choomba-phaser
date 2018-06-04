@@ -35,16 +35,16 @@ class LobbyContentController {
 				clone = document.importNode(this.content.import.body, true);
 				this.globals.crewController = this.globals.crewController.createView(this.content.import.body);
 				container.addEventListener("click", this.globals.crewController.clickHandler);
+				//
+				container.appendChild(clone);
+
+				if (this.currentView)
+					container.removeChild(this.currentView);
+				this.currentView = clone;
 				break;
 			case "tabTerritory":
 				this.content = document.querySelector('#section-territory');
-				// clone = document.importNode(this.content.import.body, true);
-				// clone = document.body.appendChild(this.content);
-				// let label: HTMLLabelElement = clone.querySelector('#territory-label');
-				// label.style.display = "block";
-				this.globals.territoryController = this.globals.territoryController.createView(this.content);//.import.body);
-				// console.log("* clone", clone);
-				container.addEventListener("click", this.globals.territoryController.clickHandler);
+				this.globals.territoryController = this.globals.territoryController.createView(this.content);			container.addEventListener("click", this.globals.territoryController.clickHandler);
 				break;
 			case "tabBiz":
 				this.content = document.querySelector('#section-biz');

@@ -11,6 +11,8 @@
     <script src="//cdn.jsdelivr.net/npm/phaser-ce@2.10.2/build/phaser.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script> -->
     <script type="text/javascript" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/js/lib/socketcluster.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
     <!-- <script src="js/index.js"></script> -->
     <!-- <script src="aws-iot-sdk-browser-bundle.js"></script>
     <script src="bundle.js"></script> -->
@@ -415,11 +417,21 @@
             <div id="section-territory">
                 <!-- <button id="show-modal" @click="showModal = true">Show Modal</button> -->
                 <modal v-if="showModal" @close="showModal = false">
-                    <h3 slot="header">custom header</h3>
+                    <h3 slot="header">PROPERTIES</h3>
                     <!--
                     you can use custom content here to overwrite
                     default content
                     -->
+
+
+                    <div slot="body">
+
+                        <div class="column">
+                            <tweet-component v-for="tweet in tweets" :key="tweet.id" :tweet="tweet" />
+                        </div>
+
+                    </div>
+                    
                 </modal>
             </div>
             <!-- biz -->
@@ -466,6 +478,9 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
+              <button class="modal-default-button" @click="$emit('close')">
+                X
+              </button>
 
           <div class="modal-header">
             <slot name="header">
@@ -479,12 +494,13 @@
             </slot>
           </div>
 
+
           <div class="modal-footer">
             <slot name="footer">
               default footer
-              <button class="modal-default-button" @click="$emit('close')">
+              <!-- <button class="modal-default-button" @click="$emit('close')">
                 OK
-              </button>
+              </button> -->
             </slot>
           </div>
         </div>
