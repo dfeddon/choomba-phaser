@@ -1,36 +1,53 @@
 <template id="tweet-component">
 
 	<div class="tweet">
+
+		<!-- <b-container fluid>
+			<b-row class="text-center">
+			<b-col md="3" class="py-3">
+				<b-btn v-b-popover.hover.top="'Popover!'" variant="primary">Top</b-btn>
+			</b-col>
+			<b-col md="3" class="py-3">
+				<b-btn v-b-popover.hover.right="'Popover!'" variant="primary">Right</b-btn>
+			</b-col>
+			<b-col md="3" class="py-3">
+				<b-btn v-b-popover.hover.left="'Popover!'" variant="primary">Left</b-btn>
+			</b-col>
+			<b-col md="3" class="py-3">
+				<b-btn v-b-popover.hover.bottom="'ToolTip!'" variant="primary">Bottom</b-btn>
+			</b-col>
+			</b-row>
+		</b-container> -->
+
 		<div class="box">
 
-			<article class="media">
-
-			<div class="media-left">
+		<b-row class="text-center">
+			<b-col>1 of 3</b-col>
+			<b-col cols="8"> <b-button variant="success">Not Disabled</b-button></b-col>
+			<b-col>3 of 3</b-col>
+		</b-row>
+			<!-- <div class="media-left">
 				<figure class="image is-64x64">
-				<img :src="tweet.img" alt="Image">
+					<b-img :src="tweet.img" alt="Image"></b-img>
 				</figure>
 			</div>
 
 			<div class="media-content">
-				<div class="content">
-				<p>
-					<strong>{{tweet.name}}</strong> <small>{{tweet.handle}}</small>
-					<br>
-					{{tweet.tweet}}
-				</p>
-				</div>
-				<div class="level-left">
-					<a class="level-item">
-					<span class="icon is-small"><i class="fas fa-heart"></i></span>
-					<span class="likes">{{tweet.likes}}</span>
-					</a>
-				</div>
+					<b-img :src="tweet.img" alt="Image"></b-img>
+					<span>Tweet:{{tweet.tweet}}</span>
+					<b-img :src="tweet.img" alt="Image"></b-img>
 			</div>
 
-			</article>
-			
+			<div class="level-left">
+				<figure class="image is-64x64">
+					<b-img :src="tweet.img" alt="Image"></b-img>
+				</figure>
+			</div> -->
+
 		</div>
+
 	</div>
+
 </template>
 
 <script lang="ts">

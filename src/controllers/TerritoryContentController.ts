@@ -4,7 +4,9 @@ import { Globals } from "../services/Globals";
 import { FlexGrid } from "phaser-ce";
 import Vue from "vue";
 import TerritoryVue from "../public/vue/TerritoryView.vue";
-// import { ITerritoryContentController } from "../interfaces/ITerritoryContentController";
+import BootstrapVue from "bootstrap-vue";
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 class TerritoryContentController {
 	// item: HTMLImageElement;
@@ -54,6 +56,8 @@ class TerritoryContentController {
 		});*/
 		let tweets = this.getRandomTweet();
 		console.log("* tweets", tweets);
+
+		Vue.use(BootstrapVue);
 
 		// register modal component
 		Vue.component('modal', {
@@ -132,7 +136,7 @@ class TerritoryContentController {
 			id: 1,
 			name: 'James',
 			handle: '@jokerjames',
-			img: 'https://semantic-ui.com/images/avatar2/large/matthew.png',
+			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/factory.png',
 			tweet: "If you don't succeed, dust yourself off and try again.",
 			likes: 10,
 		},
@@ -140,7 +144,7 @@ class TerritoryContentController {
 			id: 2,
 			name: 'Fatima',
 			handle: '@fantasticfatima',
-			img: 'https://semantic-ui.com/images/avatar2/large/molly.png',
+			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/factory.png',
 			tweet: 'Better late than never but never late is better.',
 			likes: 12,
 		},
@@ -148,7 +152,7 @@ class TerritoryContentController {
 			id: 3,
 			name: 'Xin',
 			handle: '@xeroxin',
-			img: 'https://semantic-ui.com/images/avatar2/large/elyse.png',
+			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/factory.png',
 			tweet: 'Beauty in the struggle, ugliness in the success.',
 			likes: 18,
 		}	

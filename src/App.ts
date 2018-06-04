@@ -23,6 +23,12 @@ import { EntityVO } from './models/EntitiesVO';
 import { LobbyController } from './controllers/LobbyController';
 import { SectorService } from './services/SectorService';
 
+// import Vue from "vue";
+// import TerritoryVue from "../public/vue/TerritoryView.vue";
+import BootstrapVue from "bootstrap-vue";
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 export default class App extends Phaser.Game {
   // game: Phaser.Game;
   // man1: Phaser.Sprite;

@@ -21,6 +21,7 @@
         "aws-iot-device-sdk": "^2.1.0",
         "aws-sdk": "^2.202.0",
         "bitbar-webpack-progress-plugin": "^1.0.0",
+        "bootstrap-vue": "^2.0.0-rc.11",
         "dynamoose": "^0.8.6",
         "express": "^4.16.2",
         "fantastical": "^1.0.2",
