@@ -273,7 +273,7 @@ input:checked + .labelTab {
 
 .modal-container {
 //  width: 300px;
-    width: 85%;
+    width: 75%;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
@@ -313,71 +313,10 @@ input:checked + .labelTab {
 #section-territory .tweet {
     // max-width: 500px;
     // margin: 0 auto;
-    // padding-bottom: 15px;
+    padding-bottom: 15px;
 //   background-color: #000;
 }
 
-#section-territory .box {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: center;
-    // width: 100%;
-    // margin-bottom: 0;
-    // border-radius: 0;
-}
-
-#section-territory .media-left {
-    order: 1;
-    // background-color: #4A90E2;
-}
-
-#section-territory .media-content {
-    order: 2;
-    flex-grow: 2;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: center;
-}
-
-#section-territory .level-left {
-    order: 3;
-    // background-color: rgb(226, 203, 74);
-}
-/*
-#section-territory .content small {
-  color: #00d1b2;
-}
-
-#section-territory img {
-    // border-radius: 30px;
-    width: 64px;
-    height: 64px;
-}
-
-#section-territory .level-item {
-  padding-left: 10px;
-  color: #00d1b2;
-}
-
-#section-territory input:focus {
-  border-color: #00d1b2;  
-}
-
-#section-territory .likes {
-  padding: 0 7.5px;
-}
-
-#section-territory input {
-  font-weight: bold;
-}
-
-#section-territory .tweets-move {
-  transition: transform 1s;
-}
-*/
 /*
  * The following styles are auto-applied to elements with
  * transition="modal" when their visibility is toggled

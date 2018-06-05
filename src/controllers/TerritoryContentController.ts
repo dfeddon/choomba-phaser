@@ -134,27 +134,27 @@ class TerritoryContentController {
 	getRandomTweet = (): any => {
 		return [{
 			id: 1,
-			name: 'James',
-			handle: '@jokerjames',
-			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/factory.png',
-			tweet: "If you don't succeed, dust yourself off and try again.",
-			likes: 10,
+			name: 'Warehouse #1',
+			type: 1,
+			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/warehouse.png',
+			data: [{ id: 1, name: "5000 lbs Raw Titanium" }, { id: 2, name: '1 Eyon AI' }, { id: 3, name:'20 lbs or Raw Fish'}],
+			manager: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_1.png'
 		},
 		{
 			id: 2,
-			name: 'Fatima',
-			handle: '@fantasticfatima',
+			name: 'Factory #3',
+			type: 2,
 			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/factory.png',
-			tweet: 'Better late than never but never late is better.',
-			likes: 12,
+			data: [{ id: 1, name: "5000 lbs Raw Titanium" }, { id: 2, name: '1 Eyon AI' }, { id: 3, name: '20 lbs or Raw Fish' }],
+			manager: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_3.png'
 		},
 		{
 			id: 3,
-			name: 'Xin',
-			handle: '@xeroxin',
-			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/factory.png',
-			tweet: 'Beauty in the struggle, ugliness in the success.',
-			likes: 18,
+			name: 'Warehouse #2',
+			type: 1,
+			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/warehouse.png',
+			data: [{ id: 1, name: "5000 lbs Raw Titanium" }, { id: 2, name: '1 Eyon AI' }, { id: 3, name: '20 lbs or Raw Fish' }],
+			manager: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_5.png'
 		}	
 	]};
 }
