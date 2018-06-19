@@ -5,6 +5,14 @@ class StructureVO extends AbstractVO {
 	// private _id: number;
 	private _level: number;
 	private _sections: StructureSectionVO[];
+	
+	// name, type, img
+	// data[]
+	// manager
+	// status (leased, outsourced)
+	// grade (prototype, alpha, beta, rc)
+	// stage
+	// owner
 
 	constructor() {
 		super();

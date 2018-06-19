@@ -46,7 +46,7 @@ class TerritoryContentController {
 			}
 		});//*/
 		/*
-		let tweets = this.getRandomTweet();
+		let tweets = this.stubData();
 		console.log('* data', tweets);
 		new Vue({
 			el: '#app',
@@ -54,7 +54,7 @@ class TerritoryContentController {
 				tweets
 			}
 		});*/
-		let tweets = this.getRandomTweet();
+		let tweets = this.stubData();
 		console.log("* tweets", tweets);
 
 		Vue.use(BootstrapVue);
@@ -131,12 +131,12 @@ class TerritoryContentController {
 		return this;
 	}
 
-	getRandomTweet = (): any => {
+	stubData = (): any => {
 		return [{
 			id: 1,
 			name: 'Warehouse #1',
 			type: 1,
-			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/warehouse.png',
+			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building2_128x69.png',
 			data: [{ id: 1, name: "5000 lbs Raw Titanium" }, { id: 2, name: '1 Eyon AI' }, { id: 3, name:'20 lbs or Raw Fish'}],
 			manager: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_1.png'
 		},
@@ -144,7 +144,7 @@ class TerritoryContentController {
 			id: 2,
 			name: 'Factory #3',
 			type: 2,
-			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/factory.png',
+			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building1_128x76.png',
 			data: [{ id: 1, name: "5000 lbs Raw Titanium" }, { id: 2, name: '1 Eyon AI' }, { id: 3, name: '20 lbs or Raw Fish' }],
 			manager: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_3.png'
 		},
@@ -152,7 +152,7 @@ class TerritoryContentController {
 			id: 3,
 			name: 'Warehouse #2',
 			type: 1,
-			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/territory/warehouse.png',
+			img: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/tiles/building2_128x69.png',
 			data: [{ id: 1, name: "5000 lbs Raw Titanium" }, { id: 2, name: '1 Eyon AI' }, { id: 3, name: '20 lbs or Raw Fish' }],
 			manager: 'https://s3.amazonaws.com/com.dfeddon.choomba/client/images/portraits/portrait_5.png'
 		}	

@@ -108,7 +108,8 @@ class CrewContentController {
 		var selectedId: number = parseInt((e.srcElement.attributes as any).charid.nodeValue);
 		console.log("* charid", (e.srcElement.attributes as any).charid.nodeValue);
 		var modal: HTMLDivElement = document.getElementById('character-view-modal') as HTMLDivElement;
-		var span: HTMLSpanElement = document.getElementsByClassName("close")[0] as HTMLSpanElement;
+		// var span: HTMLSpanElement = document.getElementsByClassName("close")[0] as HTMLSpanElement;
+		var span: HTMLSpanElement = document.getElementById("close") as HTMLDivElement;
 		var content: HTMLDivElement = document.getElementById("character-view-content") as HTMLDivElement;
 
 		// open modal
