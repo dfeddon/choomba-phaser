@@ -235,6 +235,11 @@ input:checked + .labelTab {
   background-color: rgb(255, 8, 0);
 }
 
+#mid-column-container {
+    display: flex;
+    flex-direction: column;
+}
+
 #character-view-modal {
     display: none;
     /* Hidden by default */
@@ -457,26 +462,46 @@ input:checked + .labelTab {
     // max-height: 450px;
 }
 
+#pulse-items-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
 .pulse-item {
     display: flex;
     flex-direction: column;
     // grid-template-rows: auto; //1fr 1fr;
-    // width: 100%;
-    // height: 100px;
-    padding-left: 10px;
-    padding-right: 20px;
-    padding-bottom: 10px;
+    width: 100px;
+    height: 50px;
+    justify-content: space-around;
+    align-items: center;
+    // padding-left: 10px;
+    // padding-right: 20px;
+    // padding-bottom: 10px;
+    // padding-top: 10px;
     background-color: #4A90E2;
     border-radius: 5px;
-    padding-top: 10px;
 }
 
+// .pulse-item-wrapper {
+//     padding-left: 5px;
+// }
+// #pulse-item-label {
+//     text-align: center;
+// }
+#pulse-item-description {
+    padding-left: 5px;
+    font-size: 10px;
+}
 .pulse-header {
     background-color: #04293C;
-    padding-left: 5px;
+    // padding-left: 5px;
+    width: 100%;
 }
 
 .pulse-label {
+    width: 100%;
+    text-align: center;
     color: #fff;
 }
 

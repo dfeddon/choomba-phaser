@@ -49,10 +49,14 @@ class LobbyController {
 		// // this.game.world.setBounds(-offset, -offset, (2500*2) + offset, (2500*2) + offset);
 		// this.game.world.setBounds(-offset, -offset, this.sectorView.gridGroup.width + (offset * 2),this.sectorView.gridGroup.height + (offset * 2));
 
+		// start global channel
+		this.incidentsManager();
+
 		return this;
 	}
 
 	incidentsManager() {
+		console.log("== LobbyController.incidentsManager ==");
 		//////////////////////////////////////////////
 		// open global incidents channel
 		//////////////////////////////////////////////
@@ -60,7 +64,6 @@ class LobbyController {
 
 		// player TODO: use entity id rather than rng
 		this.player = this.game.rnd.integerInRange(1000, 9000).toString();
-
 	}
 	//////////////////////////////////////////////
 	// add incident

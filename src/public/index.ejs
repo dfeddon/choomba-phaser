@@ -32,7 +32,6 @@
 </head>
 
 <body>
-
     <section id="gameView">
         <div id="navigation-ui-container" style="display:none;">
             <label>Navigation UI</label>
@@ -40,433 +39,453 @@
         </div>
         <div id="content" class="gameContent">
 
-    <!--
-    ################################ 
-    Section: Lobby 
-    ################################
-    -->
-    <section id="lobbyState">
-
         <!--
         ################################ 
-        Modal
+        Section: Lobby 
         ################################
         -->
-        <div id="character-view-modal">
+        <section id="lobbyState">
 
-            <div id="modal-content">
-                <a title="Close" id="close">X</a>
-                <!-- <span class="close">&times;</span> -->
+            <!--
+            ################################ 
+            Modal
+            ################################
+            -->
+            <div id="character-view-modal">
 
-                <!--
-                ################################ 
-                Character View
-                ###############################
-                -->
-                <div id="character-view-content">
-                    <!-- Character Profile -->
-                    <div id="char-row-1" class="char-row-class">
+                <div id="modal-content">
+                    <a title="Close" id="close">X</a>
+                    <!-- <span class="close">&times;</span> -->
 
-                        <!-- Character Portrait -->
-                        <div id="character-view-profile-column-1" class="character-view-profile-columns">
-                            <img id="character-view-profile-portrait" />
-                        </div>
-                        <!-- Character Stats -->
-                        <div id="character-view-profile-column-2" class="character-view-profile-columns">
-                            <label id="character-view-profile-handle"></label>
-                            <label id="character-view-profile-role"></label>
+                    <!--
+                    ################################ 
+                    Character View
+                    ###############################
+                    -->
+                    <div id="character-view-content">
+                        <!-- Character Profile -->
+                        <div id="char-row-1" class="char-row-class">
 
-                            <hr/>
+                            <!-- Character Portrait -->
+                            <div id="character-view-profile-column-1" class="character-view-profile-columns">
+                                <img id="character-view-profile-portrait" />
+                            </div>
+                            <!-- Character Stats -->
+                            <div id="character-view-profile-column-2" class="character-view-profile-columns">
+                                <label id="character-view-profile-handle"></label>
+                                <label id="character-view-profile-role"></label>
 
-                            <div class="character-view-horizontal-container">
+                                <hr/>
 
-                                <div class="character-view-vertical-container">
+                                <div class="character-view-horizontal-container">
 
-                                    <div class="header-value-row">
-                                        <label class="character-view-profile-header1">Runs:</label>
-                                        <label id="character-view-profile-runs" class="character-view-profile-value1">34</label>
+                                    <div class="character-view-vertical-container">
+
+                                        <div class="header-value-row">
+                                            <label class="character-view-profile-header1">Runs:</label>
+                                            <label id="character-view-profile-runs" class="character-view-profile-value1">34</label>
+                                        </div>
+
+                                        <div class="header-value-row">
+                                            <label class="character-view-profile-header1">Defends:</label>
+                                            <label id="character-view-profile-defends" class="character-view-profile-value1">56</label>
+                                        </div>
+
                                     </div>
 
-                                    <div class="header-value-row">
-                                        <label class="character-view-profile-header1">Defends:</label>
-                                        <label id="character-view-profile-defends" class="character-view-profile-value1">56</label>
+                                    <div class="character-view-vertical-container">
+
+                                        <div class="header-value-row">
+                                            <label class="character-view-profile-header1">Reputation:</label>
+                                            <label id="character-view-profile-reputation" class="character-view-profile-value1">62</label>
+                                        </div>
+
+                                        <div class="header-value-row">
+                                            <label class="character-view-profile-header1">Loyalty:</label>
+                                            <label id="character-view-profile-loyalty" class="character-view-profile-value1">37</label>
+                                        </div>
+
+                                        <!-- <div class="header-value-row">
+                                            <label class="character-view-profile-header1">Street Smarts:</label>
+                                            <label id="character-view-profile-intuition" class="character-view-profile-value1">55</label>
+                                        </div> -->
+
                                     </div>
-
-                                </div>
-
-                                <div class="character-view-vertical-container">
-
-                                    <div class="header-value-row">
-                                        <label class="character-view-profile-header1">Reputation:</label>
-                                        <label id="character-view-profile-reputation" class="character-view-profile-value1">62</label>
-                                    </div>
-
-                                    <div class="header-value-row">
-                                        <label class="character-view-profile-header1">Loyalty:</label>
-                                        <label id="character-view-profile-loyalty" class="character-view-profile-value1">37</label>
-                                    </div>
-
-                                    <!-- <div class="header-value-row">
-                                        <label class="character-view-profile-header1">Street Smarts:</label>
-                                        <label id="character-view-profile-intuition" class="character-view-profile-value1">55</label>
-                                    </div> -->
 
                                 </div>
 
                             </div>
+                            <!-- Character Manager -->
+                            <div id="character-view-profile-column-3" class="character-view-profile-columns highlight-bordered-border">
+                                    <div class="highlight-bordered-header-container">
+                                        <label id="character-view-skills-header" class="highlight-bordered-header">Managing</label>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <!--
+                        ################################ 
+                        Character Other
+                        ###############################
+                        -->
+                        <div id="char-row-2" class="char-row-class">
+
+                            <!-- Character Attributes -->
+                            <div id="character-view-other-column-1" class="character-view-profile-columns highlight-bordered-border">
+                                    <div class="highlight-bordered-header-container">
+                                        <label id="character-view-skills-header" class="highlight-bordered-header">Attributes</label>
+                                    </div>
+                                
+                                <label class="character-view-attribute-header1">Cybermancy</label>
+                                <div class="character-view-horizontal-container">
+                                    <label id="character-view-attribute-cybermancy" class="character-attribute-value">63</label>
+                                    <label id="character-view-cybermancy-modifier" class="character-attribute-modifier">+8</label>
+                                </div>
+                                
+                                <label class="character-view-attribute-header1">Focus</label>
+                                <div class="character-view-horizontal-container">
+                                    <label id="character-view-attribute-focus" class="character-attribute-value">63</label>
+                                    <label id="character-view-focus-modifier" class="character-attribute-modifier"></label>
+                                </div>
+
+                                <label class="character-view-attribute-header1">Grit</label>
+                                <div class="character-view-horizontal-container">
+                                    <label id="character-view-attribute-grit" class="character-attribute-value">63</label>
+                                    <label id="character-view-grit-modifier" class="character-attribute-modifier">+2</label>
+                                </div>
+
+                                <label class="character-view-attribute-header1">Meat</label>
+                                <div class="character-view-horizontal-container">
+                                    <label id="character-view-attribute-meat" class="character-attribute-value">63</label>
+                                    <label id="character-view-meat-modifier" class="character-attribute-modifier">+5</label>
+                                </div>
+
+                                <label class="character-view-attribute-header1">Reflexes</label>
+                                <div class="character-view-horizontal-container">
+                                    <label id="character-view-attribute-reflexes" class="character-attribute-value">63</label>
+                                    <label id="character-view-reflexes-modifier" class="character-attribute-modifier"></label>
+                                </div>
+                                
+                            </div>
+
+                            <div id="character-view-other-divider" class="character-view-vertical-container">
+
+                                <div id="character-view-skills-container" class="character-view-profile-columns highlight-bordered-border">
+
+                                    <!-- Character Skills -->
+                                    <div class="highlight-bordered-header-container">
+                                        <label id="character-view-skills-header" class="highlight-bordered-header">Skills</label>
+                                    </div>
+                                    <div class="character-view-horizontal-container">
+                                        <span class="circle gray">4</span>
+                                        <span class="circle green">3</span>
+                                        <span class="circle green">2</span>
+                                        <span class="circle gray">1</span>
+                                        <span class="circle black"></span>
+                                        <span class="circle red">1</span>
+                                        <span class="circle red">2</span>
+                                        <span class="circle gray">3</span>
+                                        <span class="circle gray">4</span>
+                                    </div>
+                                    <div id="player-view-ability-container" class="character-view-horizontal-container">
+                                        <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/22.png"/>
+                                        <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/31.png" />
+                                        <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/55.png" />
+                                        <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/68.png" />
+                                        <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/ability-locked.png" />
+                                    </div>
+                                </div>
+
+                                <div id="character-view-gear-synths-horizontal-container" class="character-view-horizontal-container">
+
+                                    <!-- Character Gear -->
+                                    <div id="character-view-other-gear" class="highlight-bordered-border">
+                                        <div class="highlight-bordered-header-container">
+                                            <label id="character-view-skills-header" class="highlight-bordered-header">Gear</label>
+                                        </div>
+                                        <div class="character-view-horizontal-container">
+                                            <div class="character-view-vertical-container">
+                                                <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/helmet-1.png" />
+                                                <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/boots-1.png" />
+                                            </div>
+                                            <img id="character-view-gear-figure" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/gear-figure.png"/>
+                                            <div class="character-view-vertical-container">
+                                                <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/cybernetic-arm-1.png" />
+                                                <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/cybernetic-leg-1.png" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Character Synths -->
+                                    <div id="character-view-synths-wrapper">
+                                        <div class="highlight-bordered-border">
+                                            <div class="highlight-bordered-header-container">
+                                                <label id="character-view-skills-header" class="highlight-bordered-header">Synths</label>
+                                            </div>
+                                            <div class="character-view-vertical-container">
+                                                <label class="character-view-synthetic-item">Brawling</label>
+                                                <label class="character-view-synthetic-item">Pick Pocket</label>
+                                                <label class="character-view-synthetic-item">Security Tech</label>
+                                                <label class="character-view-synthetic-item">Cyberdeck Design</label>
+                                                <label class="character-view-synthetic-item">Dodge & Escape</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            
+                            </div>
 
                         </div>
-                        <!-- Character Manager -->
-                        <div id="character-view-profile-column-3" class="character-view-profile-columns highlight-bordered-border">
-                                <div class="highlight-bordered-header-container">
-                                    <label id="character-view-skills-header" class="highlight-bordered-header">Managing</label>
-                                </div>
-                        </div>
+
                     </div>
 
                     <!--
                     ################################ 
-                    Character Other
+                    Locked Character Slot
                     ###############################
                     -->
-                    <div id="char-row-2" class="char-row-class">
-
-                        <!-- Character Attributes -->
-                        <div id="character-view-other-column-1" class="character-view-profile-columns highlight-bordered-border">
-                                <div class="highlight-bordered-header-container">
-                                    <label id="character-view-skills-header" class="highlight-bordered-header">Attributes</label>
-                                </div>
-                            
-                            <label class="character-view-attribute-header1">Cybermancy</label>
-                            <div class="character-view-horizontal-container">
-                                <label id="character-view-attribute-cybermancy" class="character-attribute-value">63</label>
-                                <label id="character-view-cybermancy-modifier" class="character-attribute-modifier">+8</label>
-                            </div>
-                            
-                            <label class="character-view-attribute-header1">Focus</label>
-                            <div class="character-view-horizontal-container">
-                                <label id="character-view-attribute-focus" class="character-attribute-value">63</label>
-                                <label id="character-view-focus-modifier" class="character-attribute-modifier"></label>
-                            </div>
-
-                            <label class="character-view-attribute-header1">Grit</label>
-                            <div class="character-view-horizontal-container">
-                                <label id="character-view-attribute-grit" class="character-attribute-value">63</label>
-                                <label id="character-view-grit-modifier" class="character-attribute-modifier">+2</label>
-                            </div>
-
-                            <label class="character-view-attribute-header1">Meat</label>
-                            <div class="character-view-horizontal-container">
-                                <label id="character-view-attribute-meat" class="character-attribute-value">63</label>
-                                <label id="character-view-meat-modifier" class="character-attribute-modifier">+5</label>
-                            </div>
-
-                            <label class="character-view-attribute-header1">Reflexes</label>
-                            <div class="character-view-horizontal-container">
-                                <label id="character-view-attribute-reflexes" class="character-attribute-value">63</label>
-                                <label id="character-view-reflexes-modifier" class="character-attribute-modifier"></label>
-                            </div>
-                            
+                    <div id="locked-character-slot">                
+                        <div id="miscCol1" class="miscCol">
+                            <label id="character-view-profile-handle">Unlock Character Slot?</label>
+                            <label id="character-view-profile-role">YES</label>
+                            <img id="character-view-profile-portrait" />
                         </div>
-
-                        <div id="character-view-other-divider" class="character-view-vertical-container">
-
-                            <div id="character-view-skills-container" class="character-view-profile-columns highlight-bordered-border">
-
-                                <!-- Character Skills -->
-                                <div class="highlight-bordered-header-container">
-                                    <label id="character-view-skills-header" class="highlight-bordered-header">Skills</label>
-                                </div>
-                                <div class="character-view-horizontal-container">
-                                    <span class="circle gray">4</span>
-                                    <span class="circle green">3</span>
-                                    <span class="circle green">2</span>
-                                    <span class="circle gray">1</span>
-                                    <span class="circle black"></span>
-                                    <span class="circle red">1</span>
-                                    <span class="circle red">2</span>
-                                    <span class="circle gray">3</span>
-                                    <span class="circle gray">4</span>
-                                </div>
-                                <div id="player-view-ability-container" class="character-view-horizontal-container">
-                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/22.png"/>
-                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/31.png" />
-                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/55.png" />
-                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/68.png" />
-                                    <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/abilities/ability-locked.png" />
-                                </div>
-                            </div>
-
-                            <div id="character-view-gear-synths-horizontal-container" class="character-view-horizontal-container">
-
-                                <!-- Character Gear -->
-                                <div id="character-view-other-gear" class="highlight-bordered-border">
-                                    <div class="highlight-bordered-header-container">
-                                        <label id="character-view-skills-header" class="highlight-bordered-header">Gear</label>
-                                    </div>
-                                    <div class="character-view-horizontal-container">
-                                        <div class="character-view-vertical-container">
-                                            <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/helmet-1.png" />
-                                            <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/boots-1.png" />
-                                        </div>
-                                        <img id="character-view-gear-figure" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/gear-figure.png"/>
-                                        <div class="character-view-vertical-container">
-                                            <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/cybernetic-arm-1.png" />
-                                            <img class="character-view-ability" src="http://s3.amazonaws.com/com.dfeddon.choomba/client/images/gear/cybernetic-leg-1.png" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Character Synths -->
-                                <div id="character-view-synths-wrapper">
-                                    <div class="highlight-bordered-border">
-                                        <div class="highlight-bordered-header-container">
-                                            <label id="character-view-skills-header" class="highlight-bordered-header">Synths</label>
-                                        </div>
-                                        <div class="character-view-vertical-container">
-                                            <label class="character-view-synthetic-item">Brawling</label>
-                                            <label class="character-view-synthetic-item">Pick Pocket</label>
-                                            <label class="character-view-synthetic-item">Security Tech</label>
-                                            <label class="character-view-synthetic-item">Cyberdeck Design</label>
-                                            <label class="character-view-synthetic-item">Dodge & Escape</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        
+                        <div id="miscCol2" class="miscCol">
+                            <label id="miscHandle">dfadf</label>
+                            <label id="miscRole">dfasdf</label>
                         </div>
-
                     </div>
 
-                </div>
-
-                <!--
-                ################################ 
-                Locked Character Slot
-                ###############################
-                -->
-                <div id="locked-character-slot">                
-                    <div id="miscCol1" class="miscCol">
-                        <label id="character-view-profile-handle">Unlock Character Slot?</label>
-                        <label id="character-view-profile-role">YES</label>
-                        <img id="character-view-profile-portrait" />
-                    </div>
-                    <div id="miscCol2" class="miscCol">
-                        <label id="miscHandle">dfadf</label>
-                        <label id="miscRole">dfasdf</label>
-                    </div>
                 </div>
 
             </div>
 
-        </div>
+            <div id="content-wrapper" class="column-wrapper">
 
-        <div id="content-wrapper" class="column-wrapper">
+                <div id="stats-crew-container">
 
-            <div id="stats-crew-container">
+                    <!-- <div id="stats-wrapper"> -->
 
-                <!-- <div id="stats-wrapper"> -->
+                    <div id="stats-container">
 
-                <div id="stats-container">
+                        <div id="stats-cell-left" class="stats-container-cell">
 
-                    <div id="stats-cell-left" class="stats-container-cell">
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">ORG:</label>
+                                <label id="org-data1" class="stats-data1-label">Sindi Redis</label>
+                                <label id="org-data2" class="stats-data2-label">Charter</label>
+                            </div>
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label"></label>
+                                <label id="org-data1" class="stats-data1-label">Affiliates</label>
+                                <label id="org-data2" class="stats-data2-label">11</label>
+                            </div>
+                            <!-- <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label"></label>
+                                <label id="org-data" class="stats-data1-label">Properties</label>
+                                <label id="org-data2" class="stats-data2-label">32 [8]</label>
+                            </div> -->
+                            <!-- <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">ALLIANCES:</label>
+                                <label id="org-data" class="stats-data1-label">Sinjun Corp</label>
+                                <label id="org-data2" class="stats-data2-label">Pledge</label>
+                            </div>
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label"></label>
+                                <label id="org-data" class="stats-data1-label">Rycen Punks</label>
+                                <label id="org-data2" class="stats-data2-label">Runner</label>
+                            </div>
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label"></label>
+                                <label id="org-data" class="stats-data1-label">Rocker Girls</label>
+                                <label id="org-data2" class="stats-data2-label">Hit Squad</label>
+                            </div> -->
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">FAME:</label>
+                                <label id="org-data" class="stats-data1-label">Obscure</label>
+                                <label id="org-data2" class="stats-data2-label">350/500</label>
+                            </div>
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">CREDS:</label>
+                                <label id="org-data" class="stats-data1-label">35,750</label>
+                                <label id="org-data2" class="stats-data2-label"></label>
+                            </div>
+                            <!-- <div id="org-container" class="stats-row">
+                                <</div>abel id="org-header" class="stats-header-label">BIZ:</label>
+                                <</div>abel id="org-data" class="stats-data1-label">Cybernetics</label>
+                                <label id="org-data2" class="stats-data2-label">35%</label>
+                            </div> -->
 
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">ORG:</label>
-                            <label id="org-data1" class="stats-data1-label">Sindi Redis</label>
-                            <label id="org-data2" class="stats-data2-label">Charter</label>
                         </div>
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label"></label>
-                            <label id="org-data1" class="stats-data1-label">Affiliates</label>
-                            <label id="org-data2" class="stats-data2-label">11</label>
-                        </div>
-                        <!-- <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label"></label>
-                            <label id="org-data" class="stats-data1-label">Properties</label>
-                            <label id="org-data2" class="stats-data2-label">32 [8]</label>
-                        </div> -->
-                        <!-- <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">ALLIANCES:</label>
-                            <label id="org-data" class="stats-data1-label">Sinjun Corp</label>
-                            <label id="org-data2" class="stats-data2-label">Pledge</label>
-                        </div>
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label"></label>
-                            <label id="org-data" class="stats-data1-label">Rycen Punks</label>
-                            <label id="org-data2" class="stats-data2-label">Runner</label>
-                        </div>
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label"></label>
-                            <label id="org-data" class="stats-data1-label">Rocker Girls</label>
-                            <label id="org-data2" class="stats-data2-label">Hit Squad</label>
-                        </div> -->
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">FAME:</label>
-                            <label id="org-data" class="stats-data1-label">Obscure</label>
-                            <label id="org-data2" class="stats-data2-label">350/500</label>
-                        </div>
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">CREDS:</label>
-                            <label id="org-data" class="stats-data1-label">35,750</label>
-                            <label id="org-data2" class="stats-data2-label"></label>
-                        </div>
-                        <!-- <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">BIZ:</label>
-                            <label id="org-data" class="stats-data1-label">Cybernetics</label>
-                            <label id="org-data2" class="stats-data2-label">35%</label>
+                        <!-- <div id="stats-cell-right" class="stats-container-cell">
+
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">ORG:</label>
+                                <label id="org-data" class="stats-data-label">data...</label>
+                            </div>
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">AFFILIATES:</label>
+                                <label id="org-data" class="stats-data-label">data...</label>
+                            </div>
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">PROPERTIES:</label>
+                                <label id="org-data" class="stats-data-label">data...</label>
+                            </div>
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">FAME:</label>
+                                <label id="org-data" class="stats-data-label">data...</label>
+                            </div>
+                            <div id="org-container" class="stats-row">
+                                <label id="org-header" class="stats-header-label">CREDS:</label>
+                                <label id="org-data" class="stats-data-label">data...</label>
+                            </div>
+
                         </div> -->
 
                     </div>
-                    <!-- <div id="stats-cell-right" class="stats-container-cell">
+                    <div id="mid-column-container">
+                        <div id="pulse-items-container">
+                            <div id="items-pulse-wrapper" class="pulse-item" data-uid="" onclick="pulseItemHandler(this)">
+                                <div class="pulse-header">
+                                    <label id="pulse-item-label" class="pulse-label">Defend</label>
+                                </div>
+                                <label id="pulse-item-description" class="pulse-desc">Cipher's Hideout</label>
+                            </div>
+                            <div id="items-pulse-wrapper" class="pulse-item" data-uid="" onclick="pulseItemHandler(this)">
+                                <div class="pulse-header">
+                                    <label id="pulse-item-label" class="pulse-label">Waylay</label>
+                                </div>
+                                <label id="pulse-item-description" class="pulse-desc">Ganger One</label>
+                            </div>
+                            <div id="items-pulse-wrapper" class="pulse-item" data-uid="" onclick="pulseItemHandler(this)">
+                                <div class="pulse-header">
+                                    <label id="pulse-item-label" class="pulse-label">Attack</label>
+                                </div>
+                                <label id="pulse-item-description" class="pulse-desc">Hive Runners</label>
+                            </div>
+                        </div>
+                        <div class="tab-bar">
+                            <input id="tab1" type="radio" name="tabs">
+                            <label id="tabPulse" class="labelTab">Pulse</label>
+                        
+                            <input id="tab2" type="radio" name="tabs">
+                            <label id="tabCrew" class="labelTab">Crew</label>
+                        
+                            <input id="tab3" type="radio" name="tabs">
+                            <label id="tabTerritory" class="labelTab">Territory</label>
+                        
+                            <input id="tab4" type="radio" name="tabs">
+                            <label id="tabBiz" class="labelTab">Biz</label>
+                        
+                            <input id="tab5" type="radio" name="tabs">
+                            <label id="tabDirectives" class="labelTab">Directives</label>
+                        </div>
+                    </div>
 
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">ORG:</label>
-                            <label id="org-data" class="stats-data-label">data...</label>
-                        </div>
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">AFFILIATES:</label>
-                            <label id="org-data" class="stats-data-label">data...</label>
-                        </div>
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">PROPERTIES:</label>
-                            <label id="org-data" class="stats-data-label">data...</label>
-                        </div>
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">FAME:</label>
-                            <label id="org-data" class="stats-data-label">data...</label>
-                        </div>
-                        <div id="org-container" class="stats-row">
-                            <label id="org-header" class="stats-header-label">CREDS:</label>
-                            <label id="org-data" class="stats-data-label">data...</label>
-                        </div>
+                    <!-- </div> -->
 
-                    </div> -->
-
+                    <div id="squad-row">
+                        <div id="crew-cell-4" class="crew-cells">
+                            <label id="crew-name-4" class="crew-names"></label>
+                            <img id="crew-portrait-4" class="crew-portraits" position="4" draggable="true" />
+                            <!-- <label id="crew-stats-4" class="crew-stats">Backline</label> -->
+                            <!-- </div> -->
+                        </div>
+                        <div id="crew-cell-3" class="crew-cells">
+                            <label id="crew-name-3" class="crew-names"></label>
+                            <img id="crew-portrait-3" class="crew-portraits" position="3" draggable="true" />
+                            <!-- <label id="crew-stats-3" class="crew-stats">Anchor</label> -->
+                        </div>
+                        <div id="crew-cell-2" class="crew-cells">
+                            <label id="crew-name-2" class="crew-names"></label>
+                            <img id="crew-portrait-2" class="crew-portraits" position="2" draggable="true" />
+                            <!-- <label id="crew-stats-2" class="crew-stats">Whip</label> -->
+                        </div>
+                        <div id="crew-cell-1" class="crew-cells">
+                            <label id="crew-name-1" class="crew-names"></label>
+                            <img id="crew-portrait-1" class="crew-portraits" position="1" draggable="true" />
+                            <!-- <label id="crew-stats-1" class="crew-stats">Frontline</label> -->
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="tab-bar">
+
+                <!-- tabs -->
+                <!-- <div class="tab-bar">
                     <input id="tab1" type="radio" name="tabs">
                     <label id="tabPulse" class="labelTab">Pulse</label>
-                
+
                     <input id="tab2" type="radio" name="tabs">
                     <label id="tabCrew" class="labelTab">Crew</label>
-                
+
                     <input id="tab3" type="radio" name="tabs">
                     <label id="tabTerritory" class="labelTab">Territory</label>
-                
+
                     <input id="tab4" type="radio" name="tabs">
                     <label id="tabBiz" class="labelTab">Biz</label>
-                
+
                     <input id="tab5" type="radio" name="tabs">
-                    <label id="tabDirectives" class="labelTab">Directives</label>
+                    <label id="tabDirectives" class="labelTab">Directives</label>            
                 </div>
+    -->
+                <!-- pulse -->
+                <link id="section-pulse" rel="import" href="section-pulse.html" onload="handleLoad(event)" onerror="handleError(event)">
+                <!-- crew pool -->
+                <link id="section-crew" rel="import" href="section-crew.html" onload="handleLoad(event)" onerror="handleError(event)">
+                <!-- territory -->
+                <!-- <link id="section-territory" rel="import" href="section-territory.html" onload="handleLoad(event)" onerror="handleError(event)"> -->
+                <div id="section-territory">
+                    <!-- <button id="show-modal" @click="showModal = true">Show Modal</button> -->
+                    <modal v-if="showModal" @close="showModal = false">
+                        <h3 slot="header">PROPERTIES</h3>
+                        <!--
+                        you can use custom content here to overwrite
+                        default content
+                        -->
 
-                <!-- </div> -->
+                        <div slot="body">
+                            <div class="column">
+                                <tweet-component v-for="tweet in tweets" :key="tweet.id" :tweet="tweet" />
+                            </div>
 
-                <div id="squad-row">
-                    <div id="crew-cell-4" class="crew-cells">
-                        <label id="crew-name-4" class="crew-names"></label>
-                        <img id="crew-portrait-4" class="crew-portraits" position="4" draggable="true" />
-                        <!-- <label id="crew-stats-4" class="crew-stats">Backline</label> -->
-                        <!-- </div> -->
-                    </div>
-                    <div id="crew-cell-3" class="crew-cells">
-                        <label id="crew-name-3" class="crew-names"></label>
-                        <img id="crew-portrait-3" class="crew-portraits" position="3" draggable="true" />
-                        <!-- <label id="crew-stats-3" class="crew-stats">Anchor</label> -->
-                    </div>
-                    <div id="crew-cell-2" class="crew-cells">
-                        <label id="crew-name-2" class="crew-names"></label>
-                        <img id="crew-portrait-2" class="crew-portraits" position="2" draggable="true" />
-                        <!-- <label id="crew-stats-2" class="crew-stats">Whip</label> -->
-                    </div>
-                    <div id="crew-cell-1" class="crew-cells">
-                        <label id="crew-name-1" class="crew-names"></label>
-                        <img id="crew-portrait-1" class="crew-portraits" position="1" draggable="true" />
-                        <!-- <label id="crew-stats-1" class="crew-stats">Frontline</label> -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- tabs -->
-            <!-- <div class="tab-bar">
-                <input id="tab1" type="radio" name="tabs">
-                <label id="tabPulse" class="labelTab">Pulse</label>
-
-                <input id="tab2" type="radio" name="tabs">
-                <label id="tabCrew" class="labelTab">Crew</label>
-
-                <input id="tab3" type="radio" name="tabs">
-                <label id="tabTerritory" class="labelTab">Territory</label>
-
-                <input id="tab4" type="radio" name="tabs">
-                <label id="tabBiz" class="labelTab">Biz</label>
-
-                <input id="tab5" type="radio" name="tabs">
-                <label id="tabDirectives" class="labelTab">Directives</label>            
-            </div>
- -->
-            <!-- pulse -->
-            <link id="section-pulse" rel="import" href="section-pulse.html" onload="handleLoad(event)" onerror="handleError(event)">
-            <!-- crew pool -->
-            <link id="section-crew" rel="import" href="section-crew.html" onload="handleLoad(event)" onerror="handleError(event)">
-            <!-- territory -->
-            <!-- <link id="section-territory" rel="import" href="section-territory.html" onload="handleLoad(event)" onerror="handleError(event)"> -->
-            <div id="section-territory">
-                <!-- <button id="show-modal" @click="showModal = true">Show Modal</button> -->
-                <modal v-if="showModal" @close="showModal = false">
-                    <h3 slot="header">PROPERTIES</h3>
-                    <!--
-                    you can use custom content here to overwrite
-                    default content
-                    -->
-
-                    <div slot="body">
-                        <div class="column">
-                            <tweet-component v-for="tweet in tweets" :key="tweet.id" :tweet="tweet" />
                         </div>
+                        
+                    </modal>
+                </div>
+                <!-- biz -->
+                <link id="section-biz" rel="import" href="section-biz.html" onload="handleLoad(event)" onerror="handleError(event)">
+                <!-- directives -->
+                <link id="section-directives" rel="import" href="section-directives.html" onload="handleLoad(event)" onerror="handleError(event)">
 
-                    </div>
-                    
-                </modal>
             </div>
-            <!-- biz -->
-            <link id="section-biz" rel="import" href="section-biz.html" onload="handleLoad(event)" onerror="handleError(event)">
-            <!-- directives -->
-            <link id="section-directives" rel="import" href="section-directives.html" onload="handleLoad(event)" onerror="handleError(event)">
+
+
+            <!-- <div id="vitals-column" class="column-wrapper">
+            </div> -->
+
+            <!-- <div id="pulse-column" class="column-wrapper">
+                <center><label>punkNET</label></center>
+                <button id="pulseClicker">CLICK</button>
+                <ul id="pulse-grid"></ul>
+            </div> -->
+
+        </section>
+
+        <!-- <section id="items" style="display:none">
+            <div id="items-pulse-wrapper" class="pulse-item" data-uid="" onclick="pulseItemHandler(this)">
+                <div class="pulse-header">
+                    <label id="pulse-item-label" class="pulse-label">Incident Name</label>
+                </div>
+                <label id="pulse-item-description" class="pulse-desc">Incident Description</label>
+            </div>
+        </section> -->
+
 
         </div>
-
-
-        <!-- <div id="vitals-column" class="column-wrapper">
-        </div> -->
-
-        <!-- <div id="pulse-column" class="column-wrapper">
-            <center><label>punkNET</label></center>
-            <button id="pulseClicker">CLICK</button>
-            <ul id="pulse-grid"></ul>
-        </div> -->
-
-    </section>
-
-    <section id="items" style="display:none">
-        <div id="items-pulse-wrapper" class="pulse-item" data-uid="" onclick="pulseItemHandler(this)">
-            <div class="pulse-header">
-                <label id="pulse-item-label" class="pulse-label">Incident Name</label>
-            </div>
-            <label id="pulse-item-description" class="pulse-desc">Incident Description</label>
+        <div id="navigation-controls-container">
+            <label>Controls</label>
         </div>
-    </section>
-
-
-    </div>
-    <div id="navigation-controls-container">
-        <label>Controls</label>
-    </div>
-    </section>
-
+    </section> <!-- end GameView -->
 
 </body>
 
