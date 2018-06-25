@@ -729,7 +729,7 @@ class SectorView extends Phaser.Sprite {
 	}
 
 	zoomClickHandler(e: Phaser.Graphics, p: Phaser.Point) {
-		console.log("* sector click handler", e, p);
+		console.log("* sector (view) click handler", e, p);
 		// let scaleTo: number = 1;
 		if (this.gridGroup.scale.x === 1)
 			this.gridGroup.scale.set(2, 2);

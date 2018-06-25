@@ -65,7 +65,7 @@ $get-path-to-assets: "http://s3.amazonaws.com/com.dfeddon.choomba/client/images/
     flex-direction: column;
 }
 
-#status-cell-left {}
+#stats-cell-left {}
 
 .stats-row {
     display: flex;
@@ -238,6 +238,8 @@ input:checked + .labelTab {
 #mid-column-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    padding-left: 25px;
 }
 
 #character-view-modal {
@@ -465,7 +467,7 @@ input:checked + .labelTab {
 #pulse-items-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
 }
 .pulse-item {
     display: flex;
@@ -481,6 +483,11 @@ input:checked + .labelTab {
     // padding-top: 10px;
     background-color: #4A90E2;
     border-radius: 5px;
+}
+
+// add gap between items
+.pulse-item:not(:last-child) {
+  margin-right: 5px;
 }
 
 // .pulse-item-wrapper {

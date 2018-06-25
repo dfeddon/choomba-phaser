@@ -7,6 +7,7 @@ import * as stub from "../helpers/stubJson.json";
 import * as _ from "lodash";
 import { CharacterVO } from "../models/CharactersVO";
 import { Globals } from "./Globals";
+import { LobbyController } from "../controllers/LobbyController";
 
 // import * as AWS from "aws-sdk";
 // import * as S3 from "aws-sdk/clients/s3";
@@ -145,7 +146,7 @@ class SocketClusterService {
 
 		// store incident vo in db?
 		// send incident vo id on createIncident socket call
-		// create incident on server ([f]rom: socket_it, [t]ype: incident type, [i]ncident: incident id, [o]wner: entity id )
+		// create incident on server ([f]rom: socket_id, [t]ype: incident type, [i]ncident: incident id, [o]wner: entity id )
 		this.socket.emit("createIncident", { f: this.socket.id, t: SocketClusterService.INCIDENT_TYPE_CREATED, i: id, o: owner });
 		// subscribe to new incident channel
 		this.localIncidentChannel = this.socket.subscribe(id);
@@ -244,8 +245,10 @@ class SocketClusterService {
 			case SocketClusterService.INCIDENT_TYPE_COMBAT_BEGIN:
 				console.log("%c++ you have begun COMBAT BEGIN", "color:yellow");
 				console.log("data", data);
-				var lobby: LobbyState = (this.game.state.getCurrentState() as LobbyState);
-				lobby.combatBegin(data);
+				// var lobby: LobbyState = (this.game.state.getCurrentState() as LobbyState);
+				// lobby.combatBegin(data);
+				let controller: LobbyController = (this.game.state.getCurrentState() as LobbyState).lobbyController;
+				controller.combatBegin(data);
 			break;
 		}
 	}

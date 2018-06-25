@@ -66,7 +66,7 @@ class LobbyController {
 		this.player = this.game.rnd.integerInRange(1000, 9000).toString();
 	}
 	//////////////////////////////////////////////
-	// add incident
+	// add incident (recipients)
 	//////////////////////////////////////////////
 	addIncident(vo: any) {
 		console.log("* adding pulse item", vo);
@@ -86,7 +86,7 @@ class LobbyController {
 			// });
 			// clone wrapper
 			var wrapper: any = document.getElementById("items-pulse-wrapper").cloneNode(true);
-			var pulse: any = document.getElementById("pulse-grid");
+			var pulse: any = document.getElementById("pulse-items-container");//("pulse-grid");
 			// insert item
 			pulse.insertAdjacentElement("afterbegin", wrapper);
 			// update labels
@@ -107,7 +107,7 @@ class LobbyController {
 		console.log("* incident created handler", i);
 		// var i: IncidentVO = (data as any).incidents[0];
 		var incidentVO = new IncidentVO(i);
-		console.log("* derek", incidentVO);
+		console.log("* incident", incidentVO);
 		this.selectedIncident = incidentVO;
 		// console.log("* net", new Phaser.Net(_this.game).getQueryString("player"));
 		// save it to dynamoDB?
@@ -116,7 +116,9 @@ class LobbyController {
 		this.sc.createChannel(i.id, this.player);
 	}
 
+	// initiating entity creating incident
 	incidentClickHandler() {
+		console.log("* incidentClickHandler");
 		// TODO: send custom incident socket vo
 		// create incidentVO
 		var obj: object = {
@@ -129,12 +131,15 @@ class LobbyController {
 		// save it to dynamoDB?
 		AWSService.getInstance().dynamoose.create(new IncidentsSchema(), obj, (err: any, item: any) => {
 			if (err) return console.log(err);
-			else return this.incidentCreatedHandler(item);// console.log(item);
+			this.incidentCreatedHandler(item);
+			console.log('* created incident', item);
 		});
 	}
+
+	// entity clicked/accepted incident
 	pulseItemHandler = (e: any) => {
 		// user elected to JOIN an extant incident (if successful, global event by id should be disabled)
-		console.log("pulseItemHandler", e.getAttribute('data-uid'));
+		console.log("pulseItemHandler", e, e.getAttribute('data-uid'));
 		var incident = JSON.parse(e.getAttribute('data-uid'));
 		console.log("* incident", incident, incident._uid);
 

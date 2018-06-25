@@ -3,6 +3,9 @@ import { LobbyDropper } from "../../controllers/LobbyDropper";
 import { LobbyContentController } from "../../controllers/LobbyContentController";
 import { AWSService } from "../../services/AWSService";
 import { NumberHelper } from "../../helpers/NumberHelper";
+import LobbyState from "../../states/LobbyState";
+import { LobbyController } from "../../controllers/LobbyController";
+import { IncidentVO } from "../../models/IncidentsVO";
 
 class LobbyDom {
 	game: Phaser.Game;
@@ -37,8 +40,25 @@ class LobbyDom {
 		let currentView: HTMLElement = document.getElementById("section-pulse");
 
 		let tabHandler = (e: Event) => {
-			// console.log("tab clicked", e.srcElement.id);
-			this.lobbyContentController.addContent(e.srcElement.id);
+			console.log("tab clicked", e.srcElement.id);
+			switch(e.srcElement.id) {
+				case 'tabPulse':
+					// create incidentVO
+					// var obj: object = {
+					// 	id: NumberHelper.UIDGenerator(),
+					// 	handle: "Cipher's Incident",
+					// 	description: "Tunnelling down into the grime of BAMA Sprawl...",
+					// 	entity: Globals.getInstance().player.entity.id,
+					// 	property: 1
+					// };
+					// let inc: IncidentVO = new IncidentVO(obj);
+					let controller: LobbyController = (this.game.state.getCurrentState() as LobbyState).lobbyController;
+					// controller.incidentCreatedHandler(inc);// console.log(item);
+					controller.incidentClickHandler();
+				break;
+				default:
+					this.lobbyContentController.addContent(e.srcElement.id);
+			}
 		};
 		pulseTab.addEventListener("click", tabHandler);
 		crewTab.addEventListener("click", tabHandler);
@@ -132,20 +152,23 @@ class LobbyDom {
 
 		//////////////////////////////////////////////
 		//////////////////////////////////////////////
-		// this.doc.pulseItemHandler = (e: any) => {
-		// 	// user elected to JOIN an extant incident (if successful, global event by id should be disabled)
-		// 	console.log("pulseItemHandler", e.getAttribute('data-uid'));
-		// 	var incident = JSON.parse(e.getAttribute('data-uid'));
-		// 	console.log("* incident", incident, incident._uid);
+		this.doc.pulseItemHandler = (e: any) => {
+			// user elected to JOIN an extant incident (if successful, global event by id should be disabled)
+			let controller: LobbyController = (this.game.state.getCurrentState() as LobbyState).lobbyController
+			controller.pulseItemHandler(e);
 
-		// 	// store incident, then send with combatBegin fnc
-		// 	this.selectedIncident = new IncidentVO(incident);
-		// 	// TODO: Assign attack/defense characters to incident
-		// 	console.log("* assign", this.selectedIncident);
+			// console.log("pulseItemHandler", e.getAttribute('data-uid'));
+			// var incident = JSON.parse(e.getAttribute('data-uid'));
+			// console.log("* incident", incident, incident._uid);
 
-		// 	// join incident
-		// 	this.sc.joinChannel(incident.channel);
-		// }
+			// store incident, then send with combatBegin fnc
+			// this.selectedIncident = new IncidentVO(incident);
+			// TODO: Assign attack/defense characters to incident
+			// console.log("* assign", this.selectedIncident);
+
+			// join incident
+			// this.sc.joinChannel(incident.channel);
+		}
 
 		//////////////////////////////////////////////
 		//////////////////////////////////////////////

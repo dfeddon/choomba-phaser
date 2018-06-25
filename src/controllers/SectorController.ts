@@ -118,7 +118,10 @@ class SectorController {
 	}
 
 	clickHandler(e: Phaser.Sprite, p: Phaser.Point) {
-		console.log("* sector click handler", e, p);
+		console.log("* sector (controller) click handler", e, p);
+		console.log("* current state", this.game.state.getCurrentState().key);
+		if (this.game.state.getCurrentState().key !== "LobbyState")
+			return;
 		// console.log("* e", e.x, e.y);
 		// console.log("* p", p.x - this.borderOffset.x, p.y);
 		// let tile: Phaser.Point = PointHelper.getTileCoordinates(new Phaser.Point(p.x-this.borderOffset.x, p.y), 64);
