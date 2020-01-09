@@ -52,11 +52,6 @@ class AWSService {
 		// var dynamoose = require('dynamoose');
 		this.dynamoose = new DynamooseService();
 		this.dynamoose.init();
-		// dynamoose.AWS.config.update({
-		// 	accessKeyId: 'AKIAIH2FBIAF5JYWFJFA',
-		// 	secretAccessKey: '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',
-		// 	region: 'us-east-1'
-		// });
 		
 		// // TODO: set auto-create to 'false' for production
 		// dynamoose.setDefaults( { create: true });
