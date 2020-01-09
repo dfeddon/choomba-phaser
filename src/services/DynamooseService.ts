@@ -31,8 +31,8 @@ class DynamooseService {
     // super();
     // var dynamoose = require('dynamoose');
     dynamoose.AWS.config.update({
-      accessKeyId: "AKIAIH2FBIAF5JYWFJFA",
-      secretAccessKey: "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",
+      accessKeyId: HIDDEN_KEY,
+      secretAccessKey: HIDDEN_ACCESS_KEY,
       region: "us-east-1"
     });
 
